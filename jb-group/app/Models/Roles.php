@@ -13,4 +13,16 @@ class Roles extends Model
         'code',
         'name'
     ];
+
+    public function accesses()
+    {
+        return $this->hasManyThrough(
+            Access::class,
+            RoleAccess::class,
+            'role_id',
+            'id',
+            'id',
+            'access_id'
+        );
+    }
 }

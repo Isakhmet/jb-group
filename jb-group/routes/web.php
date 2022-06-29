@@ -13,6 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware('auth')->group(function(){
+    Route::get('/', function () {
+        return view('home');
+    });
+    Route::resource('currencies', \App\Http\Controllers\CurrencyController::class);
+    Route::resource('users', \App\Http\Controllers\UserController::class);
+    Route::resource('roles', \App\Http\Controllers\RoleController::class);
+    Route::resource('branches', \App\Http\Controllers\BranchController::class);
 });
+
+Route::post('admin-login', [\App\Http\Controllers\Auth\LoginController::class, 'login'])->name('admin-login');
+
+Auth::routes();

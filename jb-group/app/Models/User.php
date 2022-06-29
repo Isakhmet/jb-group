@@ -21,4 +21,16 @@ class User extends Authenticatable
         'name',
         'password',
     ];
+
+    public function roles()
+    {
+        return $this->hasOneThrough(
+            'App\Models\Roles',
+            'App\Models\UserRole',
+            'user_id',
+            'id',
+            'id',
+            'role_id'
+        );
+    }
 }
