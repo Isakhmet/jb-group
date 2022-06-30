@@ -13,4 +13,21 @@ class Branch extends Model
         'name',
         'address'
     ];
+
+    public function currencies()
+    {
+        return $this->hasManyThrough(
+            Currency::class,
+            BranchCurrency::class,
+            'branch_id',
+            'id',
+            'id',
+            'currency_id',
+        );
+    }
+
+    public function balances()
+    {
+        return $this->hasMany(BranchCurrency::class, 'branch_id', 'id');
+    }
 }

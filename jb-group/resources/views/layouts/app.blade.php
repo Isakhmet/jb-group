@@ -66,6 +66,20 @@
                             </ul>
                             </li>
                         @endcan
+                        @can('viewAny', \App\Models\Branch::class)
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    Остаток валют в филиалах
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="{{url('branch-currency')}}">Остатки в филиалах</a></li>
+                                    @can('create', \App\Models\Branch::class)
+                                        <li><a class="dropdown-item" href="{{url('branch-currency/create')}}">Добавить валюту в филиал</a></li>
+                                    @endcan
+                                </ul>
+                            </li>
+                        @endcan
                         @can('viewAny', \App\Models\User::class)
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"

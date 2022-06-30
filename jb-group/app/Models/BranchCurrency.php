@@ -15,4 +15,9 @@ class BranchCurrency extends Model
         'balance',
         'is_limited',
     ];
+
+    public function currency()
+    {
+        return $this->hasOne(Currency::class, 'id', 'currency_id');
+    }
 }
