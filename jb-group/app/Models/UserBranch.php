@@ -13,4 +13,14 @@ class UserBranch extends Model
         'branch_id',
         'user_id'
     ];
+
+    public function users()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    public function branches()
+    {
+        return $this->hasOne(Branch::class, 'id', 'branch_id');
+    }
 }

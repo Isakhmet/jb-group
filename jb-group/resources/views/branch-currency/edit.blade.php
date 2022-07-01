@@ -8,7 +8,7 @@
                     <div class="card-header">{{ __('Обновление филиала') }}</div>
                     <div class="card-body">
                         <div class="text-center mt-5">
-                            <form method="post" action="{{url('/branches/'.$branch->id)}}" class="login-form">
+                            <form method="post" action="{{url('/update-branch-currency')}}" class="login-form">
                                 @if ($errors->any())
                                     <div class="alert alert-danger">
                                         <strong>Что-то пошло не так!</strong> Заполните корректно данные.<br><br>
@@ -20,12 +20,23 @@
                                     </div>
                                 @endif
                                 @csrf
-                                @method('PUT')
-                                    <input type="text" class="form-control mb-3" id="name" name="name" placeholder="Код валюты"
-                                           autocomplete required value="{{$branch->name}}">
-                                    <input type="text" class="form-control mb-3" id="name" name="address" placeholder="Описание"
-                                           autocomplete required value="{{$branch->address}}">
-                                    <button class="btn btn-lg btn-success col-12">Обновить</button>
+                                    <select id="branch_change" class="form-select mb-3" aria-label="Branch" name="branch_id" required>
+                                        <option value="" selected>Выберите филиал</option>
+                                        @foreach($branches as $branch)
+                                            <option value="{{$branch->id}}">{{$branch->name}}</option>
+                                        @endforeach
+                                    </select>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Валюта</th>
+                                            <th scope="col">Сумма</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                    <button class="btn btn-lg btn-success col-12" disabled="disabled">Сохранить</button>
                                 </div>
                             </form>
                         </div>

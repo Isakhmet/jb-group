@@ -33,6 +33,8 @@ class CurrencyController extends Controller
      */
     public function store(Request $request)
     {
+        $request->merge(['limit' =>  (int)str_replace(',', '', $request->get('limit'))]);
+
         $validator = Validator::make(
             $request->all(),
             [
@@ -77,6 +79,7 @@ class CurrencyController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->merge(['limit' =>  (int)str_replace(',', '', $request->get('limit'))]);
         $currency = Currency::find($id);
 
         if (strcmp($currency->code, $request->get('code')) !== 0) {

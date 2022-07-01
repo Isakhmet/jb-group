@@ -6,6 +6,7 @@ use App\Models\Branch;
 use App\Models\BranchCurrency;
 use App\Models\Currency;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class BranchCurrencyController extends Controller
@@ -15,19 +16,21 @@ class BranchCurrencyController extends Controller
      */
     public function index()
     {
-        $branches = Branch::with('balances.currency')->get();
+        $branches           = Branch::with('balances.currency')
+                                    ->get()
+        ;
         $data['currencies'] = Currency::all();
 
-        foreach ($branches as $key => $branch){
+        foreach ($branches as $key => $branch) {
             $balances = [];
 
             foreach ($branch->balances as $balance) {
-                $balances[$balance->currency->code]['balance'] = $balance->balance;
+                $balances[$balance->currency->code]['balance']    = $balance->balance;
                 $balances[$balance->currency->code]['is_limited'] = $balance->is_limited;
                 $balances[$balance->currency->code]['updated_at'] = $balance->updated_at->format('Y-m-d H:i:s');
             }
 
-            $data['branches'][$key]['name'] = $branch->name;
+            $data['branches'][$key]['name']     = $branch->name;
             $data['branches'][$key]['balances'] = $balances;
         }
 
@@ -49,16 +52,16 @@ class BranchCurrencyController extends Controller
      */
     public function store(Request $request)
     {
+        $request->merge(['balance' =>  (int)str_replace(',', '', $request->get('balance'))]);
         $data = $request->all();
 
-        $validator = Validator::make(
-            $data,
-            [
-                'branch_id' => 'required|integer|exists:branches,id',
-                'currency_id' => 'required|integer|exists:currencies,id',
-                'balance' => 'required|integer',
-            ]
-        );
+        $rules = [
+            'currency_id' => 'unique:branch_currencies,currency_id,NULL,id,branch_id,' . $request->get('branch_id'),
+            'branch_id'   => 'unique:branch_currencies,branch_id,NULL,id,currency_id,' . $request->get('currency_id'),
+            'balance'     => 'required|integer',
+        ];
+
+        $validator = Validator::make($data, $rules);
 
         if ($validator->fails()) {
             return redirect()
@@ -69,7 +72,7 @@ class BranchCurrencyController extends Controller
 
         $currency = Currency::find($data['currency_id']);
 
-        if($currency->limit > $data['balance']) {
+        if ($currency->limit > $data['balance']) {
             $data = array_merge($data, ['is_limited' => true]);
         }
 
@@ -77,15 +80,16 @@ class BranchCurrencyController extends Controller
 
         return redirect()->route(
             'branch-currency.index', [
-                                'success' => 'Филиал успешно создан.',
-                            ]
+                                       'success' => 'Филиал успешно создан.',
+                                   ]
         );
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -94,36 +98,50 @@ class BranchCurrencyController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit()
     {
-        //
+        $user = Auth::user();
+
+        return view('branch-currency.edit', ['branches' => $user->branches]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+
+    public function update(Request $request)
     {
-        //
+        foreach ($request->get('currency') as $key => $currency) {
+            BranchCurrency::where('branch_id', $request->get('branch_id'))
+                          ->where('currency_id', $key)
+                          ->update(
+                              [
+                                  'balance' => (int)str_replace(',' , '', $currency)
+                              ]
+                          );
+        }
+
+        return redirect()->back();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         //
+    }
+
+    public function getBalance(Request $request)
+    {
+        $branch = BranchCurrency::with('currency')
+                                ->where('branch_id', $request->get('id'))
+                                ->get()
+        ;
+
+        return $branch;
     }
 }

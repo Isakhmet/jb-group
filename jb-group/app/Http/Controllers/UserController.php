@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Branch;
 use App\Models\Roles;
 use App\Models\User;
+use App\Models\UserBranch;
 use App\Models\UserRole;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -165,6 +168,52 @@ class UserController extends Controller
         return redirect()
             ->back()
             ->with('success', 'Пользователь успешно удален')
+            ;
+    }
+
+    public function addBranch()
+    {
+        $users = User::all();
+        $branches = Branch::all();
+
+        return view('users.add-branch', ['users' => $users, 'branches' => $branches]);
+    }
+
+    public function bindBranch(Request $request)
+    {
+        $rules = [
+            'user_id' => 'unique:user_branches,user_id,NULL,id,branch_id,' . $request->get('branch_id'),
+            'branch_id' => 'unique:user_branches,branch_id,NULL,id,user_id,' . $request->get('user_id')
+        ];
+
+        $validator = Validator::make($request->toArray(), $rules);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ;
+        }
+
+        UserBranch::create($request->all());
+
+        return redirect('/list-branch');
+    }
+
+    public function listBranch()
+    {
+        $users = UserBranch::with(['users', 'branches'])->get();
+
+        return view('users.list-branch', ['users' => $users]);
+    }
+
+    public function destroyBranch($id)
+    {
+        UserBranch::find($id)->delete();
+
+        return redirect()
+            ->back()
+            ->with('success', 'Запись успешно удалена')
             ;
     }
 }

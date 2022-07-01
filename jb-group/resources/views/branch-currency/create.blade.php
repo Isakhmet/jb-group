@@ -33,7 +33,7 @@
                                         <option value="{{$currency->id}}">{{$currency->code}}</option>
                                     @endforeach
                                 </select>
-                                <input type="number" class="form-control mb-3" id="name" name="balance"
+                                <input type="text" class="form-control mb-3 money" id="name" name="balance"
                                        placeholder="Остаток"
                                        autocomplete required>
                                 <div class="mt-3">

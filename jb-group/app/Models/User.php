@@ -33,4 +33,16 @@ class User extends Authenticatable
             'role_id'
         );
     }
+
+    public function branches()
+    {
+        return $this->hasManyThrough(
+            Branch::class,
+            UserBranch::class,
+            'user_id',
+            'id',
+            'id',
+            'branch_id'
+        );
+    }
 }

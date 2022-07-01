@@ -5,8 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">{{ __('Филиалы') }}</div>
-
+                    <div class="card-header">{{ __('Остатки в филиалах') }}</div>
                     <div class="card-body">
                         <div class="text-center mt-5">
                             @if ($message = Session::get('success'))
@@ -32,7 +31,7 @@
                                         @if(isset($branch['balances'][$currency->code]))
                                             <td @if($branch['balances'][$currency->code]['is_limited']) style="background-color: red" @endif>
                                                 <ul class="list-group">
-                                                    <li style="list-style-type: none;">{{$branch['balances'][$currency->code]['balance']}}</li>
+                                                    <li style="font-size: 25px; list-style-type: none;" class="money">{{$branch['balances'][$currency->code]['balance']}}</li>
                                                     <li style="list-style-type: none;">{{$branch['balances'][$currency->code]['updated_at']}}</li>
                                                 </ul>
                                             </td>
@@ -44,6 +43,11 @@
                             @endforeach
                             </tbody>
                         </table>
+                        <div class="align-content-center">
+                            <h4>Обновлять каждые 30 минут(не дольше)</h4>
+                            <h4>При каждой большой продаже/покупке обновление обязательно</h4>
+                        </div>
+                        <a class="btn btn-success" href="{{url('branch-currency-edit')}}" role="button">Обновить</a>
                     </div>
                 </div>
             </div>

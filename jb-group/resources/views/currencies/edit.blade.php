@@ -26,7 +26,7 @@
                                            autocomplete required value="{{$currency->code}}">
                                     <input type="text" class="form-control mb-3" id="name" name="description" placeholder="Описание"
                                            autocomplete required value="{{$currency->description}}">
-                                    <input type="number" name="limit" class="form-control" id="limit" placeholder="Лимит"
+                                    <input type="text" name="limit" class="form-control" id="limit" placeholder="Лимит"
                                            autocomplete required value="{{$currency->limit}}">
                                 <div class="mt-3">
                                     <button class="btn btn-lg btn-success col-12">Обновить</button>

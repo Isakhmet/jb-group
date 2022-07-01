@@ -11,7 +11,9 @@
 
     <!-- Scripts -->
     <script src="{{ URL::to('/') }}/assets/js/bootstrap/bootstrap.js"></script>
-
+    <script src="{{ URL::to('/') }}/assets/plugins/jquery/jquery.min.js"></script>
+    <script src="{{ URL::to('/') }}/assets/plugins/jquery/jquery.maskMoney.min.js"></script>
+    <script src="{{ URL::to('/')}}/assets/js/main.js"></script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -24,7 +26,7 @@
 <div id="app">
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="{{ url('/') }}">
+            <a class="navbar-brand" href="{{ url('/branch-currency') }}">
                 {{ config('app.name', 'Laravel') }}
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -37,9 +39,6 @@
                 <!-- Left Side Of Navbar -->
                 @auth
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{ url('/') }}">Home</a>
-                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                data-bs-toggle="dropdown" aria-expanded="false">
@@ -77,6 +76,7 @@
                                     @can('create', \App\Models\Branch::class)
                                         <li><a class="dropdown-item" href="{{url('branch-currency/create')}}">Добавить валюту в филиал</a></li>
                                     @endcan
+                                    <li><a class="dropdown-item" href="{{url('branch-currency-edit')}}">Изменить остатки</a></li>
                                 </ul>
                             </li>
                         @endcan
@@ -92,6 +92,8 @@
                                         <li><a class="dropdown-item" href="{{url('users/create')}}">Добавить нового
                                                 пользователя</a></li>
                                     @endcan
+                                    <li><a class="dropdown-item" href="{{url('add-branch')}}">Доступ к филиалам</a></li>
+                                    <li><a class="dropdown-item" href="{{url('list-branch')}}">Список доступов к филиалам</a></li>
                                 </ul>
                             </li>
                         @endcan
