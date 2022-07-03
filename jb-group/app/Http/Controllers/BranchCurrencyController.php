@@ -20,6 +20,7 @@ class BranchCurrencyController extends Controller
                                     ->get()
         ;
         $data['currencies'] = Currency::all();
+        $data['branches'] = [];
 
         foreach ($branches as $key => $branch) {
             $balances = [];
