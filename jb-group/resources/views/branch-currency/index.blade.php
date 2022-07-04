@@ -43,11 +43,13 @@
                             @endforeach
                             </tbody>
                         </table>
+                        @can('update', \App\Models\BranchCurrency::class)
                         <div class="align-content-center">
                             <h4>Обновлять каждые 30 минут(не дольше)</h4>
                             <h4>При каждой большой продаже/покупке обновление обязательно</h4>
                         </div>
                         <a class="btn btn-success" href="{{url('branch-currency-edit')}}" role="button">Обновить</a>
+                        @endcan
                     </div>
                 </div>
             </div>

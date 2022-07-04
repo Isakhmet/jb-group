@@ -173,7 +173,7 @@ class UserController extends Controller
 
     public function addBranch()
     {
-        $users = User::all();
+        $users = User::whereNotIn('name', ['admin'])->get();
         $branches = Branch::all();
 
         return view('users.add-branch', ['users' => $users, 'branches' => $branches]);

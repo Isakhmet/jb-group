@@ -105,7 +105,13 @@ class BranchCurrencyController extends Controller
     {
         $user = Auth::user();
 
-        return view('branch-currency.edit', ['branches' => $user->branches]);
+        if(strcmp($user->roles->code, 'admin') === 0) {
+            $branches = Branch::all();
+        }else {
+            $branches = $user->branches;
+        }
+
+        return view('branch-currency.edit', ['branches' => $branches]);
     }
 
 
@@ -125,24 +131,22 @@ class BranchCurrencyController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @param $id
      *
-     * @param int $id
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
-        //
+        BranchCurrency::find($id)->delete();
+
+        return redirect()->back();
     }
 
     public function getBalance(Request $request)
     {
-        $branch = BranchCurrency::with('currency')
+        return BranchCurrency::with('currency')
                                 ->where('branch_id', $request->get('id'))
                                 ->get()
         ;
-
-        return $branch;
     }
 }

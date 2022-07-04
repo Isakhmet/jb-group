@@ -13,4 +13,14 @@ class RoleAccess extends Model
         'access_id',
         'role_id'
     ];
+
+    public function accesses()
+    {
+        return $this->belongsTo(Access::class, 'access_id', 'id');
+    }
+
+    public function roles()
+    {
+        return $this->belongsTo(Roles::class, 'role_id', 'id');
+    }
 }

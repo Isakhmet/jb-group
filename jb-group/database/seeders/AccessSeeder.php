@@ -30,6 +30,14 @@ class AccessSeeder extends Seeder
                       'description' => 'Редактирования пользователя',
                   ],
                   [
+                      'code' => 'user_branch_access_view',
+                      'description' => 'Список доступов пользователей к филиалом',
+                  ],
+                  [
+                      'code' => 'user_branch_access_add',
+                      'description' => 'Дать доступ пользователям к филиалу',
+                  ],
+                  [
                       'code' => 'currency',
                       'description' => 'Валюты',
                   ],

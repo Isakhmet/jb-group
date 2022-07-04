@@ -70,7 +70,7 @@
                                 </ul>
                             </li>
                         @endcan
-                        @can('viewAny', \App\Models\Branch::class)
+                        @can('viewAny', \App\Models\BranchCurrency::class)
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false">
@@ -79,12 +79,14 @@
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item" href="{{url('branch-currency')}}">Остатки в
                                             филиалах</a></li>
-                                    @can('create', \App\Models\Branch::class)
+                                    @can('create', \App\Models\BranchCurrency::class)
                                         <li><a class="dropdown-item" href="{{url('branch-currency/create')}}">Добавить
                                                 валюту в филиал</a></li>
                                     @endcan
-                                    <li><a class="dropdown-item" href="{{url('branch-currency-edit')}}">Изменить
-                                            остатки</a></li>
+                                    @can('update', \App\Models\BranchCurrency::class)
+                                        <li><a class="dropdown-item" href="{{url('branch-currency-edit')}}">Изменить
+                                                остатки</a></li>
+                                    @endcan
                                 </ul>
                             </li>
                         @endcan
@@ -100,9 +102,13 @@
                                         <li><a class="dropdown-item" href="{{url('users/create')}}">Добавить нового
                                                 пользователя</a></li>
                                     @endcan
-                                    <li><a class="dropdown-item" href="{{url('add-branch')}}">Доступ к филиалам</a></li>
-                                    <li><a class="dropdown-item" href="{{url('list-branch')}}">Список доступов к
-                                            филиалам</a></li>
+                                    @can('update', \App\Models\User::class)
+                                        <li><a class="dropdown-item" href="{{url('add-branch')}}">Доступ к филиалам</a></li>
+                                    @endcan
+                                    @can('view', \App\Models\User::class)
+                                        <li><a class="dropdown-item" href="{{url('list-branch')}}">Список доступов к
+                                                филиалам</a></li>
+                                    @endcan
                                 </ul>
                             </li>
                         @endcan
@@ -113,8 +119,8 @@
                                     Доступы
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="{{url('users')}}">Список</a></li>
-                                    <li><a class="dropdown-item" href="{{url('users/create')}}">Дать доступ
+                                    <li><a class="dropdown-item" href="{{url('accesses')}}">Список доступов</a></li>
+                                    <li><a class="dropdown-item" href="{{url('accesses/create')}}">Дать доступ
                                             пользователю</a></li>
                                 </ul>
                             </li>
