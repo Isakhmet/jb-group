@@ -22,11 +22,11 @@
     <link href="{{ URL::to('/') }}/assets/css/bootstrap/bootstrap.css" rel="stylesheet" type="text/css"/>
     <link href="{{ URL::to('/') }}/assets/css/style.css" rel="stylesheet" type="text/css"/>
 </head>
-<body>
+<body style="background-color: #2f4f5d;">
 <div id="app">
-    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+    <nav class="navbar navbar-expand-md navbar-light shadow-sm border border-white" style="background-color: #47474c;">
         <div class="container">
-            <a class="navbar-brand" href="{{ url('/branch-currency') }}">
+            <a class="navbar-brand text-light" href="{{ url('/branch-currency') }}">
                 {{ config('app.name', 'Laravel') }}
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -41,7 +41,7 @@
                     <ul class="navbar-nav me-auto">
                         @can('viewAny', \App\Models\Currency::class)
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     Валюты
                                 </a>
@@ -57,7 +57,7 @@
                         @endcan
                         @can('viewAny', \App\Models\Branch::class)
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     Филиалы
                                 </a>
@@ -72,7 +72,7 @@
                         @endcan
                         @can('viewAny', \App\Models\BranchCurrency::class)
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     Остаток валют в филиалах
                                 </a>
@@ -92,7 +92,7 @@
                         @endcan
                         @can('viewAny', \App\Models\User::class)
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     Пользователи
                                 </a>
@@ -114,7 +114,7 @@
                         @endcan
                         @can('viewAny', \App\Models\User::class)
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     Доступы
                                 </a>
@@ -134,7 +134,7 @@
 
                     @else
                         <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle text-light" href="#" role="button"
                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->name }}
                             </a>

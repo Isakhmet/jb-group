@@ -28,7 +28,7 @@ class BranchCurrencyController extends Controller
             foreach ($branch->balances as $balance) {
                 $balances[$balance->currency->code]['balance']    = $balance->balance;
                 $balances[$balance->currency->code]['is_limited'] = $balance->is_limited;
-                $balances[$balance->currency->code]['updated_at'] = $balance->updated_at->format('Y-m-d H:i:s');
+                $balances[$balance->currency->code]['updated_at'] = $balance->updated_at->format('H:i:s');
             }
 
             $data['branches'][$key]['name']     = $branch->name;
