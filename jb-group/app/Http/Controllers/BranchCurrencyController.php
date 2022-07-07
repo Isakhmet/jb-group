@@ -118,11 +118,16 @@ class BranchCurrencyController extends Controller
     public function update(Request $request)
     {
         foreach ($request->get('currency') as $key => $currency) {
+            $limit = Currency::find($key)->limit;
+            $balance = (int)str_replace(',' , '', $currency);
+            $isLimited = $balance >= $limit ? false : true;
+
             BranchCurrency::where('branch_id', $request->get('branch_id'))
                           ->where('currency_id', $key)
                           ->update(
                               [
-                                  'balance' => (int)str_replace(',' , '', $currency)
+                                  'balance' => $balance,
+                                  'is_limited' => $isLimited
                               ]
                           );
         }

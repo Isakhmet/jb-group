@@ -15,10 +15,15 @@ class CreateEmployeesTable extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 255);
+            $table->string('name');
+            $table->string('iin')->nullable();
             $table->string('phone')->nullable();
-            $table->string('addition')->nullable();
+            $table->string('address')->nullable();
+            $table->string('addition_phone')->nullable();
+            $table->bigInteger('branch_id')->nullable();
             $table->timestamps();
+
+            $table->foreign('branch_id')->references('id')->on('branches');
         });
     }
 
