@@ -23,6 +23,7 @@ Route::middleware('auth')->group(function(){
     Route::resource('branches', \App\Http\Controllers\BranchController::class);
     Route::resource('accesses', \App\Http\Controllers\AccessController::class);
     Route::resource('branch-currency', \App\Http\Controllers\BranchCurrencyController::class);
+    Route::resource('employees', \App\Http\Controllers\EmployeeController::class);
     Route::get('/branch-currency-edit', [\App\Http\Controllers\BranchCurrencyController::class, 'edit']);
     Route::get('/get-branch-currency', [\App\Http\Controllers\BranchCurrencyController::class, 'getBalance']);
     Route::post('/update-branch-currency', [\App\Http\Controllers\BranchCurrencyController::class, 'update']);

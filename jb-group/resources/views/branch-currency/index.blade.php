@@ -5,8 +5,8 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">{{ __('Остатки в филиалах') }}</div>
-                    <div class="card-body">
+                    <div class="card-header {{--text-light--}}" {{--style="background-color: #47474c;"--}}>{{ __('Остатки валют в филиалах') }}</div>
+                    <div class="card-body" {{--style="background-color: #e9e6d3;"--}}>
                         <div class="text-center mt-5">
                             @if ($message = Session::get('success'))
                                 <div class="alert alert-success">
@@ -14,7 +14,7 @@
                                 </div>
                             @endif
                         </div>
-                        <table class="table table-bordered">
+                        <table class="table table-bordered">{{--border border-dark--}}
                             <thead>
                             <tr>
                                 <th scope="col">Филиал/Валюты</th>
@@ -26,12 +26,12 @@
                             <tbody>
                             @foreach($branches as $key => $branch)
                                 <tr>
-                                    <th scope="row">{{$branch['name']}}</th>
+                                    <th scope="row" style="color: #004d40; font-size: 22px">{{$branch['name']}}</th>
                                     @foreach($currencies as $currency)
                                         @if(isset($branch['balances'][$currency->code]))
                                             <td @if($branch['balances'][$currency->code]['is_limited']) style="background-color: red" @endif>
                                                 <ul class="list-group">
-                                                    <li style="font-size: 25px; list-style-type: none;" class="money">{{$branch['balances'][$currency->code]['balance']}}</li>
+                                                    <li style="font-size: 21px; list-style-type: none;" class="money">{{$branch['balances'][$currency->code]['balance']}}</li>
                                                     <li style="list-style-type: none;">{{$branch['balances'][$currency->code]['updated_at']}}</li>
                                                 </ul>
                                             </td>

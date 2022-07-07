@@ -23,7 +23,9 @@
                                 @csrf
                                 <input type="text" class="form-control mb-3" id="name" name="name" placeholder="Названия филиала"
                                        autocomplete required>
-                                <input type="text" class="form-control mb-3" id="name" name="address" placeholder="Адрес"
+                                <input type="text" class="form-control mb-3" id="phone" name="phone" placeholder="Номер телефона"
+                                       autocomplete required>
+                                <input type="text" class="form-control mb-3" id="address" name="address" placeholder="Адрес"
                                        autocomplete required>
                                 <div class="mt-3">
                                     <button class="btn btn-lg btn-success col-12">Добавить</button>

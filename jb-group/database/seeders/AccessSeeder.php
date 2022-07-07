@@ -77,6 +77,18 @@ class AccessSeeder extends Seeder
                       'code' => 'balance_add',
                       'description' => 'Добавление валюты в филиал',
                   ],
+                  [
+                      'code' => 'employee',
+                      'description' => 'Смотреть кассиров',
+                  ],
+                  [
+                      'code' => 'employee_create',
+                      'description' => 'Добавление кассиров',
+                  ],
+                  [
+                      'code' => 'employee_edit',
+                      'description' => 'Редактирования кассиров',
+                  ],
               ]
           )
         ;

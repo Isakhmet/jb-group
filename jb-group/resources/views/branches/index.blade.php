@@ -20,6 +20,7 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Названия</th>
+                                <th scope="col">Номер телефона</th>
                                 <th scope="col">Адрес</th>
                                 <th scope="col">Дата создания</th>
                                 <th scope="col">Действия</th>
@@ -30,6 +31,7 @@
                             <tr>
                                 <th scope="row">{{$key}}</th>
                                 <td>{{$branch->name}}</td>
+                                <td>{{$branch->phone}}</td>
                                 <td>{{$branch->address}}</td>
                                 <td>{{$branch->created_at}}</td>
                                 <td>

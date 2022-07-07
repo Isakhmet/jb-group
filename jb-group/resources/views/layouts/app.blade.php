@@ -13,6 +13,7 @@
     <script src="{{ URL::to('/') }}/assets/js/bootstrap/bootstrap.js"></script>
     <script src="{{ URL::to('/') }}/assets/plugins/jquery/jquery.min.js"></script>
     <script src="{{ URL::to('/') }}/assets/plugins/jquery/jquery.maskMoney.min.js"></script>
+    <script src="{{ URL::to('/') }}/assets/plugins/bootstrap-inputmask/bootstrap-inputmask.min.js"></script>
     <script src="{{ URL::to('/')}}/assets/js/main.js"></script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -22,11 +23,11 @@
     <link href="{{ URL::to('/') }}/assets/css/bootstrap/bootstrap.css" rel="stylesheet" type="text/css"/>
     <link href="{{ URL::to('/') }}/assets/css/style.css" rel="stylesheet" type="text/css"/>
 </head>
-<body>
+<body style="background-color: #2f4f5d;">
 <div id="app">
-    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+    <nav class="navbar navbar-expand-md navbar-light shadow-sm border border-white" style="background-color: #47474c;">
         <div class="container">
-            <a class="navbar-brand" href="{{ url('/branch-currency') }}">
+            <a class="navbar-brand text-light" href="{{ url('/branch-currency') }}">
                 {{ config('app.name', 'Laravel') }}
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -41,7 +42,8 @@
                     <ul class="navbar-nav me-auto">
                         @can('viewAny', \App\Models\Currency::class)
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown"
+                                   role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     Валюты
                                 </a>
@@ -57,7 +59,8 @@
                         @endcan
                         @can('viewAny', \App\Models\Branch::class)
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown"
+                                   role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     Филиалы
                                 </a>
@@ -72,7 +75,8 @@
                         @endcan
                         @can('viewAny', \App\Models\BranchCurrency::class)
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown"
+                                   role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     Остаток валют в филиалах
                                 </a>
@@ -92,7 +96,8 @@
                         @endcan
                         @can('viewAny', \App\Models\User::class)
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown"
+                                   role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     Пользователи
                                 </a>
@@ -103,7 +108,8 @@
                                                 пользователя</a></li>
                                     @endcan
                                     @can('update', \App\Models\User::class)
-                                        <li><a class="dropdown-item" href="{{url('add-branch')}}">Доступ к филиалам</a></li>
+                                        <li><a class="dropdown-item" href="{{url('add-branch')}}">Доступ к филиалам</a>
+                                        </li>
                                     @endcan
                                     @can('view', \App\Models\User::class)
                                         <li><a class="dropdown-item" href="{{url('list-branch')}}">Список доступов к
@@ -114,7 +120,8 @@
                         @endcan
                         @can('viewAny', \App\Models\User::class)
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown"
+                                   role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     Доступы
                                 </a>
@@ -122,6 +129,22 @@
                                     <li><a class="dropdown-item" href="{{url('accesses')}}">Список доступов</a></li>
                                     <li><a class="dropdown-item" href="{{url('accesses/create')}}">Дать доступ
                                             пользователю</a></li>
+                                </ul>
+                            </li>
+                        @endcan
+                        @can('viewAny', \App\Models\Employee::class)
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown"
+                                   role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    Кассиры
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="{{url('employees')}}">Список кассиров</a></li>
+                                    @can('create', \App\Models\Employee::class)
+                                        <li><a class="dropdown-item" href="{{url('employees/create')}}">Добавить
+                                                кассира</a></li>
+                                    @endcan
                                 </ul>
                             </li>
                         @endcan
@@ -134,7 +157,7 @@
 
                     @else
                         <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle text-light" href="#" role="button"
                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->name }}
                             </a>

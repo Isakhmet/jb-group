@@ -38,6 +38,7 @@ class BranchController extends Controller
             [
                 'name' => 'required|string|unique:branches,name',
                 'address' => 'required|string',
+                'phone' => 'required|string',
             ]
         );
 
@@ -96,6 +97,7 @@ class BranchController extends Controller
                 [
                     'name' => 'required|string|unique:branches,name',
                     'address' => 'required|string',
+                    'phone' => 'required|string',
                 ]
             );
 
