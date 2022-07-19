@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   jb-group-php:
-    image:       devilbox/php-fpm:8.1-work-0.123
+    build:       ./configurations
     working_dir: /application
     environment:
       APP_ENV:  'local'
