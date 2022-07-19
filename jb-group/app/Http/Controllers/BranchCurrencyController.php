@@ -28,7 +28,7 @@ class BranchCurrencyController extends Controller
             foreach ($branch->balances as $balance) {
                 $balances[$balance->currency->code]['balance']    = $balance->balance;
                 $balances[$balance->currency->code]['is_limited'] = $balance->is_limited;
-                $balances[$balance->currency->code]['updated_at'] = $balance->updated_at->format('Y-m-d H:i:s');
+                $balances[$balance->currency->code]['updated_at'] = $balance->updated_at->format('H:i:s');
             }
 
             $data['branches'][$key]['name']     = $branch->name;
@@ -118,11 +118,16 @@ class BranchCurrencyController extends Controller
     public function update(Request $request)
     {
         foreach ($request->get('currency') as $key => $currency) {
+            $limit = Currency::find($key)->limit;
+            $balance = (int)str_replace(',' , '', $currency);
+            $isLimited = $balance >= $limit ? false : true;
+
             BranchCurrency::where('branch_id', $request->get('branch_id'))
                           ->where('currency_id', $key)
                           ->update(
                               [
-                                  'balance' => (int)str_replace(',' , '', $currency)
+                                  'balance' => $balance,
+                                  'is_limited' => $isLimited
                               ]
                           );
         }

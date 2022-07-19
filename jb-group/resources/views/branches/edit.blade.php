@@ -21,9 +21,11 @@
                                 @endif
                                 @csrf
                                 @method('PUT')
-                                    <input type="text" class="form-control mb-3" id="name" name="name" placeholder="Код валюты"
+                                    <input type="text" class="form-control mb-3" id="name" name="name"
                                            autocomplete required value="{{$branch->name}}">
-                                    <input type="text" class="form-control mb-3" id="name" name="address" placeholder="Описание"
+                                    <input type="text" class="form-control mb-3" id="phone" name="phone"
+                                           autocomplete required value="{{$branch->phone}}">
+                                    <input type="text" class="form-control mb-3" id="address" name="address"
                                            autocomplete required value="{{$branch->address}}">
                                     <button class="btn btn-lg btn-success col-12">Обновить</button>
                                 </div>

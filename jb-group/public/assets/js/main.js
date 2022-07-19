@@ -1,5 +1,8 @@
 $(document).ready(function () {
 
+    $('#phone').inputmask({"mask": "+7(999)999-99-99"});
+    $('#addition_phone').inputmask({"mask": "+7(999)999-99-99"});
+
     if (typeof $('input[name="limit"]').val() !== 'undefined') {
         var limit = numberWithCommas($('input[name="limit"]').val());
         $('input[name="limit"]').val(limit)

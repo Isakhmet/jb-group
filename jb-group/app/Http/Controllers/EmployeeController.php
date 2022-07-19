@@ -2,39 +2,57 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Branch;
+use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class EmployeeController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
-        //
+        return view('employees.index', ['employees' => Employee::all()]);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function create()
     {
-        //
+        return view('employees.create', ['branches' => Branch::all()]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @param \Illuminate\Http\Request $request
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|string',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ;
+        }
+
+        Employee::create($request->all());
+
+        return redirect()->route(
+            'employees.index', [
+                                  'success' => 'Кассир добавлен.',
+                              ]
+        );
     }
 
     /**
@@ -49,36 +67,59 @@ class EmployeeController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * @param $id
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function edit($id)
     {
-        //
+        return view('employees.edit', ['branches' => Branch::all(), 'employee' => Employee::find($id)]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * @param \Illuminate\Http\Request $request
+     * @param                          $id
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|string',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ;
+        }
+
+        Employee::find($id)->update($request->all());
+
+        return redirect()->route(
+            'employees.index', [
+                                 'success' => 'Данные обновлены.',
+                             ]
+        );
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @param $id
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
-        //
+        Employee::find($id)->delete();
+
+        return redirect()->route(
+            'employees.index', [
+                                 'success' => 'Данные обновлены.',
+                             ]
+        );
     }
 }
