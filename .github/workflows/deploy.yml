@@ -15,9 +15,6 @@ jobs:
         with:
           php-version: '8.0'
 
-      - name: docker compose
-        run: docker-compose up -d
-
       - name: Composer install
         run: cd jb-group/ && composer install --no-dev
 
@@ -32,4 +29,13 @@ jobs:
           username: ${{ secrets.JB_GROUP_SSH_USERNAME }}
           key:      ${{ secrets.JB_GROUP_SSH_PRIVATE_KEY }}
           port:     ${{ secrets.JB_GROUP_SSH_PORT }}
-          script:   docker ps
+          script:   | 
+                    cd /storage-pool/jb-group/
+                    git fetch origin master
+                    docker compose stop
+                    docker compose build
+                    docker compose up -d
+                    docker compose exec jb-group-php composer install
+                    docker compose exec jb-group-php php artisan migrate --force
+                    docker compose exec jb-group-php php artisan key:generate
+                    
