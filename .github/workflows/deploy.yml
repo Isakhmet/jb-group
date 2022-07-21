@@ -29,4 +29,4 @@ jobs:
           username: ${{ secrets.JB_GROUP_SSH_USERNAME }}
           key:      ${{ secrets.JB_GROUP_SSH_PRIVATE_KEY }}
           port:     ${{ secrets.JB_GROUP_SSH_PORT }}
-          script:   whoami
+          script:   docker ps
