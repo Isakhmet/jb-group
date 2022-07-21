@@ -31,7 +31,8 @@ jobs:
           port:     ${{ secrets.JB_GROUP_SSH_PORT }}
           script:   | 
                     cd /storage-pool/jb-group/
-                    git fetch origin master
+                    git fetch
+                    git merge origin master
                     docker compose stop
                     docker compose build
                     docker compose up -d
