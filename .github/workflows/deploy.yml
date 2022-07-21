@@ -16,7 +16,7 @@ jobs:
           php-version: '8.0'
 
       - name: list files
-        run: ls
+        run: cd jb-group/
 
       - name: Composer install
         run: composer install --no-dev
@@ -32,6 +32,4 @@ jobs:
           username: ${{ secrets.JB_GROUP_SSH_USERNAME }}
           key:      ${{ secrets.JB_GROUP_SSH_PRIVATE_KEY }}
           port:     ${{ secrets.JB_GROUP_SSH_PORT }}
-          script:   |
-                    whoami
-                    ls
+          script:   whoami
