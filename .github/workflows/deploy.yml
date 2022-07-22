@@ -1,4 +1,4 @@
-name: Deploy
+name: CI
 
 on:
   push:
@@ -14,13 +14,22 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.0'
-      - run: php my_script.php
 
       - name: Composer install
+        working-directory: ./jb-group
         run: composer install --no-dev
+
+      - name: Copy .env
+        working-directory: ./jb-group
+        run: cp .env.production .env
+
+      - name: Generate key
+        working-directory: ./jb-group
+        run: php artisan key:generate
 
   deploy:
     runs-on: ubuntu-20.04
+    needs: build
     steps:
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
@@ -30,5 +39,13 @@ jobs:
           key:      ${{ secrets.JB_GROUP_SSH_PRIVATE_KEY }}
           port:     ${{ secrets.JB_GROUP_SSH_PORT }}
           script:   |
-                    whoami
-                    ls
+            cd /storage-pool/jb-group/
+            git fetch
+            git merge origin master
+            cp jb-group/.env.production jb-group/.env
+            docker compose stop
+            docker compose build
+            docker compose up -d
+            docker compose exec jb-group-php composer install
+            docker compose exec jb-group-php php artisan migrate --force
+            docker compose exec jb-group-php php artisan key:generate
