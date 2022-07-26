@@ -4,9 +4,9 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
+                @can('create', \App\Models\Branch::class)
                 <div class="card">
                     <div class="card-header">{{ __('Добавление филиала') }}</div>
-
                     <div class="card-body">
                         <div class="text-center mt-5">
                             <form method="post" action="{{ route('branches.store') }}" class="login-form">
@@ -34,6 +34,7 @@
                         </div>
                     </div>
                 </div>
+                @endcan
             </div>
         </div>
     </div>

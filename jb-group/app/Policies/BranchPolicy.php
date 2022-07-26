@@ -64,12 +64,19 @@ class BranchPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Branch  $branch
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Branch $branch)
+    public function update(User $user)
     {
-        //
+        $accesses = $user->roles->accesses;
+
+        foreach ($accesses as $access) {
+            if (strcmp($access->code, 'branch_edit') === 0) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
