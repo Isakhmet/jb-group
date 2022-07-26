@@ -26,6 +26,7 @@ Route::middleware('auth')->group(function(){
     Route::resource('employees', \App\Http\Controllers\EmployeeController::class);
     Route::get('/branch-currency-edit', [\App\Http\Controllers\BranchCurrencyController::class, 'edit']);
     Route::get('/get-branch-currency', [\App\Http\Controllers\BranchCurrencyController::class, 'getBalance']);
+    Route::get('/get-balance-by-currency', [\App\Http\Controllers\BranchCurrencyController::class, 'getBalanceByCurrency']);
     Route::post('/update-branch-currency', [\App\Http\Controllers\BranchCurrencyController::class, 'update']);
 
     Route::get('add-branch', [\App\Http\Controllers\UserController::class, 'addBranch']);
