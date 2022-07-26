@@ -42,112 +42,28 @@
                 @auth
                     <ul class="navbar-nav me-auto">
                         @can('viewAny', \App\Models\Currency::class)
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown"
-                                   role="button"
-                                   data-bs-toggle="dropdown" aria-expanded="false">
+                            <li class="nav-item">
+                                <a class="nav-link text-light" href="{{url('currencies')}}"
+                                   role="button">
                                     Валюты
                                 </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="{{url('currencies')}}">Список валют</a></li>
-                                    @can('create', \App\Models\Currency::class)
-                                        <li><a class="dropdown-item" href="{{url('currencies/create')}}">Добавить
-                                                валюту</a>
-                                        </li>
-                                    @endcan
-                                </ul>
                             </li>
                         @endcan
                         @can('viewAny', \App\Models\Branch::class)
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown"
-                                   role="button"
-                                   data-bs-toggle="dropdown" aria-expanded="false">
-                                    Филиалы
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="{{url('branches')}}">Список филиалов</a></li>
-                                    @can('create', \App\Models\Branch::class)
-                                        <li><a class="dropdown-item" href="{{url('branches/create')}}">Добавить
-                                                филиал</a></li>
-                                    @endcan
-                                </ul>
-                            </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" href="{{url('branches')}}"
+                                       role="button">
+                                        Филиалы
+                                    </a>
+                                </li>
                         @endcan
                         @can('viewAny', \App\Models\BranchCurrency::class)
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown"
-                                   role="button"
-                                   data-bs-toggle="dropdown" aria-expanded="false">
-                                    Остаток валют в филиалах
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="{{url('branch-currency')}}">Остатки в
-                                            филиалах</a></li>
-                                    @can('create', \App\Models\BranchCurrency::class)
-                                        <li><a class="dropdown-item" href="{{url('branch-currency/create')}}">Добавить
-                                                валюту в филиал</a></li>
-                                    @endcan
-                                    @can('update', \App\Models\BranchCurrency::class)
-                                        <li><a class="dropdown-item" href="{{url('branch-currency-edit')}}">Изменить
-                                                остатки</a></li>
-                                    @endcan
-                                </ul>
-                            </li>
-                        @endcan
-                        @can('viewAny', \App\Models\User::class)
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown"
-                                   role="button"
-                                   data-bs-toggle="dropdown" aria-expanded="false">
-                                    Пользователи
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="{{url('users')}}">Список пользователей</a></li>
-                                    @can('create', \App\Models\User::class)
-                                        <li><a class="dropdown-item" href="{{url('users/create')}}">Добавить нового
-                                                пользователя</a></li>
-                                    @endcan
-                                    @can('update', \App\Models\User::class)
-                                        <li><a class="dropdown-item" href="{{url('add-branch')}}">Доступ к филиалам</a>
-                                        </li>
-                                    @endcan
-                                    @can('view', \App\Models\User::class)
-                                        <li><a class="dropdown-item" href="{{url('list-branch')}}">Список доступов к
-                                                филиалам</a></li>
-                                    @endcan
-                                </ul>
-                            </li>
-                        @endcan
-                        @can('viewAny', \App\Models\User::class)
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown"
-                                   role="button"
-                                   data-bs-toggle="dropdown" aria-expanded="false">
-                                    Доступы
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="{{url('accesses')}}">Список доступов</a></li>
-                                    <li><a class="dropdown-item" href="{{url('accesses/create')}}">Дать доступ
-                                            пользователю</a></li>
-                                </ul>
-                            </li>
-                        @endcan
-                        @can('viewAny', \App\Models\Employee::class)
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown"
-                                   role="button"
-                                   data-bs-toggle="dropdown" aria-expanded="false">
-                                    Кассиры
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="{{url('employees')}}">Список кассиров</a></li>
-                                    @can('create', \App\Models\Employee::class)
-                                        <li><a class="dropdown-item" href="{{url('employees/create')}}">Добавить
-                                                кассира</a></li>
-                                    @endcan
-                                </ul>
-                            </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" href="{{url('branch-currency')}}"
+                                       role="button">
+                                        Остаток валют в филиалах
+                                    </a>
+                                </li>
                         @endcan
                     </ul>
             @endauth
