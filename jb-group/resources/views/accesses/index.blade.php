@@ -4,6 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
+                @can('viewAny', \App\Models\Access::class)
                 <div class="card">
                     <div class="card-header">{{ __('Список доступов') }}</div>
 
@@ -60,6 +61,7 @@
                         </table>
                     </div>
                 </div>
+                @endcan
             </div>
         </div>
     </div>

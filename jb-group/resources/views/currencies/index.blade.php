@@ -4,6 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
+                @can('viewAny', \App\Models\Currency::class)
                 <div class="card">
                     <div class="card-header">{{ __('Валюты') }}</div>
 
@@ -62,6 +63,7 @@
                         </table>
                     </div>
                 </div>
+                @endcan
             </div>
         </div>
     </div>

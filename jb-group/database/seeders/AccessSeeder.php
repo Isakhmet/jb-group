@@ -89,6 +89,10 @@ class AccessSeeder extends Seeder
                       'code' => 'employee_edit',
                       'description' => 'Редактирования кассиров',
                   ],
+                  [
+                      'code' => 'accesses',
+                      'description' => 'Доступы',
+                  ],
               ]
           )
         ;
