@@ -147,11 +147,29 @@ class BranchCurrencyController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
     public function getBalance(Request $request)
     {
         return BranchCurrency::with('currency')
                                 ->where('branch_id', $request->get('id'))
                                 ->get()
         ;
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function getBalanceByCurrency(Request $request)
+    {
+        return BranchCurrency::with(['currency', 'branch'])
+                             ->where('currency_id', $request->get('id'))
+                             ->orderBy('branch_id')
+                             ->get();
     }
 }

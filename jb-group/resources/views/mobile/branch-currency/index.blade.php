@@ -14,31 +14,35 @@
                                 </div>
                             @endif
                         </div>
+                        @csrf
                         <table class="table table-bordered table-striped">{{--border border-dark--}}
                             <thead>
                             <tr>
-                                <th scope="col">Филиал/Валюты</th>
-                                @foreach($currencies as $currency)
-                                    <th scope="col">{{$currency->code}}</th>
-                                @endforeach
+                                <th scope="col" class="align-middle">Филиал</th>
+                                <th scope="col">
+                                    <select id="currency_change" style="width: auto" class="form-select mb-3" aria-label="Currency" name="currency" required>
+                                        <option value="USD" selected>USD</option>
+                                        @foreach($currencies as $currency)
+                                            <option value="{{$currency->id}}">{{$currency->code}}</option>
+                                        @endforeach
+                                    </select>
+                                </th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($branches as $key => $branch)
                                 <tr>
                                     <th scope="row" style="color: #004d40; font-size: 22px">{{$branch['name']}}</th>
-                                    @foreach($currencies as $currency)
-                                        @if(isset($branch['balances'][$currency->code]))
-                                            <td @if($branch['balances'][$currency->code]['is_limited']) style="background-color: red" @endif>
-                                                <ul class="list-group">
-                                                    <li style="font-size: 21px; list-style-type: none;" class="money">{{$branch['balances'][$currency->code]['balance']}}</li>
-                                                    <li style="list-style-type: none;">{{$branch['balances'][$currency->code]['updated_at']}}</li>
-                                                </ul>
-                                            </td>
-                                        @else
-                                            <td></td>
-                                        @endif
-                                    @endforeach
+                                    @if(isset($branch['balances']['USD']))
+                                        <td @if($branch['balances']['USD']['is_limited']) style="background-color: red" @endif>
+                                            <ul class="list-group">
+                                                <li style="font-size: 21px; list-style-type: none;" class="money">{{$branch['balances']['USD']['balance']}}</li>
+                                                <li style="list-style-type: none;">{{$branch['balances']['USD']['updated_at']}}</li>
+                                            </ul>
+                                        </td>
+                                    @else
+                                        <td></td>
+                                    @endif
                                 </tr>
                             @endforeach
                             </tbody>

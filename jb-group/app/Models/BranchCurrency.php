@@ -20,4 +20,9 @@ class BranchCurrency extends Model
     {
         return $this->hasOne(Currency::class, 'id', 'currency_id');
     }
+
+    public function branch()
+    {
+        return $this->hasOne(Branch::class, 'id', 'branch_id');
+    }
 }
