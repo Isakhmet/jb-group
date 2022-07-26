@@ -15,7 +15,7 @@
                             @endif
                         </div>
                         @csrf
-                        <table class="table table-bordered">{{--border border-dark--}}
+                        <table class="table table-bordered table-striped">{{--border border-dark--}}
                             <thead>
                             <tr>
                                 <th scope="col" class="align-middle">Филиал</th>

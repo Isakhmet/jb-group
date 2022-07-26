@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function(){
     Route::get('/', function () {
-        return view('home');
+        return redirect('branch-currency');
     });
     Route::resource('currencies', \App\Http\Controllers\CurrencyController::class);
     Route::resource('users', \App\Http\Controllers\UserController::class);

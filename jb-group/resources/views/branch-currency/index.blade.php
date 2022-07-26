@@ -14,7 +14,7 @@
                                 </div>
                             @endif
                         </div>
-                        <table class="table table-bordered">{{--border border-dark--}}
+                        <table class="table table-bordered table-striped">{{--border border-dark--}}
                             <thead>
                             <tr>
                                 <th scope="col">Филиал/Валюты</th>
