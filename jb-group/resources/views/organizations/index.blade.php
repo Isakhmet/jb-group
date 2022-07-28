@@ -4,10 +4,10 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
+                @can('viewAny', \App\Models\Organization::class)
                 <div class="card">
-                    <div class="card-header">{{ __('Пользователи') }}</div>
-
-                    <div class="card-body">
+                    <div class="card-header">{{ __('Организаций') }}</div>
+                    <div class="card-body p-2">
                         <div class="text-center mt-5">
                             @if ($message = Session::get('success'))
                                 <div class="alert alert-success">
@@ -19,23 +19,25 @@
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Имя</th>
-                                <th scope="col">Роль</th>
+                                <th scope="col">Названия</th>
+                                <th scope="col">Контакты</th>
+                                <th scope="col">Вид услуги</th>
                                 <th scope="col">Дата создания</th>
                                 <th scope="col">Действия</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($users as $key => $user)
-                                <tr>
-                                    <th scope="row">{{$key+1}}</th>
-                                    <td>{{$user->name}}</td>
-                                    <td>{{$user->roles->name}}</td>
-                                    <td>{{$user->created_at}}</td>
-                                    <td>
-                                        <div style="display: inline-flex;">
+                            @foreach($organizations as $key => $organization)
+                            <tr>
+                                <th scope="row">{{$key+1}}</th>
+                                <td>{{$organization->name}}</td>
+                                <td>{{$organization->contacts}}</td>
+                                <td>{{$organization->service_type}}</td>
+                                <td>{{$organization->created_at}}</td>
+                                <td>
+                                    <div style="display: inline-flex;">
                                             <div>
-                                                <a href="{{url('/users/'.$user->id).'/edit'}}"
+                                                <a href="{{url('/organizations/'.$organization->id).'/edit'}}"
                                                    class="btn btn-success btn-xs">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                                                         <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
@@ -43,7 +45,7 @@
                                                 </a>
                                             </div>
                                             <div>
-                                                <form method="post" action="{{ route('users.destroy', ['user' => $user->id])}}">
+                                                <form method="post" action="{{ route('organizations.destroy', ['organization' => $organization->id])}}">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button class="btn btn-danger btn-xs">
@@ -54,14 +56,15 @@
                                                     </button>
                                                 </form>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    </div>
+                                </td>
+                            </tr>
                             @endforeach
                             </tbody>
                         </table>
                     </div>
                 </div>
+                @endcan
             </div>
         </div>
     </div>

@@ -4,12 +4,12 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
+                @can('create', \App\Models\Organization::class)
                 <div class="card">
-                    <div class="card-header">{{ __('Добавление валюты для филиала') }}</div>
-
-                    <div class="card-body">
+                    <div class="card-header">{{ __('Добавление организаций') }}</div>
+                    <div class="card-body p-2">
                         <div class="text-center mt-5">
-                            <form method="post" action="{{ route('accesses.store') }}" class="login-form">
+                            <form method="post" action="{{ route('organizations.store') }}" class="login-form">
                                 @if ($errors->any())
                                     <div class="alert alert-danger">
                                         <strong>Что-то пошло не так!</strong> Заполните корректно данные.<br><br>
@@ -21,18 +21,12 @@
                                     </div>
                                 @endif
                                 @csrf
-                                <select class="form-select mb-3" aria-label="Roles" name="role_id" required>
-                                    <option value="" selected>Выберите роль</option>
-                                    @foreach($roles as $role)
-                                        <option value="{{$role->id}}">{{$role->name}}</option>
-                                    @endforeach
-                                </select>
-                                <select class="form-select mb-3" aria-label="Accesses" name="access_id" required>
-                                    <option value="" selected>Выберите доступ</option>
-                                    @foreach($accesses as $access)
-                                        <option value="{{$access->id}}">{{$access->description}}</option>
-                                    @endforeach
-                                </select>
+                                <input type="text" class="form-control mb-3" id="name" name="name" placeholder="Названия"
+                                       autocomplete required>
+                                <input type="text" class="form-control mb-3" id="phone" name="contacts" placeholder="Контакты"
+                                       autocomplete required>
+                                <input type="text" class="form-control mb-3" name="service_type" placeholder="Вид услуги"
+                                       autocomplete required>
                                 <div class="mt-3">
                                     <button class="btn btn-lg btn-success col-12">Добавить</button>
                                 </div>
@@ -40,6 +34,7 @@
                         </div>
                     </div>
                 </div>
+                @endcan
             </div>
         </div>
     </div>

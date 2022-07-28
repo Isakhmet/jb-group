@@ -122,6 +122,15 @@ class ParserController extends Controller
         User::insert($array);
     }
 
+    public function parseUsersBranch()
+    {
+        $client = $this->connectHost();
+
+        $results = $client->post('user-branches');
+        $array = json_decode($results->getBody()->getContents(), true);
+        UserBranch::insert($array);
+    }
+
     public function parseUsersRoles()
     {
         $client = $this->connectHost();

@@ -4,10 +4,11 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
+                @can('create', \App\Models\Currency::class)
                 <div class="card">
                     <div class="card-header">{{ __('Добавление валюты') }}</div>
 
-                    <div class="card-body">
+                    <div class="card-body p-2">
                         <div class="text-center mt-5">
                             <form method="post" action="{{ route('currencies.store') }}" class="login-form">
                                 @if ($errors->any())
@@ -35,6 +36,7 @@
                         </div>
                     </div>
                 </div>
+                @endcan
             </div>
         </div>
     </div>

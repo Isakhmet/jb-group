@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">{{ __('Вход в систему') }}</div>
 
-                <div class="card-body">
+                <div class="card-body p-2">
                     <form method="POST" action="{{ route('admin-login') }}">
                         @csrf
                         @if ($errors->any())

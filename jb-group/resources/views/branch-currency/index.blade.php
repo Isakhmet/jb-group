@@ -6,7 +6,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header {{--text-light--}}" {{--style="background-color: #47474c;"--}}>{{ __('Остатки валют в филиалах') }}</div>
-                    <div class="card-body" {{--style="background-color: #e9e6d3;"--}}>
+                    <div class="card-body p-2" {{--style="background-color: #e9e6d3;"--}}>
                         <div class="text-center mt-5">
                             @if ($message = Session::get('success'))
                                 <div class="alert alert-success">

@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Branch;
+use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class BranchPolicy
+class OrganizationPolicy
 {
     use HandlesAuthorization;
 
@@ -21,7 +21,7 @@ class BranchPolicy
         $accesses = $user->roles->accesses;
 
         foreach ($accesses as $access) {
-            if (strcmp($access->code, 'branch_view') === 0) {
+            if (strcmp($access->code, 'organization_view') === 0) {
                 return true;
             }
         }
@@ -33,10 +33,10 @@ class BranchPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Branch  $branch
+     * @param  \App\Models\Organization  $organization
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Branch $branch)
+    public function view(User $user, Organization $organization)
     {
         //
     }
@@ -52,7 +52,7 @@ class BranchPolicy
         $accesses = $user->roles->accesses;
 
         foreach ($accesses as $access) {
-            if (strcmp($access->code, 'branch_add') === 0) {
+            if (strcmp($access->code, 'organization_add') === 0) {
                 return true;
             }
         }
@@ -64,14 +64,15 @@ class BranchPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
+     * @param  \App\Models\Organization  $organization
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user)
+    public function update(User $user, Organization $organization)
     {
         $accesses = $user->roles->accesses;
 
         foreach ($accesses as $access) {
-            if (strcmp($access->code, 'branch_edit') === 0) {
+            if (strcmp($access->code, 'organization_edit') === 0) {
                 return true;
             }
         }
@@ -83,10 +84,10 @@ class BranchPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Branch  $branch
+     * @param  \App\Models\Organization  $organization
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Branch $branch)
+    public function delete(User $user, Organization $organization)
     {
         //
     }
@@ -95,10 +96,10 @@ class BranchPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Branch  $branch
+     * @param  \App\Models\Organization  $organization
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Branch $branch)
+    public function restore(User $user, Organization $organization)
     {
         //
     }
@@ -107,10 +108,10 @@ class BranchPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Branch  $branch
+     * @param  \App\Models\Organization  $organization
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Branch $branch)
+    public function forceDelete(User $user, Organization $organization)
     {
         //
     }

@@ -61,13 +61,11 @@ class EmployeePolicy
     }
 
     /**
-     * Determine whether the user can update the model.
+     * @param \App\Models\User $user
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Employee  $employee
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @return bool
      */
-    public function update(User $user, Employee $employee)
+    public function update(User $user)
     {
         $accesses = $user->roles->accesses;
 

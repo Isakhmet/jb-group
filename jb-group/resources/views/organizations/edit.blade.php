@@ -4,12 +4,12 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
+                @can('update', \App\Models\Branch::class)
                 <div class="card">
-                    <div class="card-header">{{ __('Добавление валюты') }}</div>
-
-                    <div class="card-body">
+                    <div class="card-header">{{ __('Обновление организаций') }}</div>
+                    <div class="card-body p-2">
                         <div class="text-center mt-5">
-                            <form method="post" action="{{ route('currencies.store') }}" class="login-form">
+                            <form method="post" action="{{url('/organizations/'.$organization->id)}}" class="login-form">
                                 @if ($errors->any())
                                     <div class="alert alert-danger">
                                         <strong>Что-то пошло не так!</strong> Заполните корректно данные.<br><br>
@@ -21,19 +21,19 @@
                                     </div>
                                 @endif
                                 @csrf
-                                <input type="text" class="form-control mb-3" id="name" name="code" placeholder="Код валюты"
-                                       autocomplete required>
-                                <input type="text" class="form-control mb-3" id="name" name="description" placeholder="Описание"
-                                       autocomplete required>
-                                <input type="text" name="limit" class="form-control" id="limit" placeholder="Лимит"
-                                       autocomplete required>
-
-                                <div class="mt-3">
-                                    <button class="btn btn-lg btn-success col-12">Добавить</button>
+                                @method('PUT')
+                                    <input type="text" class="form-control mb-3" id="name" name="name"
+                                           autocomplete required value="{{$organization->name}}">
+                                    <input type="text" class="form-control mb-3" id="phone" name="contacts"
+                                           autocomplete required value="{{$organization->contacts}}">
+                                    <input type="text" class="form-control mb-3" name="service_type"
+                                           autocomplete required value="{{$organization->service_type}}">
+                                    <button class="btn btn-lg btn-success col-12">Обновить</button>
                                 </div>
                             </form>
                         </div>
                     </div>
+                @endcan
                 </div>
             </div>
         </div>

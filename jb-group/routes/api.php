@@ -36,4 +36,5 @@ Route::prefix('parser')->group(function () {
     Route::post('get-branch', [\App\Http\Controllers\ParserController::class, 'parseBranches']);
     Route::post('get-branch-currencies', [\App\Http\Controllers\ParserController::class, 'parseBranchCurrency']);
     Route::post('get-users-roles', [\App\Http\Controllers\ParserController::class, 'parseUsersRoles']);
+    Route::post('get-users-branches', [\App\Http\Controllers\ParserController::class, 'parseUsersBranch']);
 });
