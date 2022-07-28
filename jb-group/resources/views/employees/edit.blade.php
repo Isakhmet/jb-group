@@ -6,8 +6,8 @@
             <div class="col-md-8">
                 @can('update', \App\Models\Employee::class)
                 <div class="card">
-                    <div class="card-header">{{ __('Редактировние данных кассира') }}</div>
-                    <div class="card-body">
+                    <div class="card-header">{{ __('Редактировние данных сотрудников') }}</div>
+                    <div class="card-body p-2">
                         <div class="text-center mt-5">
                             <form method="post" action="{{url('/employees/'.$employee->id)}}" class="login-form">
                                 @if ($errors->any())
@@ -30,6 +30,8 @@
                                        placeholder="Номер телефона" value="{{$employee->phone}}">
                                 <input type="text" class="form-control mb-3" id="address" name="address"
                                        placeholder="Адрес" value="{{$employee->address}}">
+                                <input type="text" class="form-control mb-3" id="position" name="position"
+                                       placeholder="Должность" value="{{$employee->position}}">
                                 <input type="text" class="form-control mb-3" id="addition_phone" name="addition_phone"
                                        placeholder="Доверенный номер" value="{{$employee->addition_phone}}">
                                 <select class="form-select mb-3" aria-label="Branch" name="branch_id">

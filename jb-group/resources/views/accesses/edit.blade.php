@@ -7,7 +7,7 @@
                 @can('viewAny', \App\Models\Access::class)
                 <div class="card">
                     <div class="card-header">{{ __('Обновление филиала') }}</div>
-                    <div class="card-body">
+                    <div class="card-body p-2">
                         <div class="text-center mt-5">
                             <form method="post" action="{{url('/accesses/'.$roleAccesses->id)}}" class="login-form">
                                 @if ($errors->any())

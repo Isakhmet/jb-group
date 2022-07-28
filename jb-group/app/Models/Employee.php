@@ -16,6 +16,7 @@ class Employee extends Model
         'address',
         'addition_phone',
         'branch_id',
+        'position'
     ];
 
     public function branch()

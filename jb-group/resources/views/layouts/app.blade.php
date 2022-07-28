@@ -137,13 +137,13 @@
                                 <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown"
                                    role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    Кассиры
+                                    Сотрудники
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="{{url('employees')}}">Список кассиров</a></li>
+                                    <li><a class="dropdown-item" href="{{url('employees')}}">Список сотрудников</a></li>
                                     @can('create', \App\Models\Employee::class)
                                         <li><a class="dropdown-item" href="{{url('employees/create')}}">Добавить
-                                                кассира</a></li>
+                                                сотрудника</a></li>
                                     @endcan
                                 </ul>
                             </li>

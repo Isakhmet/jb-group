@@ -7,7 +7,7 @@
                 @can('create', \App\Models\Organization::class)
                 <div class="card">
                     <div class="card-header">{{ __('Добавление организаций') }}</div>
-                    <div class="card-body">
+                    <div class="card-body p-2">
                         <div class="text-center mt-5">
                             <form method="post" action="{{ route('organizations.store') }}" class="login-form">
                                 @if ($errors->any())

@@ -6,9 +6,9 @@
             <div class="col-md-8">
                 @can('viewAny', \App\Models\Employee::class)
                 <div class="card">
-                    <div class="card-header">{{ __('Кассиры') }}</div>
+                    <div class="card-header">{{ __('Сотрудники') }}</div>
 
-                    <div class="card-body">
+                    <div class="card-body p-2 m">
                         <div class="text-center mt-5">
                             @if ($message = Session::get('success'))
                                 <div class="alert alert-success">
@@ -25,7 +25,7 @@
                                 <th scope="col">Номер телефона</th>
                                 <th scope="col">Доверенный номер</th>
                                 <th scope="col">Адрес</th>
-                                <th scope="col">Филиал</th>
+                                <th scope="col">Должность</th>
                                 <th scope="col">Действия</th>
                             </tr>
                             </thead>
@@ -38,7 +38,7 @@
                                 <td>{{$employee->phone}}</td>
                                 <td>{{$employee->addition_phone}}</td>
                                 <td>{{$employee->address}}</td>
-                                <td>{{$employee->branch->name}}</td>
+                                <td>{{$employee->position}}</td>
                                 <td>
                                     <div style="display: inline-flex;">
                                             <div>

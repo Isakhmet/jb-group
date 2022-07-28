@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header">{{ __('Обновление пользователя') }}</div>
 
-                    <div class="card-body">
+                    <div class="card-body p-2">
                         <div class="text-center mt-5">
                             <form method="post" action="{{url('/users/'.$user->id)}}" class="login-form">
                                 @if ($errors->any())

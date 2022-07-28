@@ -7,7 +7,7 @@
                 @can('viewAny', \App\Models\Branch::class)
                 <div class="card">
                     <div class="card-header">{{ __('Филиалы') }}</div>
-                    <div class="card-body">
+                    <div class="card-body p-2">
                         <div class="text-center mt-5">
                             @if ($message = Session::get('success'))
                                 <div class="alert alert-success">
