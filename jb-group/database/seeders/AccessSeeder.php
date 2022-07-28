@@ -93,6 +93,18 @@ class AccessSeeder extends Seeder
                       'code' => 'accesses',
                       'description' => 'Доступы',
                   ],
+                  [
+                      'code' => 'organization_view',
+                      'description' => 'Организаций',
+                  ],
+                  [
+                      'code' => 'organization_add',
+                      'description' => 'Добавить организацию',
+                  ],
+                  [
+                      'code' => 'organization_edit',
+                      'description' => 'Редактирования организаций',
+                  ],
               ]
           )
         ;
