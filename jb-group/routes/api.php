@@ -32,8 +32,8 @@ Route::prefix('parser')->group(function () {
     Route::post('get-users', [\App\Http\Controllers\ParserController::class, 'parseUsers']);
     Route::post('get-accesses', [\App\Http\Controllers\ParserController::class, 'parseRoleAccesses']);
     Route::post('get-currencies', [\App\Http\Controllers\ParserController::class, 'parseCurrency']);
-    Route::post('get-employees', [\App\Http\Controllers\ParserController::class, 'parseEmployee']);
     Route::post('get-branch', [\App\Http\Controllers\ParserController::class, 'parseBranches']);
+    Route::post('get-employees', [\App\Http\Controllers\ParserController::class, 'parseEmployee']);
     Route::post('get-branch-currencies', [\App\Http\Controllers\ParserController::class, 'parseBranchCurrency']);
     Route::post('get-users-roles', [\App\Http\Controllers\ParserController::class, 'parseUsersRoles']);
     Route::post('get-users-branches', [\App\Http\Controllers\ParserController::class, 'parseUsersBranch']);
