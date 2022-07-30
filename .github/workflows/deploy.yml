@@ -49,3 +49,4 @@ jobs:
             docker compose exec jb-group-php composer install
             docker compose exec jb-group-php php artisan migrate --force
             docker compose exec jb-group-php php artisan key:generate
+            sudo chmod -R 777 jb-group/storage
