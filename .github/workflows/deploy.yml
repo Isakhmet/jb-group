@@ -44,8 +44,8 @@ jobs:
             git merge origin master
             cp jb-group/.env.production jb-group/.env
             docker compose stop
-            docker compose build
-            docker compose up -d
+            docker compose -f docker-compose.production.yml build
+            docker compose -f docker-compose.production.yml up -d
             docker compose exec jb-group-php composer install
             docker compose exec jb-group-php php artisan migrate --force
             docker compose exec jb-group-php php artisan key:generate

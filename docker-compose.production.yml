@@ -1,0 +1,41 @@
+version: '3.3'
+
+services:
+  jb-group-php:
+    build:       ./configurations
+    working_dir: /application
+    environment:
+      APP_ENV:  'local'
+      TIMEZONE: 'Asia/Almaty'
+    volumes:
+      - ${PWD}/jb-group:/application
+      - /etc/letsencrypt/live/jb-group.kz/:/etc/letsencrypt/live/jb-group.kz/
+    ports:
+      - 9000
+    restart:     unless-stopped
+
+  jb-group-nginx:
+    image: nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ${PWD}/configurations/nginx.prod.conf:/etc/nginx/conf.d/nginx.conf:ro
+      - ${PWD}/configurations/nginx.prod.conf:/etc/nginx/conf.d/default.conf:ro
+      - ${PWD}/jb-group:/application
+      - /etc/letsencrypt/:/etc/letsencrypt/
+
+  jb-group-postgres:
+    image:   postgres:13
+    restart: always
+    environment:
+      POSTGRES_USER:     'postgres'
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_DB:       'postgres'
+      SCHEMA:            'public'
+
+    ports:
+      - 54133:5432
+    volumes:
+      - ${PWD}/configurations/initdb.sh:/docker-entrypoint-initdb.d/initdb.sh
+      - ${PWD}/postgres-data:/var/lib/postgresql/data
