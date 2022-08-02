@@ -21,9 +21,8 @@
                                 <th scope="col" class="align-middle">Филиал</th>
                                 <th scope="col">
                                     <select id="currency_change" style="width: auto" class="form-select mb-3" aria-label="Currency" name="currency" required>
-                                        <option value="USD" selected>USD</option>
                                         @foreach($currencies as $currency)
-                                            <option value="{{$currency->id}}">{{$currency->code}}</option>
+                                            <option value="{{$currency->id}}" {{ $loop->first ? 'selected="selected"' : '' }}>{{$currency->code}}</option>
                                         @endforeach
                                     </select>
                                 </th>
@@ -33,11 +32,11 @@
                             @foreach($branches as $key => $branch)
                                 <tr>
                                     <th scope="row" style="color: #004d40; font-size: 22px">{{$branch['name']}}</th>
-                                    @if(isset($branch['balances']['USD']))
-                                        <td @if($branch['balances']['USD']['is_limited']) style="background-color: red" @endif>
+                                    @if(isset($branch['balances'][$currencies[0]->code]))
+                                        <td @if($branch['balances'][$currencies[0]->code]['is_limited']) style="background-color: red" @endif>
                                             <ul class="list-group">
-                                                <li style="font-size: 21px; list-style-type: none;" class="money">{{$branch['balances']['USD']['balance']}}</li>
-                                                <li style="list-style-type: none;">{{$branch['balances']['USD']['updated_at']}}</li>
+                                                <li style="font-size: 21px; list-style-type: none;" class="money">{{$branch['balances'][$currencies[0]->code]['balance']}}</li>
+                                                <li style="list-style-type: none;">{{$branch['balances'][$currencies[0]->code]['updated_at']}}</li>
                                             </ul>
                                         </td>
                                     @else
