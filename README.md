@@ -1,2 +1,3 @@
+# Jb-Group admin panel for managers
 Status of last deployment:<br>
-<img src="https://github.com/github/Isakhmet/jb-group/workflows/CI/badge.svg?branch=master">
+![example branch parameter](https://github.com/Isakhmet/jb-group/actions/workflows/deploy.yml/badge.svg?branch=master)
