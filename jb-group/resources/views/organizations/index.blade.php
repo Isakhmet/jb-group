@@ -6,7 +6,7 @@
             <div class="col-md-8">
                 @can('viewAny', \App\Models\Organization::class)
                 <div class="card">
-                    <div class="card-header">{{ __('Организаций') }}</div>
+                    <div class="card-header">{{ __('titles.organizations') }}</div>
                     <div class="card-body p-2">
                         <div class="text-center mt-5">
                             @if ($message = Session::get('success'))
