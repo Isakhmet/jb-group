@@ -45,7 +45,7 @@
                             <li class="nav-item">
                                 <a class="nav-link text-light" href="{{url('currencies')}}"
                                    role="button">
-                                    Валюты
+                                    {{ __('titles.currencies') }}
                                 </a>
                             </li>
                         @endcan
@@ -53,7 +53,7 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-light" href="{{url('branches')}}"
                                        role="button">
-                                        Филиалы
+                                        {{ __('titles.branches') }}
                                     </a>
                                 </li>
                         @endcan
@@ -61,7 +61,7 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-light" href="{{url('branch-currency')}}"
                                        role="button">
-                                        Остаток валют в филиалах
+                                        {{ __('titles.branch_currencies') }}
                                     </a>
                                 </li>
                         @endcan

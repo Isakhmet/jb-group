@@ -32,7 +32,7 @@ services:
       SCHEMA:            'public'
 
     ports:
-      - 54133:5432
+      - 54134:5432
     volumes:
       - ${PWD}/configurations/initdb.sh:/docker-entrypoint-initdb.d/initdb.sh
       - ${PWD}/postgres-data:/var/lib/postgresql/data

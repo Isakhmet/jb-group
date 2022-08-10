@@ -6,7 +6,7 @@
             <div class="col-md-8">
                 @can('viewAny', \App\Models\Employee::class)
                 <div class="card">
-                    <div class="card-header">{{ __('Сотрудники') }}</div>
+                    <div class="card-header">{{ __('titles.employees') }}</div>
 
                     <div class="card-body p-2 m">
                         <div class="text-center mt-5">
