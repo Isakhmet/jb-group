@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EmployeeRequest;
 use App\Models\Branch;
 use App\Models\Employee;
 use Illuminate\Http\Request;
@@ -26,26 +27,12 @@ class EmployeeController extends Controller
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
+     * @param \App\Http\Requests\EmployeeRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(EmployeeRequest $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'name' => 'required|string',
-            ]
-        );
-
-        if ($validator->fails()) {
-            return redirect()
-                ->back()
-                ->withErrors($validator)
-                ;
-        }
-
         Employee::create($request->all());
 
         return redirect()->route(

@@ -163,6 +163,7 @@ class UserController extends Controller
         $user = User::with('roles')->find($id);
 
         UserRole::where('user_id', $id)->delete();
+        UserBranch::where('user_id', $id)->delete();
         $user->delete();
 
         return redirect()

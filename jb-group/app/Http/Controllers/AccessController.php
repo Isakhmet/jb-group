@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AccessRequest;
 use App\Models\Access;
 use App\Models\RoleAccess;
 use App\Models\Roles;
@@ -36,22 +37,8 @@ class AccessController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(AccessRequest $request)
     {
-        $rules = [
-            'access_id' => 'unique:role_accesses,access_id,NULL,id,role_id,' . $request->get('role_id'),
-            'role_id'   => 'unique:role_accesses,role_id,NULL,id,access_id,' . $request->get('access_id'),
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return redirect()
-                ->back()
-                ->withErrors($validator)
-                ;
-        }
-
         RoleAccess::create($request->all());
 
         return redirect()->route('accesses.index');
