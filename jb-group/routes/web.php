@@ -37,5 +37,6 @@ Route::middleware('auth')->group(function(){
 });
 
 Route::post('admin-login', [\App\Http\Controllers\Auth\LoginController::class, 'login'])->name('admin-login');
+Route::post('webhook', [\App\Http\Controllers\Test\TelegramController::class, 'getDataFromTg']);
 
 Auth::routes();
