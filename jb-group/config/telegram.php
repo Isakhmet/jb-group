@@ -32,7 +32,7 @@ return [
     |             ]
     */
     'bots' => [
-        'test' => [
+        'mybot' => [
             'username' => 'testChatbotForF7',
             'token' => env('TELEGRAM_BOT_TOKEN', '5354690402:AAGB6mQwXQjNhr__UzTHKFtYq3v2WEUekv0'),
             'certificate_path' => env('TELEGRAM_CERTIFICATE_PATH', 'YOUR-CERTIFICATE-PATH'),
