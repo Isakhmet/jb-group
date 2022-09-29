@@ -22,7 +22,7 @@ class TelegramController extends Controller
 {
     public function main(Request $request, $handler)
     {
-        //$this->telegramLog($request->all());
+        $this->telegramLog($request->all());
         $validator = Validator::make(['handler' => $handler], [
             'handler' => 'required|in:telegram,whatsapp'
         ]);
