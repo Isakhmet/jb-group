@@ -212,7 +212,7 @@ class WhatsappHandler {
      * @param      string           $answer   Текст сообщения
      * @param      array            $result   Найденые товары
      */
-    public function sendLinks($chat_id, $answer, $result, $callback = false){
+    public function sendLinks($chat_id, $answer, $result, $callback = null){
         $this->sendMessage($chat_id, $answer);
         $last_key = array_key_last($result);
         foreach ($result as $key => $value) {
