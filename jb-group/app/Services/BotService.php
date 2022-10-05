@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Helpers\Telegram\Bot;
 use Illuminate\Support\Str;
+use TelegramBot\Api\Types\Message;
 
 class BotService
 {
@@ -65,13 +66,12 @@ class BotService
             $messageId = $bot->getMessageId($message);
             $messageText = $bot->getText($message);
 
-            /**
-             * TO DO
-             */
-            $commandRaw = $bot->getCommandCache($chatId, $messageText);
+            //$var = new Message();
+            //$var->getText()
 
-            $command = explode(':', $commandRaw)[0];
-            $this->botCalledQuery($bot, $command, $commandRaw, $chatId, $messageId, $message, $messageText, true);
+            if (strcmp($message->getText(), 'start') === 0) {
+                $this->botCalledQuery($bot, 'start', 'start', $chatId, $messageId, $message, $messageText, true);
+            }
         });
 
         $bot->main();
