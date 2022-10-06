@@ -2,6 +2,8 @@
 
 namespace App\Helpers\Telegram;
 
+use Illuminate\Support\Facades\Cache;
+
 class Bot {
 
     /**
@@ -99,7 +101,7 @@ class Bot {
      */
     public function cached ($key, $callBack, $cache_time = 3600)
     {
-        if (!($result = $this->cacheGet('data-cache'.$key))) {
+        if (!($result = $this->getCache('data-cache'.$key))) {
             $result = $callBack($key);
             $this->cacheSet('data-cache'.$key, $result, $cache_time);
         }
@@ -129,7 +131,7 @@ class Bot {
      */
     public function getCommandCache($chatId, $name)
     {
-        return $this->cacheGet(md5($chatId.$name));
+        return $this->getCache(md5($chatId.$name));
     }
 
     /**
@@ -149,13 +151,12 @@ class Bot {
     }
 
     /**
-     * Парсинг команды назад
-     *
-     * @param string
+     * @param      $commandRaw
+     * @param null $chatId
      *
      * @return array
      */
-    public function parseForInlineCommand($commandRaw)
+    public function parseForInlineCommand($commandRaw, $chatId = null)
     {
         // example: tires_car:1:2:3:34
         $checkCount = explode(':', $commandRaw);
@@ -170,9 +171,21 @@ class Bot {
                 $countCases = 1;
             }
             $commandRaw = str_replace(':back', '', implode(':', $checkCount));
+        }else if ($chatId) {
+            $this->cacheSet('backLink'.$chatId.$countCases, $checkCount[$countCases-1]);
         }
 
         return [$commandRaw, $checkCount, $countCases];
+    }
+
+    public function cacheSet($key, $data, $time = 3600)
+    {
+        Cache::put('bot_'.$key, $data, $time);
+    }
+
+    public function getCache($key)
+    {
+        return Cache::get('bot_'.$key);
     }
 
     public function getCallBackCommand($commandRaw)

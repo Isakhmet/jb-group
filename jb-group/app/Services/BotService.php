@@ -167,11 +167,6 @@ class BotService
                 break;
             case 'vote':
                 [,$vote_id] = explode(':', $commandRaw);
-                /*$bot->setVote($chatId, [
-                    1 => $chatId,
-                    2 => $vote_id,
-                    3 => $bot->handler == 'whatsapp' ? 3 : 4
-                ]);*/
                 $answer = $vote_id == 2 ? 'Не можете найти подходящий товар? Задайте вопрос нашему специалисту <a href="tel:7210">7210</a> (бесплатно с мобильного)' : 'Спасибо что воспользовались нашим сервисом! Ждем вас снова на Formula7.';
                 $bot->sendMessage($chatId, $answer, 'HTML', false, null, [
                     [
@@ -180,7 +175,7 @@ class BotService
                 ]);
                 break;
             case 'tires_car':
-                [$commandRaw, $checkCount, $countCases] = $bot->parseForInlineCommand($commandRaw);
+                [$commandRaw, $checkCount, $countCases] = $bot->parseForInlineCommand($commandRaw, $chatId);
 
                 $buttons = [];
                 switch ($countCases) {
@@ -193,25 +188,29 @@ class BotService
 
                         break;
                     case 2:
-                        $result = $bot->repository->getTiresModel($checkCount[$countCases-1]);
+                        $key = $bot->getCache('backLink'.$chatId.'2');
+                        $result = $bot->repository->getTiresModel($key);
                         $buttons = $bot->generateButtons($result, $commandRaw);
                         $answer = 'Выберите модель автомобиля';
 
                         break;
                     case 3:
-                        $result = $bot->repository->getTiresYear($checkCount[$countCases-1]);
+                        $key = $bot->getCache('backLink'.$chatId.'3');
+                        $result = $bot->repository->getTiresYear($key);
                         $buttons = $bot->generateButtons($result, $commandRaw);
                         $answer = 'Выберите год автомобиля';
 
                         break;
                     case 4:
-                        $result = $bot->repository->getTiresModify($checkCount[$countCases-1]);
+                        $key = $bot->getCache('backLink'.$chatId.'4');
+                        $result = $bot->repository->getTiresModify($key);
                         $buttons = $bot->generateButtons($result, $commandRaw);
                         $answer = 'Выберите модификацию Вашего автомобиля';
 
                         break;
                     case 5:
-                        $result = $bot->repository->getTiresCharacters($checkCount[$countCases-1]);
+                        $key = $bot->getCache('backLink'.$chatId.'5');
+                        $result = $bot->repository->getTiresCharacters($key);
                         $buttons = [];
 
                         foreach ($result as $row) {
@@ -220,7 +219,13 @@ class BotService
                         }
 
                         $answer = 'Подходящие результаты:';
-                        $buttons[] = [['text' => 'Назад', 'callback_data' => $commandRaw.':back'],['text' => 'В меню', 'callback_data' => 'start']];
+                        $commandRaw = $commandRaw.':back';
+
+                        if (mb_strlen($commandRaw) >= 64) {
+                            $commandRaw = $bot->getCallBackCommand($commandRaw);
+                        }
+
+                        $buttons[] = [['text' => 'Назад', 'callback_data' => $commandRaw],['text' => 'В меню', 'callback_data' => 'start']];
 
                         return $bot->updateMessage($chatId, $messageId, $answer, $buttons, true, $need_send);
 
