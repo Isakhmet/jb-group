@@ -105,7 +105,7 @@ class BotService
                 $answer = 'Выберите город:';
                 $realCity = '';
 
-                if(Str::contains($command, ':')) {
+                if(Str::contains($commandRaw, ':')) {
                     [$command, $realCity] = explode(':', $commandRaw);
                 }
 
@@ -113,7 +113,7 @@ class BotService
                 $buttons = [];
                 $back = 'start';
 
-                $res = [
+                $cities = [
                     'Алматы' => $result['result']['Алматы'],
                     'Астана' => $result['result']['Астана']
                 ];
@@ -122,9 +122,10 @@ class BotService
 
                 ksort($result['result']);
                 foreach ($result['result'] as $k => $v) {
-                    $res[$k] = $v;
+                    $cities[$k] = $v;
                 }
-                foreach ($res as $city => $rows) {
+
+                foreach ($cities as $city => $rows) {
                     if (!empty($realCity)) {
                         if ($city == $realCity) {
                             $answer = 'Филиал F7 в городе <b>'.$city.'</b>'."\n\n";
