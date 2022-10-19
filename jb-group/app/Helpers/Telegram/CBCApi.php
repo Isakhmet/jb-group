@@ -2,6 +2,8 @@
 
 namespace App\Helpers\Telegram;
 
+use GuzzleHttp\Client;
+
 class CBCApi
 {
     public function getTiresMark()
@@ -99,5 +101,38 @@ class CBCApi
         }
 
         return $result['data'];
+    }
+
+
+    public function getPartsSku($sku = '1815766')
+    {
+        $client = new Client([
+                                 'base_uri' => 'https://api.cbc-parts.kz/',
+                             ]);
+        $results = $client->get('api/warehouse/search', ['query' => ['query' => $sku, 'warehouse' => 'cbc']])
+                         ->getBody()
+                         ->getContents();
+
+        $results = json_decode($results, JSON_UNESCAPED_UNICODE)['data'];
+
+        foreach ($results as &$result) {
+            $result['price'] = $result['stocks'][0]['price'];
+            $result['image'] = $result['images'][0] ?? 'https://api.cbc-parts.kz/images/not-found.png';
+            $result['link'] = 'https://cbc-parts.kz/product/'.$result['id'];
+            $result['characteristic'] = $result['characteristic'] === 'ANALOG' ? 'аналог' : 'оригинал';
+        }
+
+        if(count($results) > 5) $results['more-link'] = 'https://cbc-parts.kz/parts/1815766?city=almaty';
+
+        return $results;
+    }
+
+    public function getPartsVin($vin)
+    {
+        $client = new Client(['base_uri' => 'https://api.cbc-parts.kz']);
+        $results = $client->post('/api/catalog/all/vin',  ['json' => ['vin' => $vin]])
+            ->getBody()
+            ->getContents();
+        return json_decode($results, JSON_UNESCAPED_UNICODE)['data'];
     }
 }
