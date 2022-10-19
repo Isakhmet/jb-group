@@ -103,7 +103,7 @@ class Bot {
     {
         if (!($result = $this->getCache('data-cache'.$key))) {
             $result = $callBack($key);
-            $this->cacheSet('data-cache'.$key, $result, $cache_time);
+            $this->setCache('data-cache'.$key, $result, $cache_time);
         }
         return $result;
     }
@@ -119,7 +119,7 @@ class Bot {
      */
     public function setCommandCache($chatId, $name, $value, $cache_time = 3600)
     {
-        $this->cacheSet(md5($chatId.$name), $value, $cache_time);
+        $this->setCache(md5($chatId.$name), $value, $cache_time);
     }
 
     /**
@@ -172,13 +172,13 @@ class Bot {
             }
             $commandRaw = str_replace(':back', '', implode(':', $checkCount));
         }else if ($chatId) {
-            $this->cacheSet('backLink'.$chatId.$countCases, $checkCount[$countCases-1]);
+            $this->setCache('backLink'.$chatId.$countCases, $checkCount[$countCases-1]);
         }
 
         return [$commandRaw, $checkCount, $countCases];
     }
 
-    public function cacheSet($key, $data, $time = 3600)
+    public function setCache($key, $data, $time = 3600)
     {
         Cache::put('bot_'.$key, $data, $time);
     }

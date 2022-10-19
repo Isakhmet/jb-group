@@ -181,8 +181,13 @@ class TelegramHandler {
                 $price = number_format($value['price'], 0, '', ' ');
                 $text .= " ({$price} тенге за 1 шт) ";
             }
+            $text .= "\n{$value['characteristic']}";
             $text .= "\n{$value['link']}";
             $this->bot->sendPhoto($chatId, $value['image'], $text, null, null, false, 'HTML');
+        }
+
+        if(isset($result['more-links'])) {
+            $this->sendMessage($chatId, 'Больше товаров по ссылке '.$result['more-links']);
         }
 
         if (is_callable($callback)) {
