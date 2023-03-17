@@ -45,7 +45,7 @@ class BotService
         $bot->command('start', function ($message) use ($bot) {
             $answer = self::DEFAULT_MESSAGE;
             $chatId = $bot->chatId($message);
-            $this->logging($bot, $chatId, true);
+            //$this->logging($bot, $chatId, $message);
             $bot->lastName($bot->getUsername($message));
 
             if ($bot->isWhatsapp()) {
@@ -54,7 +54,7 @@ class BotService
 
             $keyboard = self::DEFAULT_KEYBOARD;
 
-            if ($bot->getCache('city')) {
+            if (!$bot->getCache('city')) {
                 $cities = $bot->repository->getCities();
 
                 if($cities['success']) {
@@ -76,7 +76,7 @@ class BotService
             $messageId = $bot->getMessageId($message);
             $commandRaw = trim($bot->getCommand($message));
             $command = explode(':', $commandRaw)[0];
-            $this->logging($message->getFrom(), $commandRaw);
+            //$this->logging($message->getFrom(), $commandRaw);
             $this->botCalledQuery($bot, $command, $commandRaw, $chatId, $messageId, $message);
         });
 
@@ -102,7 +102,7 @@ class BotService
                 $commandRaw = 'start';
             }
 
-            $this->logging($message->getFrom(), $commandRaw, true);
+            //$this->logging($message->getFrom(), $commandRaw, true);
 
             if(isset($command)) {
                 $this->botCalledQuery($bot, $command, $commandRaw, $chatId, $messageId, $message, $messageText, true);
@@ -114,7 +114,7 @@ class BotService
 
     public function logging($bot, $chatId, $data)
     {
-        $bot->sendMessage($chatId, $answer, 'HTML', false, null, );
+        $bot->sendMessage($chatId, json_encode($data), 'HTML', false, null, );
     }
 
     public function botCalledQuery(Bot $bot, $command, $commandRaw, $chatId, $messageId, $message,  $messageText = '', $needSend = false) {
@@ -129,7 +129,7 @@ class BotService
 
                 $keyboard = self::DEFAULT_KEYBOARD;
 
-                if ($bot->getCache('city')) {
+                if (!$bot->getCache('city')) {
                     $cities = $bot->repository->getCities();
 
                     if($cities['success']) {
