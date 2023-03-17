@@ -1,8 +1,6 @@
 <?php
 
-
-namespace App\Helpers\Telegram\Handlers;
-
+namespace App\Helpers\Chatbot\Handlers;
 
 class TelegramHandler {
 
@@ -175,30 +173,58 @@ class TelegramHandler {
     {
         $this->sendMessage($chatId, $answer);
 
+        $moreLinks = $result['more-link'] ?? null;
+        unset($result['more-link']);
+
         foreach ($result as $key => $value) {
             $text = $value['title'];
+
             if (isset($value['price'])) {
                 $price = number_format($value['price'], 0, '', ' ');
                 $text .= " ({$price} тенге за 1 шт) ";
             }
-            $text .= "\n{$value['characteristic']}";
+
+            if (isset($value['characteristic'])) $text .= "\n{$value['characteristic']}";
+
             $text .= "\n{$value['link']}";
-            $this->bot->sendPhoto($chatId, $value['image'], $text, null, null, false, 'HTML');
+
+            try {
+                $this->bot->sendPhoto($chatId, $value['image'], $text, null, null, false, 'HTML');
+            }catch (\Exception $exception){
+                continue;
+            }
         }
 
-        if(isset($result['more-links'])) {
-            $this->sendMessage($chatId, 'Больше товаров по ссылке '.$result['more-links']);
+        if(isset($moreLinks)) {
+            $this->sendMessage($chatId, 'Больше товаров по ссылке '.$moreLinks);
         }
 
         if (is_callable($callback)) {
             $callback();
         }
+
+        if(!empty($result)) {
+            sleep(5);
+            $this->vote($chatId);
+        }
+    }
+
+    /**
+     * @param $chatId
+     */
+    public function vote($chatId)
+    {
+        $this->sendMessage($chatId, 'Вам удалось найти нужный товар?', 'HTML', false, null, [
+            [
+                ['text' => 'Да', 'callback_data' => 'vote:1'],
+                ['text' => "Нет", 'callback_data' => 'vote:2'],
+            ]
+        ]);
     }
 
     /**
      * Обработка отдельных команд
-     *
-     * @param      strign    $event     Стока событие
+     * @param      string    $event     Стока событие
      * @param      callBack  $callback  Функция обработчик
      */
     public function command($event, $callback)
