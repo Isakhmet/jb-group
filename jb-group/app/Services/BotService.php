@@ -58,11 +58,12 @@ class BotService
                 $cities = $bot->repository->getCities();
 
                 if($cities['success']) {
+                    $keyboard = [];
+
                     foreach ($cities['data'] as $city) {
-                        $citiesKeyboard = [['text' => $city['name'], 'callback_data' => 'cities:'.$city['slug']]];
+                        $keyboard[] = [['text' => $city['name'], 'callback_data' => 'cities:'.$city['slug']]];
                     }
 
-                    $keyboard = [$citiesKeyboard];
                     $answer = 'Выберите свой город';
                 }
             }
