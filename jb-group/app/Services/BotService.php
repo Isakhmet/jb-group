@@ -76,7 +76,7 @@ class BotService
             $messageId = $bot->getMessageId($message);
             $commandRaw = trim($bot->getCommand($message));
             $command = explode(':', $commandRaw)[0];
-            $this->logging($message->getFrom(), $commandRaw);
+            //$this->logging($message->getFrom(), $commandRaw);
             $this->botCalledQuery($bot, $command, $commandRaw, $chatId, $messageId, $message);
         });
 
@@ -102,7 +102,7 @@ class BotService
                 $commandRaw = 'start';
             }
 
-            $this->logging($message->getFrom(), $commandRaw, true);
+            //$this->logging($message->getFrom(), $commandRaw, true);
 
             if(isset($command)) {
                 $this->botCalledQuery($bot, $command, $commandRaw, $chatId, $messageId, $message, $messageText, true);
@@ -114,7 +114,7 @@ class BotService
 
     public function logging($bot, $chatId, $data)
     {
-        $bot->sendMessage($chatId, $answer, 'HTML', false, null, );
+        $bot->sendMessage($chatId, json_encode($data), 'HTML', false, null, );
     }
 
     public function botCalledQuery(Bot $bot, $command, $commandRaw, $chatId, $messageId, $message,  $messageText = '', $needSend = false) {
