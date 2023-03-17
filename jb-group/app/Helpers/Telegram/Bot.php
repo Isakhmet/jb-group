@@ -58,11 +58,11 @@ class Bot {
         'handlers' => []
     ];
 
-    public CBCApi $repository;
+    public $repository;
 
     public function __construct($config)
     {
-        $this->repository = new CBCApi();
+        $this->repository = new BotRepository();
         $this->config = array_replace_recursive($this->config, $config);
         $this->handler = strtolower($this->config['handler']);
 
@@ -108,6 +108,16 @@ class Bot {
         return $result;
     }
 
+    public function setCache($key, $data, $time = 3600)
+    {
+        Cache::put('bot_'.$key, $data, $time);
+    }
+
+    public function getCache($key)
+    {
+        return Cache::get('bot_'.$key);
+    }
+
     /**
      * Установка комманд в кеш
      *
@@ -131,7 +141,7 @@ class Bot {
      */
     public function getCommandCache($chatId, $name)
     {
-        return $this->getCache(md5($chatId.$name));
+        return $this->setCache(md5($chatId.$name));
     }
 
     /**
@@ -176,16 +186,6 @@ class Bot {
         }
 
         return [$commandRaw, $checkCount, $countCases];
-    }
-
-    public function setCache($key, $data, $time = 3600)
-    {
-        Cache::put('bot_'.$key, $data, $time);
-    }
-
-    public function getCache($key)
-    {
-        return Cache::get('bot_'.$key);
     }
 
     public function getCallBackCommand($commandRaw)
