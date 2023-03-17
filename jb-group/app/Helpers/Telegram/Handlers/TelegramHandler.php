@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helpers\Chatbot\Handlers;
+namespace App\Helpers\Telegram\Handlers;
 
 class TelegramHandler {
 
