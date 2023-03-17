@@ -45,7 +45,7 @@ class BotService
         $bot->command('start', function ($message) use ($bot) {
             $answer = self::DEFAULT_MESSAGE;
             $chatId = $bot->chatId($message);
-            $this->logging($bot, $chatId, true);
+            //$this->logging($bot, $chatId, $message);
             $bot->lastName($bot->getUsername($message));
 
             if ($bot->isWhatsapp()) {
@@ -54,7 +54,7 @@ class BotService
 
             $keyboard = self::DEFAULT_KEYBOARD;
 
-            if ($bot->getCache('city')) {
+            if (!$bot->getCache('city')) {
                 $cities = $bot->repository->getCities();
 
                 if($cities['success']) {
@@ -129,7 +129,7 @@ class BotService
 
                 $keyboard = self::DEFAULT_KEYBOARD;
 
-                if ($bot->getCache('city')) {
+                if (!$bot->getCache('city')) {
                     $cities = $bot->repository->getCities();
 
                     if($cities['success']) {
