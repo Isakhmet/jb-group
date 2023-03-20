@@ -226,10 +226,17 @@ class BotService
                 $bot->updateMessage($chatId, $messageId, $answer, $buttons, true, $needSend);
                 break;
             case 'tires':
-                $answer = 'Пожалуйста выберите из списка подбор';
-                $bot->updateMessage($chatId, $messageId, $answer, [
+                $bot->updateMessage($chatId, $messageId, 'Пожалуйста выберите из списка подбор', [
                     [['text' => 'Выбор по характеристикам', 'callback_data' => 'tires_char']],
                     [['text' => 'Выбор по авто', 'callback_data' => 'tires_car']],
+                    [['text' => 'Назад', 'callback_data' => 'start']],
+                ], true, $needSend);
+
+                break;
+            case 'wheels':
+                $bot->updateMessage($chatId, $messageId, 'Пожалуйста выберите из списка подбор', [
+                    [['text' => 'Выбор по характеристикам', 'callback_data' => 'wheels_char']],
+                    [['text' => 'Выбор по авто', 'callback_data' => 'wheels_car']],
                     [['text' => 'Назад', 'callback_data' => 'start']],
                 ], true, $needSend);
 
@@ -516,6 +523,107 @@ class BotService
                 $buttons[] = [['text' => 'Назад', 'callback_data' => $commandRaw.':back'],['text' => 'В меню', 'callback_data' => 'start']];
                 $bot->updateMessage($chatId, $messageId, $answer, $buttons);
 
+                break;
+
+            case 'wheels_car':
+                [$commandRaw, $checkCount, $countCases] = $bot->parseForInlineCommand($commandRaw, $chatId);
+
+                $buttons = [];
+                switch ($countCases) {
+                    case 1:
+                        $result = $bot->repository->getWheelsCarFilters($bot->getCache('city'));
+                        $commandRaw = 'wheels_car';
+                        $buttons = $bot->generateButtons($result['data']['params']['vendor'], $commandRaw, 2);
+                        $commandRaw = 'tires';
+                        $answer = 'Выберите авто из списка';
+
+                        break;
+                    case 2:
+                        $key = $bot->getCache('backLink'.$chatId.'2');
+                        $result = $bot->repository->getWheelsCarFilters($key);
+                        $buttons = $bot->generateButtons($result, $commandRaw);
+                        $answer = 'Выберите модель автомобиля';
+
+                        break;
+                    case 3:
+                        $key = $bot->getCache('backLink'.$chatId.'3');
+                        $result = $bot->repository->getTiresYear($key);
+                        $buttons = $bot->generateButtons($result, $commandRaw);
+                        $answer = 'Выберите год автомобиля';
+
+                        break;
+                    case 4:
+                        $key = $bot->getCache('backLink'.$chatId.'4');
+                        $result = $bot->repository->getTiresModify($key);
+                        $buttons = $bot->generateButtons($result, $commandRaw);
+                        $answer = 'Выберите модификацию Вашего автомобиля';
+
+                        break;
+                    case 5:
+                        $key = $bot->getCache('backLink'.$chatId.'5');
+                        $result = $bot->repository->getTiresCharacters($key);
+                        $buttons = [];
+
+                        foreach ($result as $row) {
+                            $size = $row['width'].' /'.$row['height'].' '.$row['radius'];
+                            $buttons[] = [['text' => 'Размер: '.$size.' - '.$row['title'], 'callback_data' => $command.':1:2:3:'.$checkCount[4].':'.$row['width'].'x'.$row['height'].'x'.$row['radius']]];
+                        }
+
+                        $answer = 'Подходящие результаты:';
+                        $commandRaw .=':back';
+
+                        if (mb_strlen($commandRaw) >= 64) {
+                            $commandRaw = $bot->getCallBackCommand($commandRaw);
+                        }
+
+                        $buttons[] = [
+                            ['text' => 'Назад', 'callback_data' => $commandRaw],
+                            ['text' => 'В меню', 'callback_data' => 'start']
+                        ];
+
+                        return $bot->updateMessage($chatId, $messageId, $answer, $buttons, true, $needSend);
+
+                    // Поиск шин по каталогу
+                    case 6:
+                        [$width, $height, $radius] = explode('x', $checkCount[5]);
+
+                        $params = [
+                            'catalog' => 'light',
+                            'width' => $width,
+                            'height' => $height,
+                            'radius' => 'R'.$radius,
+                            'season' => 'summer',
+                        ];
+
+                        $result = $bot->repository->getTireItems($params);
+
+                        $buttons[] = [
+                            ['text' => 'Назад', 'callback_data' => $bot->getCallBackCommand($commandRaw.':back')],
+                            ['text' => 'В меню', 'callback_data' => 'start']];
+
+                        if (empty($result['items'])) {
+                            return $bot->sendLinks($chatId, 'По вашему запросу ничего не найдено', []);
+                        }
+
+                        // Добавляем голосовалку
+                        // Отправляем найденные результаты пользователю
+                        return $bot->sendLinks($chatId, 'Найденные товары', $result['items'], function () use ($bot, $buttons, $chatId) {
+
+                            // В вацапе происходит баг в отправке сообщения.
+                            // Когда сообщения ещё не отправлены. Может вылететь сообщение которое должно быть отправлено последним
+                            $bot->sendMessage($chatId, 'Меню', null, false, null, $buttons);
+                        });
+
+                        break;
+                }
+
+                $buttons[] = [['text' => 'Назад', 'callback_data' => $commandRaw.':back']];
+                return $bot->updateMessage($chatId, $messageId, $answer, $buttons, true, $needSend);
+
+                break;
+            case 'wheels_char':
+                [$commandRaw, $checkCount, $countCases] = $bot->parseForInlineCommand($commandRaw);
+                $buttons = [];
                 break;
         }
     }
