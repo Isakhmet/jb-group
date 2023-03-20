@@ -13,6 +13,7 @@ class BotService
 
     protected const DEFAULT_KEYBOARD = [
         [['text' => 'Шины', 'callback_data' => 'tires']],
+        [['text' => 'Диски', 'callback_data' => 'wheels']],
         [['text' => 'Запчасти', 'callback_data' => 'parts']],
         [['text' => 'Контакты', 'callback_data' => 'contacts']],
         [['text' => 'Акции', 'callback_data' => 'actions']],
