@@ -533,23 +533,22 @@ class BotService
                 switch ($countCases) {
                     case 1:
                         $result = $bot->repository->getWheelsCarFilters($bot->getCache('city'));
-                        $commandRaw = 'wheels_car';
                         $buttons = $bot->generateButtons($result['data']['params']['vendor'], $commandRaw, 2);
-                        $commandRaw = 'tires';
+                        $commandRaw = 'wheels';
                         $answer = 'Выберите авто из списка';
 
                         break;
                     case 2:
                         $key = $bot->getCache('backLink'.$chatId.'2');
-                        $result = $bot->repository->getWheelsCarFilters($key);
-                        $buttons = $bot->generateButtons($result, $commandRaw);
+                        $result = $bot->repository->getWheelsCarFilters($bot->getCache('city'), ['vendor' => $key]);
+                        $buttons = $bot->generateButtons($result['data']['params']['car'], $commandRaw);
                         $answer = 'Выберите модель автомобиля';
 
                         break;
                     case 3:
                         $key = $bot->getCache('backLink'.$chatId.'3');
-                        $result = $bot->repository->getTiresYear($key);
-                        $buttons = $bot->generateButtons($result, $commandRaw);
+                        $result = $bot->repository->getWheelsCarFilters($bot->getCache('city'), ['car' => $key]);
+                        $buttons = $bot->generateButtons($result['data']['params']['year'], $commandRaw);
                         $answer = 'Выберите год автомобиля';
 
                         break;
