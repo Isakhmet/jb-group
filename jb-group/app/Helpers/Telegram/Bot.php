@@ -210,15 +210,13 @@ class Bot {
      */
     public function generateButtons($result, $commandRaw, $max_inline = 3, $max_word = 17)
     {
-        $keys = array_keys($result);
-        $values = array_values($result);
         $buttons = [];
 
-        for ($i = 0; $i < count($keys); $i += 3) {
+        for ($i = 0; $i < count($result); $i += 3) {
             $strlen_text = 0;
-            for ($j = 0; $j < $max_inline && isset($values[$i + $j]) && $strlen_text < $max_word; $j++) {
-                $buttons[$i][$j] = ['text' => $values[$i + $j], 'callback_data' => $this->getCallBackCommand($commandRaw.':'.$keys[$i + $j])];
-                $strlen_text += mb_strlen($values[$i + $j]);
+            for ($j = 0; $j < $max_inline && isset($result[$i + $j]) && $strlen_text < $max_word; $j++) {
+                $buttons[$i][$j] = ['text' => $result[$i + $j], 'callback_data' => $this->getCallBackCommand($commandRaw.':'.$result[$i + $j])];
+                $strlen_text += mb_strlen($result[$i + $j]);
             }
         }
 
