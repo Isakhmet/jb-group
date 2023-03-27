@@ -25,14 +25,14 @@ class BotRepository
         return Http::post($this->urlTire .'catalog/filters', ['city' => $this->city, 'type' => 1, 'filters' => $filters]);
     }
 
-    public function getWheelsCarFilters($city, $params = [])
+    public function getWheelsCarFilters($city, $data = [])
     {
-        $params = [
-            'params' => $params,
+        $query = [
+            'params' => json_encode($data),
             'city' => $city,
             'type' => 2
         ];
 
-        return Http::get($this->urlTire . 'catalog/marks', ['query' => $params]);
+        return Http::get($this->urlTire . 'catalog/marks', http_build_query($query));
     }
 }
