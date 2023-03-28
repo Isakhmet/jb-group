@@ -544,7 +544,7 @@ class BotService
                         $key = $bot->getCache('backLink'.$chatId.'2');
                         $result = $bot->repository->getWheelsCarFilters($city, ['vendor' => $key]);
                         $bot->setCache('prev_'.$chatId.$countCases, json_encode($result['data']['params']));
-                        $buttons = $bot->generateButtons($result['data']['params']['car'], $commandRaw);
+                        $buttons = $bot->generateShortButtons($result['data']['params']['car'], $commandRaw);
                         $answer = 'Выберите модель автомобиля';
 
                         break;
@@ -553,7 +553,7 @@ class BotService
                         $previousData = json_decode($bot->getCache('prev_'.$chatId.$countCases-1), true);
                         $params = [
                             'vendor' => $previousData['vendor'][0],
-                            'car' => $key
+                            'car' => $previousData['car'][$key]
                         ];
                         $result = $bot->repository->getWheelsCarFilters($city, $params);
                         $buttons = $bot->generateButtons($result['data']['params']['year'], $commandRaw);
@@ -580,7 +580,7 @@ class BotService
                             'vendor' => $previousData['vendor'][0],
                             'car' => $previousData['car'][0],
                             'year' => $previousData['year'][0],
-                            'modification' => $key,
+                            'modification' => $previousData['modification'][$key],
                         ];
                         $result = $bot->repository->getWheelsCarFilters($city, $params);
 
