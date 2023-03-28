@@ -35,4 +35,16 @@ class BotRepository
 
         return Http::get($this->urlTire . 'catalog/marks', http_build_query($query));
     }
+
+    public function getWheels($city, $data = [])
+    {
+        $query = [
+            'params' => json_encode($data),
+            'city' => $city,
+            'type' => 2,
+            'sorting' => 'new',
+        ];
+
+        return Http::get($this->urlTire . 'catalog/marks/wheels/product', http_build_query($query));
+    }
 }
