@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Test;
 use App\Http\Controllers\Controller;
 use App\Services\BotService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
@@ -27,6 +28,8 @@ class TelegramController extends Controller
     public function telegramLog($log)
     {
         $answer = json_encode($log, JSON_UNESCAPED_UNICODE);
+
+        Log::info($answer);
 
         return Telegram::sendMessage(
             [
