@@ -234,9 +234,9 @@ class BotService
                     //[['text' => 'Шины для спецтехники', 'callback_data' => $commandRaw.':industrial']],
                 ];
                 $bot->updateMessage($chatId, $messageId, 'Пожалуйста выберите из списка подбор', [
-                    [['text' => 'Легковые шины', 'callback_data' => $commandRaw.'tires_light']],
-                    [['text' => 'Грузовые шины', 'callback_data' => $commandRaw.'tires_truck']],
-                    [['text' => 'OTR шины', 'callback_data' => $commandRaw.'tires_otr']],
+                    [['text' => 'Легковые шины', 'callback_data' => 'tires_light']],
+                    [['text' => 'Грузовые шины', 'callback_data' => 'tires_truck']],
+                    [['text' => 'OTR шины', 'callback_data' => 'tires_otr']],
                     [['text' => 'Назад', 'callback_data' => 'start']],
 
                     /*[['text' => 'Выбор по характеристикам', 'callback_data' => 'tires_char']],
