@@ -227,138 +227,98 @@ class BotService
                 $bot->updateMessage($chatId, $messageId, $answer, $buttons, true, $needSend);
                 break;
             case 'tires':
+                $buttons = [
+                    [['text' => 'Легковые шины', 'callback_data' => $commandRaw.':light']],
+                    [['text' => 'Грузовые шины', 'callback_data' => $commandRaw.':truck']],
+                    [['text' => 'OTR шины', 'callback_data' => $commandRaw.':otr']],
+                    //[['text' => 'Шины для спецтехники', 'callback_data' => $commandRaw.':industrial']],
+                ];
+                $bot->updateMessage($chatId, $messageId, 'Пожалуйста выберите из списка подбор', [
+                    [['text' => 'Легковые шины', 'callback_data' => $commandRaw.'tires_light']],
+                    [['text' => 'Грузовые шины', 'callback_data' => $commandRaw.'tires_truck']],
+                    [['text' => 'OTR шины', 'callback_data' => $commandRaw.'tires_otr']],
+                    [['text' => 'Назад', 'callback_data' => 'start']],
+
+                    /*[['text' => 'Выбор по характеристикам', 'callback_data' => 'tires_char']],
+                    [['text' => 'Выбор по авто', 'callback_data' => 'tires_car']],
+                    [['text' => 'Назад', 'callback_data' => 'start']],*/
+                ], true, $needSend);
+
+                break;
+            case 'tires_light':
                 $bot->updateMessage($chatId, $messageId, 'Пожалуйста выберите из списка подбор', [
                     [['text' => 'Выбор по характеристикам', 'callback_data' => 'tires_char']],
                     [['text' => 'Выбор по авто', 'callback_data' => 'tires_car']],
                     [['text' => 'Назад', 'callback_data' => 'start']],
                 ], true, $needSend);
-
                 break;
-            case 'wheels':
-                $bot->updateMessage($chatId, $messageId, 'Пожалуйста выберите из списка подбор', [
-                    [['text' => 'Выбор по характеристикам', 'callback_data' => 'wheels_char']],
-                    [['text' => 'Выбор по авто', 'callback_data' => 'wheels_car']],
-                    [['text' => 'Назад', 'callback_data' => 'start']],
-                ], true, $needSend);
-
+            case 'tires_truck':
                 break;
-            case 'vote':
-                [,$vote] = explode(':', $commandRaw);
-                $answer = $vote == 2 ? 'Не можете найти подходящий товар? Задайте вопрос нашему специалисту <a href="tel:7210">7210</a> (бесплатно с мобильного)'
-                    : 'Спасибо что воспользовались нашим сервисом! Ждем вас снова на Formula7.';
-                $bot->sendMessage($chatId, $answer, 'HTML', false, null, [
-                    [
-                        ['text' => 'В меню', 'callback_data' => 'start'],
-                    ]
-                ]);
-                break;
-
-            case 'parts':
-                $answer = 'Пожалуйста выберите способ поиска';
-
-                if(Str::contains($commandRaw, ':')) {
-                    [$command, $method] = explode(':', $commandRaw);
-                }
-
-                if(!isset($method)) {
-                    $bot->updateMessage($chatId, $messageId, $answer, [
-                        [['text' => 'Поиск по артиклу запчасти', 'callback_data' => 'parts:sku']],
-                        [['text' => 'Поиск по ВИН коду', 'callback_data' => 'parts:vin']],
-                        [['text' => 'Назад', 'callback_data' => 'start']],
-                    ], true, $needSend);
-
-                    break;
-                }
-
-                switch ($method) {
-                    case 'sku':
-                        $answer = 'Пожалуйста введите артикул запчасти';
-                        $key = $chatId.'parts-method';
-                        $bot->setCache($key, 'search-sku');
-
-                        break;
-                    case 'vin':
-                        $answer = 'Пожалуйста введите VIN транспорта';
-                        $key = $chatId.'parts-method';
-                        $bot->setCache($key, 'search-vin');
-
-                        break;
-                }
-
-                $bot->updateMessage($chatId, $messageId, $answer, null, true, true);
-
-                break;
-
-            case 'search-sku':
-                $result = $bot->repository->getPartsSku($messageText);
-                $buttons[] = [['text' => 'В меню', 'callback_data' => 'start']];
-
-                if (empty($result)) {
-                    return $bot->sendMessage($chatId, 'По вашему запросу ничего не найдено', null, false, null, $buttons);
-                }
-
-                return $bot->sendLinks($chatId, 'Найденные товары', $result, function () use ($bot, $buttons, $chatId){
-                    $bot->sendMessage($chatId, 'Меню', null, false, null, $buttons);
-                });
-
-                break;
-
-            case 'search-vin':
-                $result    = $bot->repository->getPartsVin($messageText);
-                $buttons[] = [['text' => 'В меню', 'callback_data' => 'start']];
-
-                if (empty($result['breadcrumbs'])) {
-                    return $bot->sendMessage($chatId, 'По вашему запросу ничего не найдено', null, false, null, $buttons);
-                }
-
-                $link = 'https://cbc-parts.kz/catalogs/modifications/groups?';
-
-                foreach ($result['breadcrumbs'] as $key => $breadcrumb) {
-                    $link .= "$key=$breadcrumb&";
-                }
-
-                $text = "Результат пойска по <a href='$link'>ссылке</a>";
-                $bot->sendMessage($chatId, $text, 'HTML', false, null, $buttons);
-
+            case 'tires_otr':
                 break;
             case 'tires_car':
                 [$commandRaw, $checkCount, $countCases] = $bot->parseForInlineCommand($commandRaw, $chatId);
 
+                $city = $bot->getCache('city');
                 $buttons = [];
+
                 switch ($countCases) {
                     case 1:
-                        $result = $bot->repository->getTiresMark();
-                        $commandRaw = 'tires_car';
-                        $buttons = $bot->generateButtons($result, $commandRaw, 2);
-                        $commandRaw = 'tires';
+                        $result = $bot->repository->getWheelsCarFilters($city);
+                        $buttons = $bot->generateButtons($result['data']['params']['vendor'], $commandRaw);
+                        $commandRaw = 'wheels';
                         $answer = 'Выберите авто из списка';
 
                         break;
                     case 2:
                         $key = $bot->getCache('backLink'.$chatId.'2');
-                        $result = $bot->repository->getTiresModel($key);
-                        $buttons = $bot->generateButtons($result, $commandRaw);
+                        $result = $bot->repository->getWheelsCarFilters($city, ['vendor' => $key]);
+                        $bot->setCache('prev_'.$chatId.$countCases, json_encode($result['data']['params']));
+                        $buttons = $bot->generateShortButtons($result['data']['params']['car'], $commandRaw);
                         $answer = 'Выберите модель автомобиля';
 
                         break;
                     case 3:
                         $key = $bot->getCache('backLink'.$chatId.'3');
-                        $result = $bot->repository->getTiresYear($key);
-                        $buttons = $bot->generateButtons($result, $commandRaw);
+                        $previousData = json_decode($bot->getCache('prev_'.$chatId.$countCases-1), true);
+                        $params = [
+                            'vendor' => $previousData['vendor'][0],
+                            'car' => $previousData['car'][$key]
+                        ];
+                        $result = $bot->repository->getWheelsCarFilters($city, $params);
+                        $bot->setCache('prev_'.$chatId.$countCases, json_encode($result['data']['params']));
+                        $buttons = $bot->generateButtons($result['data']['params']['year'], $commandRaw);
                         $answer = 'Выберите год автомобиля';
 
                         break;
                     case 4:
                         $key = $bot->getCache('backLink'.$chatId.'4');
-                        $result = $bot->repository->getTiresModify($key);
-                        $buttons = $bot->generateButtons($result, $commandRaw);
+                        $previousData = json_decode($bot->getCache('prev_'.$chatId.$countCases-1), true);
+                        $params = [
+                            'vendor' => $previousData['vendor'][0],
+                            'car' => $previousData['car'][0],
+                            'year' => $key,
+                        ];
+                        $result = $bot->repository->getWheelsCarFilters($city, $params);
+                        $bot->setCache('prev_'.$chatId.$countCases, json_encode($result['data']['params']));
+                        $buttons = $bot->generateButtons($result['data']['params']['modification'], $commandRaw);
                         $answer = 'Выберите модификацию Вашего автомобиля';
 
                         break;
                     case 5:
                         $key = $bot->getCache('backLink'.$chatId.'5');
-                        $result = $bot->repository->getTiresCharacters($key);
-                        $buttons = [];
+                        $previousData = json_decode($bot->getCache('prev_'.$chatId.$countCases-1), true);
+                        $params = [
+                            'vendor' => $previousData['vendor'][0],
+                            'car' => $previousData['car'][0],
+                            'year' => $previousData['year'][0],
+                            'modification' => $key,
+                        ];
+                        $result = $bot->repository->getWheelsCarFilters($city, $params);
+                        $bot->setCache('prev_'.$chatId.$countCases, json_encode($result['data']['params']));
+                        $buttons = $bot->generateShortButtons($result['data']['params']['wheels'], $commandRaw);
+                        $answer = 'Выберите размеры';
+                        /*dd($result['data']);
 
                         foreach ($result as $row) {
                             $size = $row['width'].' /'.$row['height'].' '.$row['radius'];
@@ -377,33 +337,33 @@ class BotService
                             ['text' => 'В меню', 'callback_data' => 'start']
                         ];
 
-                        return $bot->updateMessage($chatId, $messageId, $answer, $buttons, true, $needSend);
+                        return $bot->updateMessage($chatId, $messageId, $answer, $buttons, true, $needSend);*/
 
+                        break;
                     // Поиск шин по каталогу
                     case 6:
-                        [$width, $height, $radius] = explode('x', $checkCount[5]);
-
+                        $key = $bot->getCache('backLink'.$chatId.'6');
+                        $previousData = json_decode($bot->getCache('prev_'.$chatId.$countCases-1), true);
                         $params = [
-                            'catalog' => 'light',
-                            'width' => $width,
-                            'height' => $height,
-                            'radius' => 'R'.$radius,
-                            'season' => 'summer',
+                            'vendor' => $previousData['vendor'][0],
+                            'car' => $previousData['car'][0],
+                            'year' => $previousData['year'][0],
+                            'modification' => $previousData['modification'][0],
+                            'wheels' => $previousData['wheels'][$key],
                         ];
-
-                        $result = $bot->repository->getTireItems($params);
+                        $result = $bot->repository->getWheels($city, $params);
 
                         $buttons[] = [
                             ['text' => 'Назад', 'callback_data' => $bot->getCallBackCommand($commandRaw.':back')],
                             ['text' => 'В меню', 'callback_data' => 'start']];
 
-                        if (empty($result['items'])) {
+                        if (empty($result['data'])) {
                             return $bot->sendLinks($chatId, 'По вашему запросу ничего не найдено', []);
                         }
 
                         // Добавляем голосовалку
                         // Отправляем найденные результаты пользователю
-                        return $bot->sendLinks($chatId, 'Найденные товары', $result['items'], function () use ($bot, $buttons, $chatId) {
+                        return $bot->sendLinks($chatId, 'Найденные товары', $result['data'], function () use ($bot, $buttons, $chatId) {
 
                             // В вацапе происходит баг в отправке сообщения.
                             // Когда сообщения ещё не отправлены. Может вылететь сообщение которое должно быть отправлено последним
@@ -525,7 +485,14 @@ class BotService
                 $bot->updateMessage($chatId, $messageId, $answer, $buttons);
 
                 break;
+            case 'wheels':
+                $bot->updateMessage($chatId, $messageId, 'Пожалуйста выберите из списка подбор', [
+                    [['text' => 'Выбор по характеристикам', 'callback_data' => 'wheels_char']],
+                    [['text' => 'Выбор по авто', 'callback_data' => 'wheels_car']],
+                    [['text' => 'Назад', 'callback_data' => 'start']],
+                ], true, $needSend);
 
+                break;
             case 'wheels_car':
                 [$commandRaw, $checkCount, $countCases] = $bot->parseForInlineCommand($commandRaw, $chatId);
 
@@ -647,6 +614,7 @@ class BotService
                 return $bot->updateMessage($chatId, $messageId, $answer, $buttons, true, $needSend);
 
                 break;
+
             case 'wheels_char':
                 [$commandRaw, $checkCount, $countCases] = $bot->parseForInlineCommand($commandRaw, $chatId);
 
@@ -766,6 +734,86 @@ class BotService
 
                 $buttons[] = [['text' => 'Назад', 'callback_data' => $commandRaw.':back']];
                 return $bot->updateMessage($chatId, $messageId, $answer, $buttons, true, $needSend);
+
+            case 'vote':
+                [,$vote] = explode(':', $commandRaw);
+                $answer = $vote == 2 ? 'Не можете найти подходящий товар? Задайте вопрос нашему специалисту <a href="tel:7210">7210</a> (бесплатно с мобильного)'
+                    : 'Спасибо что воспользовались нашим сервисом! Ждем вас снова на Formula7.';
+                $bot->sendMessage($chatId, $answer, 'HTML', false, null, [
+                    [
+                        ['text' => 'В меню', 'callback_data' => 'start'],
+                    ]
+                ]);
+                break;
+
+            case 'parts':
+                $answer = 'Пожалуйста выберите способ поиска';
+
+                if(Str::contains($commandRaw, ':')) {
+                    [$command, $method] = explode(':', $commandRaw);
+                }
+
+                if(!isset($method)) {
+                    $bot->updateMessage($chatId, $messageId, $answer, [
+                        [['text' => 'Поиск по артиклу запчасти', 'callback_data' => 'parts:sku']],
+                        [['text' => 'Поиск по ВИН коду', 'callback_data' => 'parts:vin']],
+                        [['text' => 'Назад', 'callback_data' => 'start']],
+                    ], true, $needSend);
+
+                    break;
+                }
+
+                switch ($method) {
+                    case 'sku':
+                        $answer = 'Пожалуйста введите артикул запчасти';
+                        $key = $chatId.'parts-method';
+                        $bot->setCache($key, 'search-sku');
+
+                        break;
+                    case 'vin':
+                        $answer = 'Пожалуйста введите VIN транспорта';
+                        $key = $chatId.'parts-method';
+                        $bot->setCache($key, 'search-vin');
+
+                        break;
+                }
+
+                $bot->updateMessage($chatId, $messageId, $answer, null, true, true);
+
+                break;
+
+            case 'search-sku':
+                $result = $bot->repository->getPartsSku($messageText);
+                $buttons[] = [['text' => 'В меню', 'callback_data' => 'start']];
+
+                if (empty($result)) {
+                    return $bot->sendMessage($chatId, 'По вашему запросу ничего не найдено', null, false, null, $buttons);
+                }
+
+                return $bot->sendLinks($chatId, 'Найденные товары', $result, function () use ($bot, $buttons, $chatId){
+                    $bot->sendMessage($chatId, 'Меню', null, false, null, $buttons);
+                });
+
+                break;
+
+            case 'search-vin':
+                $result    = $bot->repository->getPartsVin($messageText);
+                $buttons[] = [['text' => 'В меню', 'callback_data' => 'start']];
+
+                if (empty($result['breadcrumbs'])) {
+                    return $bot->sendMessage($chatId, 'По вашему запросу ничего не найдено', null, false, null, $buttons);
+                }
+
+                $link = 'https://cbc-parts.kz/catalogs/modifications/groups?';
+
+                foreach ($result['breadcrumbs'] as $key => $breadcrumb) {
+                    $link .= "$key=$breadcrumb&";
+                }
+
+                $text = "Результат пойска по <a href='$link'>ссылке</a>";
+                $bot->sendMessage($chatId, $text, 'HTML', false, null, $buttons);
+
+                break;
         }
     }
 }
