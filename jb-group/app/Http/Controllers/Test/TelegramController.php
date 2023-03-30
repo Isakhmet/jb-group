@@ -27,9 +27,11 @@ class TelegramController extends Controller
 
     public function telegramLog($log)
     {
-        $answer = json_encode($log, JSON_UNESCAPED_UNICODE);
+        if(isset($log['callback_query']['message']['reply_markup'])) {
+            unset($log['callback_query']['message']['reply_markup']);
+        }
 
-        Log::info($answer);
+        $answer = json_encode($log, JSON_UNESCAPED_UNICODE);
 
         return Telegram::sendMessage(
             [
