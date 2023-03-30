@@ -535,7 +535,7 @@ class BotService
                 switch ($countCases) {
                     case 1:
                         $result = $bot->repository->getWheelsCarFilters($city);
-                        $buttons = $bot->generateButtons($result['data']['params']['vendor'], $commandRaw, 2);
+                        $buttons = $bot->generateButtons($result['data']['params']['vendor'], $commandRaw);
                         $commandRaw = 'wheels';
                         $answer = 'Выберите авто из списка';
 
@@ -648,9 +648,124 @@ class BotService
 
                 break;
             case 'wheels_char':
-                [$commandRaw, $checkCount, $countCases] = $bot->parseForInlineCommand($commandRaw);
+                [$commandRaw, $checkCount, $countCases] = $bot->parseForInlineCommand($commandRaw, $chatId);
+
+                $city = $bot->getCache('city');
                 $buttons = [];
-                break;
+
+                switch ($countCases) {
+                    case 1:
+                        $result = $bot->repository->getWheelsCharFilters($city);
+                        $params = [];
+
+                        foreach ($result['data']['filters'] as $filter) {
+                            if(strcmp($filter['slug'], 'diametr-diska') === 0) {
+                                foreach ($filter['values'] as $value) {
+                                    $params[$value['id']] = $value['slug'];
+                                }
+                            }
+                        }
+
+                        $buttons = $bot->generateShortButtons($params, $commandRaw);
+                        $commandRaw = 'wheels';
+                        $answer = 'Выберите диаметр диска';
+
+                        break;
+                    case 2:
+                        $key = $bot->getCache('backLink'.$chatId.'2');
+                        $result = $bot->repository->getWheelsCharFilters($city, [$key]);
+                        $params = [];
+
+                        foreach ($result['data']['filters'] as $filter) {
+                            if(strcmp($filter['slug'], 'pcd-diska') === 0) {
+                                foreach ($filter['values'] as $value) {
+                                    $params[$value['id']] = $value['slug'];
+                                }
+                            }
+                        }
+
+                        $buttons = $bot->generateShortButtons($params, $commandRaw);
+                        $commandRaw = 'wheels';
+                        $answer = 'Выберите PCD диска';
+
+                        //$buttons[] = [['text' => 'Показать диски', 'callback_data' => $commandRaw.':show']];
+                        break;
+                    case 3:
+                        $filters = explode(':', $commandRaw);
+                        array_shift($filters);
+
+                        $result = $bot->repository->getWheelsCharFilters($city, $filters);
+                        $params = [];
+
+                        foreach ($result['data']['filters'] as $filter) {
+                            if(strcmp($filter['slug'], 'diametr-stupicy-diska') === 0) {
+                                foreach ($filter['values'] as $value) {
+                                    $params[$value['id']] = $value['slug'];
+                                }
+                            }
+                        }
+
+                        $buttons = $bot->generateShortButtons($params, $commandRaw);
+                        $commandRaw = 'wheels';
+                        $answer = 'Выберите диаметр ступицы диска';
+                        break;
+                    case 4:
+                        $filters = explode(':', $commandRaw);
+                        array_shift($filters);
+                        $result = $bot->repository->getWheelsCharFilters($city, $filters);
+                        $params = [];
+
+                        foreach ($result['data']['filters'] as $filter) {
+                            if(strcmp($filter['slug'], 'vynos-diska') === 0) {
+                                foreach ($filter['values'] as $value) {
+                                    $params[$value['id']] = $value['slug'];
+                                }
+                            }
+                        }
+
+                        $buttons = $bot->generateShortButtons($params, $commandRaw);
+                        $commandRaw = 'wheels';
+                        $answer = 'Выберите вынос диска';
+
+                        break;
+                    case 5:
+                        $filters = explode(':', $commandRaw);
+                        array_shift($filters);
+                        $result = $bot->repository->getWheelsCharFilters($city, $filters);
+                        $params = [];
+
+                        foreach ($result['data']['filters'] as $filter) {
+                            if(strcmp($filter['slug'], 'sirina-diska') === 0) {
+                                foreach ($filter['values'] as $value) {
+                                    $params[$value['id']] = $value['slug'];
+                                }
+                            }
+                        }
+
+                        $buttons = $bot->generateShortButtons($params, $commandRaw);
+                        $commandRaw = 'wheels';
+                        $answer = 'Выберите ширину диска';
+
+                        break;
+                    case 6:
+                        $filters = explode(':', $commandRaw);
+                        array_shift($filters);
+                        $result = $bot->repository->getWheelsByChar($city, $filters);
+
+                        $buttons[] = [['text' => 'Назад', 'callback_data' => $commandRaw.':back'], ['text' => 'В меню', 'callback_data' => 'start']];
+
+                        if (empty($result['data'])) {
+                            return $bot->sendMessage($chatId, 'По вашему запросу ничего не найдено', null, false, null, $buttons);
+                        }
+
+                        // Добавляем голосовалку
+                        return $bot->sendLinks($chatId, 'Найденные товары', $result['data'], function () use ($bot, $buttons, $chatId){
+                            $bot->sendMessage($chatId, 'Меню', null, false, null, $buttons);
+                        });
+                }
+
+                $buttons[] = [['text' => 'Назад', 'callback_data' => $commandRaw.':back']];
+                return $bot->updateMessage($chatId, $messageId, $answer, $buttons, true, $needSend);
         }
     }
 }
