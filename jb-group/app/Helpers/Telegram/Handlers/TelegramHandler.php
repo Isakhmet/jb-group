@@ -173,8 +173,8 @@ class TelegramHandler {
     {
         $this->sendMessage($chatId, $answer);
 
-        $moreLinks = $result['more-link'] ?? null;
-        unset($result['more-link']);
+        /*$moreLinks = $result['more-link'] ?? null;
+        unset($result['more-link']);*/
 
         foreach ($result as $key => $value) {
             $text = $value['title'];
@@ -184,12 +184,16 @@ class TelegramHandler {
                 $text .= " ({$price} тенге за 1 шт) ";
             }
 
-            if (isset($value['characteristic'])) $text .= "\n{$value['characteristic']}";
+            if (!empty($value['short_properties'])) {
+                foreach ($value['short_properties'] as $property){
+                    $text .= "\n$property";
+                }
+            }
 
-            $text .= "\n{$value['link']}";
+            $text .= "\nhttps://f7.kz/product/{$value['id']}";
 
             try {
-                $this->bot->sendPhoto($chatId, $value['image'], $text, null, null, false, 'HTML');
+                $this->bot->sendPhoto($chatId, $value['images'][0], $text, null, null, false, 'HTML');
             }catch (\Exception $exception){
                 continue;
             }

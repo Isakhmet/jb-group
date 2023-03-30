@@ -36,6 +36,28 @@ class BotRepository
         return Http::get($this->urlTire . 'catalog/marks', http_build_query($query));
     }
 
+    public function getWheelsCharFilters($city = 'almaty', $data = [])
+    {
+        $params = [
+            'filters' => $data,
+            'city' => $city,
+            'type' => 2
+        ];
+
+        return Http::post($this->urlTire . 'catalog/filters', $params);
+    }
+
+    public function getWheelsByChar($city = 'almaty', $data = [])
+    {
+        $query = [
+            'filters' => $data,
+            'city' => $city,
+            'sorting' => 'new',
+        ];
+
+        return Http::get($this->urlTire . 'catalog/wheels', http_build_query($query));
+    }
+
     public function getWheels($city, $data = [])
     {
         $query = [
