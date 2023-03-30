@@ -227,21 +227,12 @@ class BotService
                 $bot->updateMessage($chatId, $messageId, $answer, $buttons, true, $needSend);
                 break;
             case 'tires':
-                $buttons = [
-                    [['text' => 'Легковые шины', 'callback_data' => $commandRaw.':light']],
-                    [['text' => 'Грузовые шины', 'callback_data' => $commandRaw.':truck']],
-                    [['text' => 'OTR шины', 'callback_data' => $commandRaw.':otr']],
-                    //[['text' => 'Шины для спецтехники', 'callback_data' => $commandRaw.':industrial']],
-                ];
                 $bot->updateMessage($chatId, $messageId, 'Пожалуйста выберите из списка подбор', [
                     [['text' => 'Легковые шины', 'callback_data' => 'tires_light']],
                     [['text' => 'Грузовые шины', 'callback_data' => 'tires_truck']],
                     [['text' => 'OTR шины', 'callback_data' => 'tires_otr']],
                     [['text' => 'Назад', 'callback_data' => 'start']],
 
-                    /*[['text' => 'Выбор по характеристикам', 'callback_data' => 'tires_char']],
-                    [['text' => 'Выбор по авто', 'callback_data' => 'tires_car']],
-                    [['text' => 'Назад', 'callback_data' => 'start']],*/
                 ], true, $needSend);
 
                 break;
@@ -266,7 +257,7 @@ class BotService
                     case 1:
                         $result = $bot->repository->getWheelsCarFilters($city);
                         $buttons = $bot->generateButtons($result['data']['params']['vendor'], $commandRaw);
-                        $commandRaw = 'wheels';
+                        $commandRaw = 'tires_light';
                         $answer = 'Выберите авто из списка';
 
                         break;
