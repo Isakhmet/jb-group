@@ -323,7 +323,7 @@ class BotService
                             'modification' => $previousData['modification'][0],
                             'tyres' => $previousData['tyres'][$key],
                         ];
-                        $result = $bot->repository->getTyresByCar($city, $params);
+                        $result = $bot->repository->getTyresByCar($city, $params)->json();
 
                         $buttons[] = [
                             ['text' => 'Назад', 'callback_data' => $bot->getCallBackCommand($commandRaw.':back')],
@@ -342,10 +342,8 @@ class BotService
                 }
 
                 $buttons[] = [['text' => 'Назад', 'callback_data' => $commandRaw.':back']];
+
                 return $bot->updateMessage($chatId, $messageId, $answer, $buttons, true, $needSend);
-
-                break;
-
             /*
              Выбор шин по автомобилю
              */
