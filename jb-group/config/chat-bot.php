@@ -18,5 +18,9 @@ return [
             'button_type' => 0,
             'buttons_always_shown' => ['В меню','Назад']
         ]
+    ],
+    'api' => [
+        'front' => env('F7_FRONTEND_URL', 'https://f7.kz/'),
+        'back' => env('F7_API_URL', 'https://api.f7.kz/api/')
     ]
 ];

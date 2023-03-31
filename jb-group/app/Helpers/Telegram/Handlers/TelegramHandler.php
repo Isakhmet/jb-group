@@ -173,10 +173,13 @@ class TelegramHandler {
     {
         $this->sendMessage($chatId, $answer);
 
-        /*$moreLinks = $result['more-link'] ?? null;
-        unset($result['more-link']);*/
+        $moreLinks = $result['more-link'] ?? null;
+        unset($result['more-link']);
 
         foreach ($result as $key => $value) {
+
+            if($key > 4) break;
+
             $text = $value['title'];
 
             if (isset($value['price'])) {
@@ -186,6 +189,12 @@ class TelegramHandler {
 
             if (!empty($value['short_properties'])) {
                 foreach ($value['short_properties'] as $property){
+                    $text .= "\n$property";
+                }
+            }
+
+            if (!empty($value['icon_properties'])) {
+                foreach ($value['icon_properties'] as $property){
                     $text .= "\n$property";
                 }
             }

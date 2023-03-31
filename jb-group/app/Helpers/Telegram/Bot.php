@@ -212,7 +212,7 @@ class Bot {
     {
         $buttons = [];
 
-        for ($i = 0; $i < count($result); $i += 3) {
+        for ($i = 0; $i < count($result); $i += $max_inline) {
             $strlen_text = 0;
             for ($j = 0; $j < $max_inline && isset($result[$i + $j]) && $strlen_text < $max_word; $j++) {
                 $buttons[$i][$j] = ['text' => $result[$i + $j], 'callback_data' => $this->getCallBackCommand($commandRaw.':'.$result[$i + $j])];
@@ -229,7 +229,9 @@ class Bot {
         $values = array_values($result);
         $buttons = [];
 
-        for ($i = 0; $i < count($keys); $i += 3) {
+
+        for ($i = 0; $i < count($keys); $i += $max_inline) {
+
             $strlen_text = 0;
             for ($j = 0; $j < $max_inline && isset($values[$i + $j]) && $strlen_text < $max_word; $j++) {
                 $buttons[$i][$j] = ['text' => $values[$i + $j], 'callback_data' => $this->getCallBackCommand($commandRaw.':'.$keys[$i + $j])];

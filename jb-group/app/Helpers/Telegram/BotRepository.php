@@ -12,7 +12,7 @@ class BotRepository
 
     public function __construct()
     {
-        $this->urlTire = env('F7_API_URL', 'https://api.f7.kz/api/');
+        $this->urlTire = config('chat-bot.api.back');
     }
 
     public function getCities()
@@ -25,12 +25,12 @@ class BotRepository
         return Http::post($this->urlTire .'catalog/filters', ['city' => $this->city, 'type' => 1, 'filters' => $filters]);
     }
 
-    public function getWheelsCarFilters($city, $data = [])
+    public function getCarFilters($city, $data = [], $type = 2)
     {
         $query = [
             'params' => json_encode($data),
             'city' => $city,
-            'type' => 2
+            'type' => $type
         ];
 
         return Http::get($this->urlTire . 'catalog/marks', http_build_query($query));
@@ -68,5 +68,17 @@ class BotRepository
         ];
 
         return Http::get($this->urlTire . 'catalog/marks/wheels/product', http_build_query($query));
+    }
+
+    public function getTyresByCar($city, $data = [])
+    {
+        $query = [
+            'params' => json_encode($data),
+            'city' => $city,
+            'type' => 1,
+            'sorting' => 'new',
+        ];
+
+        return Http::get($this->urlTire . 'catalog/marks/product', http_build_query($query));
     }
 }
