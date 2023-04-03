@@ -246,6 +246,11 @@ class BotService
             case 'tires_truck':
                 break;
             case 'tires_otr':
+                [$commandRaw, $checkCount, $countCases] = $bot->parseForInlineCommand($commandRaw, $chatId);
+
+                $city = $bot->getCache('city');
+                $buttons = [];
+
                 break;
             case 'tires_car':
                 [$commandRaw, $checkCount, $countCases] = $bot->parseForInlineCommand($commandRaw, $chatId);
@@ -366,7 +371,7 @@ class BotService
                         }
 
                         $buttons = $bot->generateShortButtons($params, $commandRaw);
-                        $commandRaw = 'tires';
+                        $commandRaw = 'tires_light';
                         $answer = 'Выберите ширину шины';
 
                         break;
@@ -384,7 +389,6 @@ class BotService
                         }
 
                         $buttons = $bot->generateShortButtons($params, $commandRaw);
-                        $commandRaw = 'wheels';
                         $answer = 'Выберите высоту шины';
 
                         break;
@@ -404,7 +408,6 @@ class BotService
                         }
 
                         $buttons = $bot->generateShortButtons($params, $commandRaw);
-                        $commandRaw = 'wheels';
                         $answer = 'Выберите диаметр';
                         break;
                     case 4:
@@ -416,20 +419,19 @@ class BotService
                         foreach ($result['data']['filters'] as $filter) {
                             if(strcmp($filter['slug'], 'sezonnost-siny') === 0) {
                                 foreach ($filter['values'] as $value) {
-                                    $params[$value['id']] = $value['slug'];
+                                    $params[$value['id']] = $value['name'];
                                 }
                             }
                         }
-
                         $buttons = $bot->generateShortButtons($params, $commandRaw);
-                        $commandRaw = 'wheels';
                         $answer = 'Выберите сезонность шины';
 
                         break;
                     case 5:
                         $filters = explode(':', $commandRaw);
                         array_shift($filters);
-                        $result = $bot->repository->getTiresByChar($city, $filters);
+
+                        $result = $bot->repository->getTiresByChar($city, $filters)->json();
 
                         $buttons[] = [['text' => 'Назад', 'callback_data' => $commandRaw.':back'], ['text' => 'В меню', 'callback_data' => 'start']];
 
@@ -437,13 +439,16 @@ class BotService
                             return $bot->sendMessage($chatId, 'По вашему запросу ничего не найдено', null, false, null, $buttons);
                         }
 
+                        $query = http_build_query(['filters' => implode(',', $filters)]);
+                        $result['data']['more-link'] = config('chat-bot.api.front')."categories/tyres?$query";
+
                         // Добавляем голосовалку
                         return $bot->sendLinks($chatId, 'Найденные товары', $result['data'], function () use ($bot, $buttons, $chatId){
                             $bot->sendMessage($chatId, 'Меню', null, false, null, $buttons);
                         });
                 }
 
-                $buttons[] = [['text' => 'Назад', 'callback_data' => $commandRaw.':back'],['text' => 'В меню', 'callback_data' => 'start']];
+                $buttons[] = [['text' => 'Назад', 'callback_data' => $commandRaw.':back']];
                 $bot->updateMessage($chatId, $messageId, $answer, $buttons);
 
                 break;
