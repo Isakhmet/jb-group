@@ -25,7 +25,7 @@ class BotRepository
         return Http::post($this->urlTire .'catalog/filters', ['city' => $this->city, 'type' => 1, 'filters' => $filters]);
     }
 
-    public function getCarFilters($city, $data = [], $type = 2)
+    public function getCarFilters($city, $data = [], $type = 1)
     {
         $query = [
             'params' => json_encode($data),
@@ -36,7 +36,7 @@ class BotRepository
         return Http::get($this->urlTire . 'catalog/marks', http_build_query($query));
     }
 
-    public function getCharFilters($city = 'almaty', $data = [], $type = 1)
+    public function getCharFilters($city, $data = [], $type = 1)
     {
         $params = [
             'filters' => $data,

@@ -255,7 +255,7 @@ class BotService
 
                 switch ($countCases) {
                     case 1:
-                        $result = $bot->repository->getCarFilters($city, [], 1);
+                        $result = $bot->repository->getCarFilters($city, []);
                         $buttons = $bot->generateButtons($result['data']['params']['vendor'], $commandRaw);
                         $commandRaw = 'tires_light';
                         $answer = 'Выберите авто из списка';
@@ -263,7 +263,7 @@ class BotService
                         break;
                     case 2:
                         $key = $bot->getCache('backLink'.$chatId.'2');
-                        $result = $bot->repository->getCarFilters($city, ['vendor' => $key], 1);
+                        $result = $bot->repository->getCarFilters($city, ['vendor' => $key]);
                         $bot->setCache('prev_'.$chatId.$countCases, json_encode($result['data']['params']));
                         $buttons = $bot->generateShortButtons($result['data']['params']['car'], $commandRaw);
                         $answer = 'Выберите модель автомобиля';
@@ -276,7 +276,7 @@ class BotService
                             'vendor' => $previousData['vendor'][0],
                             'car' => $previousData['car'][$key]
                         ];
-                        $result = $bot->repository->getCarFilters($city, $params, 1);
+                        $result = $bot->repository->getCarFilters($city, $params);
                         $bot->setCache('prev_'.$chatId.$countCases, json_encode($result['data']['params']));
                         $buttons = $bot->generateButtons($result['data']['params']['year'], $commandRaw);
                         $answer = 'Выберите год автомобиля';
@@ -290,7 +290,7 @@ class BotService
                             'car' => $previousData['car'][0],
                             'year' => $key,
                         ];
-                        $result = $bot->repository->getCarFilters($city, $params, 1);
+                        $result = $bot->repository->getCarFilters($city, $params);
                         $bot->setCache('prev_'.$chatId.$countCases, json_encode($result['data']['params']));
                         $buttons = $bot->generateButtons($result['data']['params']['modification'], $commandRaw);
                         $answer = 'Выберите модификацию Вашего автомобиля';
@@ -305,7 +305,7 @@ class BotService
                             'year' => $previousData['year'][0],
                             'modification' => $key,
                         ];
-                        $result = $bot->repository->getCarFilters($city, $params, 1);
+                        $result = $bot->repository->getCarFilters($city, $params);
                         $bot->setCache('prev_'.$chatId.$countCases, json_encode($result['data']['params']));
                         $buttons = $bot->generateShortButtons($result['data']['params']['tyres'], $commandRaw, 1, 50);
                         $answer = 'Выберите размеры';
@@ -348,7 +348,7 @@ class BotService
              Выбор шин по автомобилю
              */
             case 'tires_char':
-                [$commandRaw, $checkCount, $countCases] = $bot->parseForInlineCommand($commandRaw);
+                [$commandRaw, $checkCount, $countCases] = $bot->parseForInlineCommand($commandRaw, $chatId);
                 $buttons = [];
                 $city = $bot->getCache('city');
 
@@ -463,7 +463,7 @@ class BotService
 
                 switch ($countCases) {
                     case 1:
-                        $result = $bot->repository->getCarFilters($city);
+                        $result = $bot->repository->getCarFilters($city, [], 2);
                         $buttons = $bot->generateButtons($result['data']['params']['vendor'], $commandRaw);
                         $commandRaw = 'wheels';
                         $answer = 'Выберите авто из списка';
@@ -471,7 +471,7 @@ class BotService
                         break;
                     case 2:
                         $key = $bot->getCache('backLink'.$chatId.'2');
-                        $result = $bot->repository->getCarFilters($city, ['vendor' => $key]);
+                        $result = $bot->repository->getCarFilters($city, ['vendor' => $key], 2);
                         $bot->setCache('prev_'.$chatId.$countCases, json_encode($result['data']['params']));
                         $buttons = $bot->generateShortButtons($result['data']['params']['car'], $commandRaw);
                         $answer = 'Выберите модель автомобиля';
@@ -484,7 +484,7 @@ class BotService
                             'vendor' => $previousData['vendor'][0],
                             'car' => $previousData['car'][$key]
                         ];
-                        $result = $bot->repository->getCarFilters($city, $params);
+                        $result = $bot->repository->getCarFilters($city, $params, 2);
                         $bot->setCache('prev_'.$chatId.$countCases, json_encode($result['data']['params']));
                         $buttons = $bot->generateButtons($result['data']['params']['year'], $commandRaw);
                         $answer = 'Выберите год автомобиля';
@@ -498,7 +498,7 @@ class BotService
                             'car' => $previousData['car'][0],
                             'year' => $key,
                         ];
-                        $result = $bot->repository->getCarFilters($city, $params);
+                        $result = $bot->repository->getCarFilters($city, $params, 2);
                         $bot->setCache('prev_'.$chatId.$countCases, json_encode($result['data']['params']));
                         $buttons = $bot->generateButtons($result['data']['params']['modification'], $commandRaw);
                         $answer = 'Выберите модификацию Вашего автомобиля';
@@ -513,7 +513,7 @@ class BotService
                             'year' => $previousData['year'][0],
                             'modification' => $key,
                         ];
-                        $result = $bot->repository->getCarFilters($city, $params);
+                        $result = $bot->repository->getCarFilters($city, $params, 2);
                         $bot->setCache('prev_'.$chatId.$countCases, json_encode($result['data']['params']));
                         $buttons = $bot->generateShortButtons($result['data']['params']['wheels'], $commandRaw);
                         $answer = 'Выберите размеры';
