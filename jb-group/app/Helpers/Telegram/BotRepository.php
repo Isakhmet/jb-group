@@ -47,7 +47,7 @@ class BotRepository
         return Http::post($this->urlTire . 'catalog/filters', $params);
     }
 
-    public function getTiresByChar($city = 'almaty', $data = [])
+    public function getProductsByChar($productType, $city = 'almaty', $data = [])
     {
         $query = [
             'filters' => $data,
@@ -55,18 +55,7 @@ class BotRepository
             'sorting' => 'new',
         ];
 
-        return Http::get($this->urlTire . 'catalog/tyres', http_build_query($query));
-    }
-
-    public function getWheelsByChar($city = 'almaty', $data = [])
-    {
-        $query = [
-            'filters' => $data,
-            'city' => $city,
-            'sorting' => 'new',
-        ];
-
-        return Http::get($this->urlTire . 'catalog/wheels', http_build_query($query));
+        return Http::get($this->urlTire . "catalog/$productType", http_build_query($query));
     }
 
     public function getWheels($city, $data = [])
