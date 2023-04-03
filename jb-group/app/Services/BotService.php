@@ -344,7 +344,7 @@ class BotService
                         }
 
                         $query = http_build_query(['filters' => implode(',', $filters)]);
-                        $result['data']['more-link'] = config('chat-bot.api.front')."categories/tyres?$query";
+                        $result['data']['more-link'] = config('chat-bot.api.front')."categories/trucks?$query";
 
                         return $bot->sendLinks($chatId, 'Найденные товары', $result['data'], function () use ($bot, $buttons, $chatId){
                             $bot->sendMessage($chatId, 'Меню', null, false, null, $buttons);
@@ -359,6 +359,99 @@ class BotService
 
                 $city = $bot->getCache('city');
                 $buttons = [];
+
+                switch ($countCases) {
+                    case 1:
+                        $result = $bot->repository->getCharFilters($city, type: 4);
+                        $params = [];
+
+                        foreach ($result['data']['filters'] as $filter) {
+                            if(strcmp($filter['slug'], 'sirina-siny') === 0) {
+                                foreach ($filter['values'] as $value) {
+                                    $params[$value['id']] = $value['slug'];
+                                }
+                            }
+                        }
+
+                        $buttons = $bot->generateShortButtons($params, $commandRaw);
+                        $commandRaw = 'tires_light';
+                        $answer = 'Выберите ширину шины';
+
+                        break;
+                    case 2:
+                        $key = $bot->getCache('backLink'.$chatId.'2');
+                        $result = $bot->repository->getCharFilters($city, [$key], 4);
+                        $params = [];
+
+                        foreach ($result['data']['filters'] as $filter) {
+                            if(strcmp($filter['slug'], 'vysota-siny') === 0) {
+                                foreach ($filter['values'] as $value) {
+                                    $params[$value['id']] = $value['slug'];
+                                }
+                            }
+                        }
+
+                        $buttons = $bot->generateShortButtons($params, $commandRaw);
+                        $answer = 'Выберите высоту шины';
+
+                        break;
+                    case 3:
+                        $filters = explode(':', $commandRaw);
+                        array_shift($filters);
+
+                        $result = $bot->repository->getCharFilters($city, $filters, 4);
+                        $params = [];
+
+                        foreach ($result['data']['filters'] as $filter) {
+                            if(strcmp($filter['slug'], 'sina-diametr-diska') === 0) {
+                                foreach ($filter['values'] as $value) {
+                                    $params[$value['id']] = $value['slug'];
+                                }
+                            }
+                        }
+
+                        $buttons = $bot->generateShortButtons($params, $commandRaw);
+                        $answer = 'Выберите диаметр';
+                        break;
+                    case 4:
+                        $filters = explode(':', $commandRaw);
+                        array_shift($filters);
+                        $result = $bot->repository->getCharFilters($city, $filters, 4);
+                        $params = [];
+
+                        foreach ($result['data']['filters'] as $filter) {
+                            if(strcmp($filter['slug'], 'primeniaemost-siny') === 0) {
+                                foreach ($filter['values'] as $value) {
+                                    $params[$value['id']] = $value['name'];
+                                }
+                            }
+                        }
+                        $buttons = $bot->generateShortButtons($params, $commandRaw);
+                        $answer = 'Выберите применяемость шины';
+
+                        break;
+                    case 5:
+                        $filters = explode(':', $commandRaw);
+                        array_shift($filters);
+
+                        $result = $bot->repository->getProductsByChar('otr', $city, $filters)->json();
+
+                        $buttons[] = [['text' => 'Назад', 'callback_data' => $commandRaw.':back'], ['text' => 'В меню', 'callback_data' => 'start']];
+
+                        if (empty($result['data'])) {
+                            return $bot->sendMessage($chatId, 'По вашему запросу ничего не найдено', null, false, null, $buttons);
+                        }
+
+                        $query = http_build_query(['filters' => implode(',', $filters)]);
+                        $result['data']['more-link'] = config('chat-bot.api.front')."categories/otr?$query";
+
+                        return $bot->sendLinks($chatId, 'Найденные товары', $result['data'], function () use ($bot, $buttons, $chatId){
+                            $bot->sendMessage($chatId, 'Меню', null, false, null, $buttons);
+                        });
+                }
+
+                $buttons[] = [['text' => 'Назад', 'callback_data' => $commandRaw.':back']];
+                $bot->updateMessage($chatId, $messageId, $answer, $buttons);
 
                 break;
             case 'tires_car':
