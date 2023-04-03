@@ -208,7 +208,7 @@ class Bot {
      *
      * @param int $max_word
      */
-    public function generateButtons($result, $commandRaw, $max_inline = 3, $max_word = 17)
+    public function generateButtons($result, $commandRaw, $max_inline = 3, $max_word = 50)
     {
         $buttons = [];
 
@@ -223,7 +223,7 @@ class Bot {
         return array_values($buttons);
     }
 
-    public function generateShortButtons($result, $commandRaw, $max_inline = 3, $max_word = 17)
+    public function generateShortButtons($result, $commandRaw, $max_inline = 3, $max_word = 50)
     {
         $keys = array_keys($result);
         $values = array_values($result);
