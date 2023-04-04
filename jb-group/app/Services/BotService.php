@@ -311,7 +311,7 @@ class BotService
                                 }
                             }
                         }
-                        $buttons = $bot->generateShortButtons($params, $commandRaw, maxWord: 17);
+                        $buttons = $bot->generateShortButtons($params, $commandRaw, 1);
                         $answer = 'Выберите ось шины';
 
                         break;
