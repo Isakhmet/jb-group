@@ -130,11 +130,12 @@ class BotService
                     $cities = $bot->repository->getCities();
 
                     if($cities['success']) {
+                        $keyboard = [];
+
                         foreach ($cities['data'] as $city) {
-                            $citiesKeyboard = [['text' => $city['name'], 'callback_data' => 'cities:'.$city['slug']]];
+                            $keyboard[] = [['text' => $city['name'], 'callback_data' => 'cities:'.$city['slug']]];
                         }
 
-                        $keyboard = [$citiesKeyboard];
                         $answer = 'Выберите свой город';
                     }
                 }
@@ -310,7 +311,7 @@ class BotService
                                 }
                             }
                         }
-                        $buttons = $bot->generateShortButtons($params, $commandRaw);
+                        $buttons = $bot->generateShortButtons($params, $commandRaw, maxWord: 17);
                         $answer = 'Выберите ось шины';
 
                         break;
@@ -386,7 +387,7 @@ class BotService
                         foreach ($result['data']['filters'] as $filter) {
                             if(strcmp($filter['slug'], 'vysota-siny') === 0) {
                                 foreach ($filter['values'] as $value) {
-                                    $params[$value['id']] = $value['slug'];
+                                    $params[$value['id']] = $value['name'];
                                 }
                             }
                         }

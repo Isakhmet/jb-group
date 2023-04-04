@@ -204,39 +204,48 @@ class Bot {
      *
      * @param array $result
      *
-     * @param int $max_inline
+     * @param int $maxInline
      *
-     * @param int $max_word
+     * @param int $maxWord
      */
-    public function generateButtons($result, $commandRaw, $max_inline = 3, $max_word = 50)
+    public function generateButtons($result, $commandRaw, $maxInline = 3, $maxWord = 50)
     {
         $buttons = [];
 
-        for ($i = 0; $i < count($result); $i += $max_inline) {
-            $strlen_text = 0;
-            for ($j = 0; $j < $max_inline && isset($result[$i + $j]) && $strlen_text < $max_word; $j++) {
+        for ($i = 0; $i < count($result); $i += $maxInline) {
+            $lengthText = 0;
+            for ($j = 0; $j < $maxInline && isset($result[$i + $j]) && $lengthText < $maxWord; $j++) {
                 $buttons[$i][$j] = ['text' => $result[$i + $j], 'callback_data' => $this->getCallBackCommand($commandRaw.':'.$result[$i + $j])];
-                $strlen_text += mb_strlen($result[$i + $j]);
+                $lengthText += mb_strlen($result[$i + $j]);
             }
         }
 
         return array_values($buttons);
     }
 
-    public function generateShortButtons($result, $commandRaw, $max_inline = 3, $max_word = 50)
+    public function generateShortButtons($result, $commandRaw, $maxInline = 3, $maxWord = 50)
     {
         $keys = array_keys($result);
         $values = array_values($result);
         $buttons = [];
 
+        for ($i = 0; $i < count($keys); $i += $maxInline) {
 
-        for ($i = 0; $i < count($keys); $i += $max_inline) {
-
-            $strlen_text = 0;
-            for ($j = 0; $j < $max_inline && isset($values[$i + $j]) && $strlen_text < $max_word; $j++) {
+            $lengthText = 0;
+            for ($j = 0; $j < $maxInline && isset($values[$i + $j]) && $lengthText < $maxWord; $j++) {
                 $buttons[$i][$j] = ['text' => $values[$i + $j], 'callback_data' => $this->getCallBackCommand($commandRaw.':'.$keys[$i + $j])];
-                $strlen_text += mb_strlen($values[$i + $j]);
+                $lengthText += mb_strlen($values[$i + $j]);
             }
+
+            /*for ($j = 0; $j < $maxInline && isset($values[$i + $j]); $j++) {
+                if ($lengthText > $maxWord && (count($keys) === $maxInline)) {
+                    $buttons[$i+1][$j] = ['text' => $values[$i + $j], 'callback_data' => $this->getCallBackCommand($commandRaw.':'.$keys[$i + $j])];
+                    $lengthText += mb_strlen($values[$i + $j]);
+                }else {
+                    $buttons[$i][$j] = ['text' => $values[$i + $j], 'callback_data' => $this->getCallBackCommand($commandRaw.':'.$keys[$i + $j])];
+                    $lengthText += mb_strlen($values[$i + $j]);
+                }
+            }*/
         }
 
         return array_values($buttons);
