@@ -2,7 +2,6 @@
 
 namespace App\Helpers\Telegram;
 
-use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 
 class BotRepository
