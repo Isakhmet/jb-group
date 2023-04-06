@@ -6,22 +6,24 @@ use Illuminate\Support\Facades\Http;
 
 class BotRepository
 {
-    private string $urlTire;
+    private string $api;
+    private string $partsApi;
     private string $city;
 
     public function __construct()
     {
-        $this->urlTire = config('chat-bot.api.back');
+        $this->api = config('chat-bot.api.back');
+        $this->partsApi = config('chat-bot.api.parts');
     }
 
     public function getCities()
     {
-        return Http::get($this->urlTire . 'common/cities');
+        return Http::get($this->api . 'common/cities');
     }
 
     public function getFilters($filters)
     {
-        return Http::post($this->urlTire .'catalog/filters', ['city' => $this->city, 'type' => 1, 'filters' => $filters]);
+        return Http::post($this->api .'catalog/filters', ['city' => $this->city, 'type' => 1, 'filters' => $filters]);
     }
 
     public function getCarFilters($city, $data = [], $type = 1)
@@ -32,7 +34,7 @@ class BotRepository
             'type' => $type
         ];
 
-        return Http::get($this->urlTire . 'catalog/marks', http_build_query($query));
+        return Http::get($this->api . 'catalog/marks', http_build_query($query));
     }
 
     public function getCharFilters($city, $data = [], $type = 1)
@@ -43,7 +45,7 @@ class BotRepository
             'type' => $type
         ];
 
-        return Http::post($this->urlTire . 'catalog/filters', $params);
+        return Http::post($this->api . 'catalog/filters', $params);
     }
 
     public function getProductsByChar($productType, $city = 'almaty', $data = [])
@@ -54,7 +56,7 @@ class BotRepository
             'sorting' => 'new',
         ];
 
-        return Http::get($this->urlTire . "catalog/$productType", http_build_query($query));
+        return Http::get($this->api . "catalog/$productType", http_build_query($query));
     }
 
     public function getWheels($city, $data = [])
@@ -66,7 +68,7 @@ class BotRepository
             'sorting' => 'new',
         ];
 
-        return Http::get($this->urlTire . 'catalog/marks/wheels/product', http_build_query($query));
+        return Http::get($this->api . 'catalog/marks/wheels/product', http_build_query($query));
     }
 
     public function getTyresByCar($city, $data = [])
@@ -78,6 +80,37 @@ class BotRepository
             'sorting' => 'new',
         ];
 
-        return Http::get($this->urlTire . 'catalog/marks/product', http_build_query($query));
+        return Http::get($this->api . 'catalog/marks/product', http_build_query($query));
+    }
+
+    public function getPartsSku($sku, $city)
+    {
+        $query = [
+            'query' => $sku,
+            'warehouse' => 'cbc',
+            'city' => $city
+        ];
+
+        $results = Http::get($this->partsApi . 'api/warehouse/search', http_build_query($query))->json();
+
+        foreach ($results['data'] as &$result) {
+            $result['price'] = $result['stocks'][0]['price'];
+            $result['image'] = $result['images'][0] ?? $this->partsApi.'/images/not-found.png';
+            $result['link'] = config('chat-bot.api.parts-front').'/product/'.$result['id'];
+            $result['characteristic'] = $result['characteristic'] === 'ANALOG' ? 'Аналог' : 'Оригинал';
+        }
+
+        if (count($results) > 5) {
+            $results = array_slice($results, 0, 5);
+        }
+
+        $results['data']['more-link'] = config('chat-bot.api.parts-front')."/parts/$sku?city=$city";
+
+        return $results;
+    }
+
+    public function getPartsVin($vin)
+    {
+        return Http::post($this->partsApi . 'api/catalog/all/vin', ['vin' => $vin]);
     }
 }

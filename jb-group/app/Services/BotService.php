@@ -21,14 +21,21 @@ class BotService
 
     protected const COMMANDS_DESCRIPTION = [
         'actions' => 'Список действущих акций',
+        'cities' => 'Список городов',
         'contacts' => 'Список контактов',
         'tires' => 'Шины',
+        'tires_light' => 'Легковые шины',
+        'tires_truck' => 'Грузовые шины',
+        'tires_otr' => 'OTR шины',
         'tires_car' => 'Подбор шин по авто',
         'tires_char' => 'Подбор шин по характеристикам',
         'vote' => 'Оценка работы бота',
         'parts' => 'Запчасти',
         'search-sku' => 'Поиск запчастей по артиклу',
         'search-vin' => 'Поиск запчастей по вин коду',
+        'wheels' => 'Диски',
+        'wheels_car' => 'Подбор дисков по авто',
+        'wheels_char' => 'Подбор дисков по характеристикам',
     ];
 
     private $config = [];
@@ -552,7 +559,6 @@ class BotService
                 $buttons[] = [['text' => 'Назад', 'callback_data' => $commandRaw.':back']];
 
                 return $bot->updateMessage($chatId, $messageId, $answer, $buttons, true, $needSend);
-
             case 'tires_char':
                 [$commandRaw, $checkCount, $countCases] = $bot->parseForInlineCommand($commandRaw, $chatId);
                 $buttons = [];
@@ -761,7 +767,6 @@ class BotService
                 return $bot->updateMessage($chatId, $messageId, $answer, $buttons, true, $needSend);
 
                 break;
-
             case 'wheels_char':
                 [$commandRaw, $checkCount, $countCases] = $bot->parseForInlineCommand($commandRaw, $chatId);
 
@@ -845,7 +850,8 @@ class BotService
                     case 5:
                         $filters = explode(':', $commandRaw);
                         array_shift($filters);
-                        $result = $bot->repository->getCharFilters($city, $filters);
+
+                        $result = $bot->repository->getCharFilters($city, $filters, 2);
                         $params = [];
 
                         foreach ($result['data']['filters'] as $filter) {
@@ -857,7 +863,6 @@ class BotService
                         }
 
                         $buttons = $bot->generateShortButtons($params, $commandRaw);
-                        $commandRaw = 'wheels';
                         $answer = 'Выберите ширину диска';
 
                         break;
@@ -880,7 +885,6 @@ class BotService
 
                 $buttons[] = [['text' => 'Назад', 'callback_data' => $commandRaw.':back']];
                 return $bot->updateMessage($chatId, $messageId, $answer, $buttons, true, $needSend);
-
             case 'vote':
                 [,$vote] = explode(':', $commandRaw);
                 $answer = $vote == 2 ? 'Не можете найти подходящий товар? Задайте вопрос нашему специалисту <a href="tel:7210">7210</a> (бесплатно с мобильного)'
@@ -891,7 +895,6 @@ class BotService
                     ]
                 ]);
                 break;
-
             case 'parts':
                 $answer = 'Пожалуйста выберите способ поиска';
 
@@ -927,30 +930,27 @@ class BotService
                 $bot->updateMessage($chatId, $messageId, $answer, null, true, true);
 
                 break;
-
             case 'search-sku':
-                $result = $bot->repository->getPartsSku($messageText);
+                $result = $bot->repository->getPartsSku($messageText, $bot->getCache('city'));
                 $buttons[] = [['text' => 'В меню', 'callback_data' => 'start']];
 
                 if (empty($result)) {
                     return $bot->sendMessage($chatId, 'По вашему запросу ничего не найдено', null, false, null, $buttons);
                 }
 
-                return $bot->sendLinks($chatId, 'Найденные товары', $result, function () use ($bot, $buttons, $chatId){
+                return $bot->sendLinks($chatId, 'Найденные товары', $result['data'], function () use ($bot, $buttons, $chatId){
                     $bot->sendMessage($chatId, 'Меню', null, false, null, $buttons);
                 });
-
-                break;
-
             case 'search-vin':
                 $result    = $bot->repository->getPartsVin($messageText);
+
                 $buttons[] = [['text' => 'В меню', 'callback_data' => 'start']];
 
                 if (empty($result['breadcrumbs'])) {
                     return $bot->sendMessage($chatId, 'По вашему запросу ничего не найдено', null, false, null, $buttons);
                 }
 
-                $link = 'https://cbc-parts.kz/catalogs/modifications/groups?';
+                $link = config('chat-bot.api.parts-front').'catalogs/modifications/groups?';
 
                 foreach ($result['breadcrumbs'] as $key => $breadcrumb) {
                     $link .= "$key=$breadcrumb&";
