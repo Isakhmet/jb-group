@@ -21,6 +21,8 @@ return [
     ],
     'api' => [
         'front' => env('F7_FRONTEND_URL', 'https://f7.kz/'),
-        'back' => env('F7_API_URL', 'https://api.f7.kz/api/')
+        'back' => env('F7_API_URL', 'https://api.f7.kz/api/'),
+        'parts' => env('PARTS_API_URL', 'https://api.cbc-parts.kz/'),
+        'parts-front' => env('PARTS_FRONTEND_URL', 'https://cbc-parts.kz/'),
     ]
 ];
