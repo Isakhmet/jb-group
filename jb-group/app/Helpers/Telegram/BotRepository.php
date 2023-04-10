@@ -96,7 +96,7 @@ class BotRepository
         foreach ($results['data'] as &$result) {
             $result['price'] = $result['stocks'][0]['price'];
             $result['image'] = $result['images'][0] ?? $this->partsApi.'/images/not-found.png';
-            $result['link'] = config('chat-bot.api.parts-front').'/product/'.$result['id'];
+            $result['link'] = config('chat-bot.api.parts-front').'product/'.$result['id'];
             $result['characteristic'] = $result['characteristic'] === 'ANALOG' ? 'Аналог' : 'Оригинал';
         }
 
@@ -104,7 +104,7 @@ class BotRepository
             $results = array_slice($results, 0, 5);
         }
 
-        $results['data']['more-link'] = config('chat-bot.api.parts-front')."/parts/$sku?city=$city";
+        $results['data']['more-link'] = config('chat-bot.api.parts-front')."parts/$sku?city=$city";
 
         return $results;
     }
