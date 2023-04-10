@@ -943,19 +943,14 @@ class BotService
                 });
             case 'search-vin':
                 $result    = $bot->repository->getPartsVin($messageText);
-
                 $buttons[] = [['text' => 'В меню', 'callback_data' => 'start']];
 
-                if (empty($result['breadcrumbs'])) {
+                if (empty($result['data']['breadcrumbs'])) {
                     return $bot->sendMessage($chatId, 'По вашему запросу ничего не найдено', null, false, null, $buttons);
                 }
 
                 $link = config('chat-bot.api.parts-front').'catalogs/modifications/groups?';
-
-                foreach ($result['breadcrumbs'] as $key => $breadcrumb) {
-                    $link .= "$key=$breadcrumb&";
-                }
-
+                $link .= http_build_query($result['data']['breadcrumbs']);
                 $text = "Результат пойска по <a href='$link'>ссылке</a>";
                 $bot->sendMessage($chatId, $text, 'HTML', false, null, $buttons);
 

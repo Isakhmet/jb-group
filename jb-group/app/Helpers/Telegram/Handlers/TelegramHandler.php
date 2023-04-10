@@ -199,7 +199,8 @@ class TelegramHandler {
                 }
             }
 
-            $text .= "\nhttps://f7.kz/product/{$value['id']}";
+            $link = isset($value['link']) ? $value['link'] : config('chat-bot.api.front')."product/{$value['id']}";
+            $text .= "\n$link";
 
             try {
                 $this->bot->sendPhoto($chatId, $value['images'][0], $text, null, null, false, 'HTML');
