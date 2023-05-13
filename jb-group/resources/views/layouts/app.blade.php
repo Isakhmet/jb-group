@@ -141,7 +141,7 @@
                                     <li><a class="dropdown-item" href="{{url('employees')}}">Список </a></li>
                                     @can('create', \App\Models\Employee::class)
                                         <li><a class="dropdown-item" href="{{url('employees/create')}}">Добавить
-                                                </a></li>
+                                            </a></li>
                                     @endcan
                                 </ul>
                             </li>
@@ -157,7 +157,23 @@
                                     <li><a class="dropdown-item" href="{{url('organizations')}}">Список</a></li>
                                     @can('create', \App\Models\Organization::class)
                                         <li><a class="dropdown-item" href="{{url('organizations/create')}}">Добавить
-                                                </a></li>
+                                            </a></li>
+                                    @endcan
+                                </ul>
+                            </li>
+                        @endcan
+                        @can('viewAny', \App\Models\Organization::class)
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown"
+                                   role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    {{ __('titles.clients') }}
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="{{url('clients')}}">Список</a></li>
+                                    @can('create', \App\Models\Organization::class)
+                                        <li><a class="dropdown-item" href="{{url('clients/create')}}">Добавить
+                                            </a></li>
                                     @endcan
                                 </ul>
                             </li>
