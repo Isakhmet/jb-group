@@ -9,3 +9,26 @@
     max-width: 500px;
     margin: auto
 }
+
+.overlay {
+    position: fixed; /* Positioning and size */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(128,128,128,0.5); /* color */
+    display: none; /* making it hidden by default */
+}
+
+.modal-code{
+    display: flex;
+    background-color: #dfd6d6;
+    width: 350px;
+    height: 180px;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+    position: fixed;
+    top: 200px;
+    left: 500px;
+    z-index: auto;
+}

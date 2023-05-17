@@ -24,6 +24,7 @@ Route::middleware('auth')->group(function(){
     Route::resource('accesses', \App\Http\Controllers\AccessController::class);
     Route::resource('branch-currency', \App\Http\Controllers\BranchCurrencyController::class);
     Route::resource('employees', \App\Http\Controllers\EmployeeController::class);
+    Route::resource('clients', \App\Http\Controllers\ClientController::class);
     Route::resource('organizations', \App\Http\Controllers\OrganizationController::class);
     Route::get('/branch-currency-edit', [\App\Http\Controllers\BranchCurrencyController::class, 'edit']);
     Route::get('/get-branch-currency', [\App\Http\Controllers\BranchCurrencyController::class, 'getBalance']);
@@ -34,6 +35,8 @@ Route::middleware('auth')->group(function(){
     Route::post('bind-branch', [\App\Http\Controllers\UserController::class, 'bindBranch']);
     Route::get('list-branch', [\App\Http\Controllers\UserController::class, 'listBranch']);
     Route::post('destroy-branch/{id}', [\App\Http\Controllers\UserController::class, 'destroyBranch']);
+
+    Route::get('notify', [\App\Http\Controllers\NotifyController::class, 'notify']);
 });
 
 Route::post('admin-login', [\App\Http\Controllers\Auth\LoginController::class, 'login'])->name('admin-login');
