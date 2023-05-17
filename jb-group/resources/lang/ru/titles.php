@@ -7,5 +7,6 @@ return [
     'currencies' => 'Валюты',
     'employees' => 'Сотрудники',
     'organizations' => 'Партнеры',
+    'clients' => 'Клиенты',
     'users' => 'Пользователи',
 ];

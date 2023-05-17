@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     $('#phone').inputmask({"mask": "+7(999)999-99-99"});
     $('#addition_phone').inputmask({"mask": "+7(999)999-99-99"});
 
@@ -59,6 +58,58 @@ $(document).ready(function () {
             }
         });
     })
+
+    $('#clients').DataTable({
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/ru.json',
+        },
+    });
+
+    $(".notify").click(function () {
+        let phone = $("#phone").val();
+        phone = phone.replace(/\D/g, "");
+
+        $.ajax({
+            url: '/notify',
+            type: 'GET',
+            data: {
+                '_token' : $('input[name="token"]').val(),
+                'id' : phone
+            },
+            success: function(result) {
+                console.log(result.code)
+                $('.notify').prop("disabled", false);
+                $('#code').val(result.code)
+                $('.overlay').css("display", "block");
+            }
+        });
+    });
+
+    $('.check-code').click(function () {
+        let serverCode = $('#code').val();
+        let clientCode = $('input[name="code"]').val();
+
+        if(serverCode === clientCode) {
+            alert('Код верный');
+            $('input[name="code"]').val("");
+            $('.overlay').css("display", "none");
+        }else {
+            alert('Неверный код!!!');
+            $('input[name="code"]').val("");
+        }
+    })
+
+    $(document).click(function(e) {
+        if(e.target.id == "overlay"){
+            $('.overlay').css("display", "none");
+        }
+    });
+
+    $( document ).on( 'keydown', function ( e ) {
+        if ( e.keyCode === 27 ) {
+            $('.overlay').css("display", "none");
+        }
+    });
 });
 
 function numberWithCommas(x) {

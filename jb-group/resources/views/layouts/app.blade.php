@@ -15,7 +15,9 @@
     <script src="{{ URL::to('/') }}/assets/plugins/jquery/jquery.maskMoney.min.js"></script>
     <script src="{{ URL::to('/') }}/assets/plugins/bootstrap-inputmask/bootstrap-inputmask.min.js"></script>
     <script src="{{ URL::to('/')}}/assets/js/main.js"></script>
+    <script type="text/javascript" charset="utf8"src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <!-- Fonts -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
@@ -141,7 +143,7 @@
                                     <li><a class="dropdown-item" href="{{url('employees')}}">Список </a></li>
                                     @can('create', \App\Models\Employee::class)
                                         <li><a class="dropdown-item" href="{{url('employees/create')}}">Добавить
-                                                </a></li>
+                                            </a></li>
                                     @endcan
                                 </ul>
                             </li>
@@ -157,7 +159,23 @@
                                     <li><a class="dropdown-item" href="{{url('organizations')}}">Список</a></li>
                                     @can('create', \App\Models\Organization::class)
                                         <li><a class="dropdown-item" href="{{url('organizations/create')}}">Добавить
-                                                </a></li>
+                                            </a></li>
+                                    @endcan
+                                </ul>
+                            </li>
+                        @endcan
+                        @can('viewAny', \App\Models\Organization::class)
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown"
+                                   role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    {{ __('titles.clients') }}
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="{{url('clients')}}">Список</a></li>
+                                    @can('create', \App\Models\Organization::class)
+                                        <li><a class="dropdown-item" href="{{url('clients/create')}}">Добавить
+                                            </a></li>
                                     @endcan
                                 </ul>
                             </li>
