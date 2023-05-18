@@ -164,7 +164,7 @@
                                 </ul>
                             </li>
                         @endcan
-                        @can('viewAny', \App\Models\Organization::class)
+                        @can('viewAny', \App\Models\Client::class)
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown"
                                    role="button"
@@ -173,7 +173,7 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item" href="{{url('clients')}}">Список</a></li>
-                                    @can('create', \App\Models\Organization::class)
+                                    @can('create', \App\Models\Client::class)
                                         <li><a class="dropdown-item" href="{{url('clients/create')}}">Добавить
                                             </a></li>
                                     @endcan
