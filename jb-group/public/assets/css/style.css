@@ -34,3 +34,11 @@
     margin-top: -130px;
     z-index: auto;
 }
+
+.bi-arrow-up-short {
+    color: green;
+}
+
+.bi-arrow-down-short {
+    color: #0e0101;
+}
