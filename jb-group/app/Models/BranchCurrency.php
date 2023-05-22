@@ -14,6 +14,7 @@ class BranchCurrency extends Model
         'currency_id',
         'balance',
         'is_limited',
+        'change'
     ];
 
     public function currency()
