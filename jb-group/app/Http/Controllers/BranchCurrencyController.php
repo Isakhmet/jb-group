@@ -6,6 +6,7 @@ use App\Models\Branch;
 use App\Models\BranchCurrency;
 use App\Models\Currency;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -141,7 +142,8 @@ class BranchCurrencyController extends Controller
 
             $model->balance = $balance;
             $model->is_limited = $isLimited;
-            $model->save();
+            $model->updated_at = Carbon::now();
+            $model->update();
         }
 
         return redirect()->back();
