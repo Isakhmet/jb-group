@@ -20,7 +20,7 @@
                                             </ul>
                                         </div>
                                     @endif
-                                    @csrf
+                                        @csrf
                                     @method('PUT')
                                     <input type="text" class="form-control mb-3" id="name" name="name" placeholder="ФИО"
                                            autocomplete required value="{{$client->name}}">

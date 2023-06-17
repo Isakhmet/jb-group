@@ -4,5 +4,5 @@ namespace App\Services\Notify;
 
 interface Notify
 {
-    public function send();
+    public function send(array $params);
 }

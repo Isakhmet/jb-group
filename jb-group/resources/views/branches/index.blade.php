@@ -22,6 +22,7 @@
                                 <th scope="col">Названия</th>
                                 <th scope="col">Номер телефона</th>
                                 <th scope="col">Адрес</th>
+                                <th scope="col">Имя для смс рассылки</th>
                                 <th scope="col">Дата создания</th>
                                 <th scope="col">Действия</th>
                             </tr>
@@ -33,6 +34,7 @@
                                 <td>{{$branch->name}}</td>
                                 <td>{{$branch->phone}}</td>
                                 <td>{{$branch->address}}</td>
+                                <td>{{$branch->slug}}</td>
                                 <td>{{$branch->created_at}}</td>
                                 <td>
                                     <div style="display: inline-flex;">

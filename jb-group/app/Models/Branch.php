@@ -12,7 +12,8 @@ class Branch extends Model
     protected $fillable = [
         'name',
         'phone',
-        'address'
+        'address',
+        'slug'
     ];
 
     public function currencies()

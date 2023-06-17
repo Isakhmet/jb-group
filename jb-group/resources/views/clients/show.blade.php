@@ -9,6 +9,7 @@
                         <div class="card-header">{{ __('Просмотр данных клиента') }}</div>
                         <div class="card-body p-2">
                             <div class="login-form text-center mt-5">
+                                @csrf
                                 <input type="text" class="form-control mb-3" id="name" name="name" placeholder="ФИО"
                                        autocomplete readonly value="{{$client->name}}">
                                 <input type="text" class="form-control mb-3" id="iin" name="iin" placeholder="ИИН"
