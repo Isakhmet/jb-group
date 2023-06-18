@@ -23,6 +23,7 @@
                                 <th scope="col">КОД</th>
                                 <th scope="col">Описания</th>
                                 <th scope="col">Лимит</th>
+                                <th scope="col">Доп валюта</th>
                                 <th scope="col">Действия</th>
                             </tr>
                             </thead>
@@ -33,6 +34,7 @@
                                 <td>{{$currency->code}}</td>
                                 <td>{{$currency->description}}</td>
                                 <td class="money">{{$currency->limit}}</td>
+                                <td>{{$currency->is_additional ? 'Да' : 'Нет'}}</td>
                                 <td>
                                     <div style="display: inline-flex;">
                                             <div>

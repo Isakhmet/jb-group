@@ -9,9 +9,13 @@ class NotifyController extends Controller
 {
     public function notify(Request $request)
     {
-        //(new NotifyFactory())->createNotifyType('sms')->send();
+        $code = rand(1000, 9999);
+        $phone = $request->get('phone');
+
+        (new NotifyFactory())->createNotifyType('sms')->send(['message' => $code, 'phone' => $phone]);
+
         return [
-            'code' => '8803'
+            'code' => $code
         ];
     }
 }

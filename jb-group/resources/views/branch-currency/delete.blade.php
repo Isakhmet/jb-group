@@ -6,7 +6,7 @@
             <div class="col-md-8">
                 @can('viewAny', \App\Models\Branch::class)
                 <div class="card">
-                    <div class="card-header">{{ __('titles.branches') }}</div>
+                    <div class="card-header">{{ __('Остатки валют в филиалах') }}</div>
                     <div class="card-body p-2">
                         <div class="text-center mt-5">
                             @if ($message = Session::get('success'))
@@ -19,10 +19,9 @@
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Названия</th>
-                                <th scope="col">Номер телефона</th>
-                                <th scope="col">Адрес</th>
-                                <th scope="col">Имя для смс рассылки</th>
+                                <th scope="col">Названия филиала</th>
+                                <th scope="col">Валюта</th>
+                                <th scope="col">Остаток</th>
                                 <th scope="col">Дата создания</th>
                                 <th scope="col">Действия</th>
                             </tr>
@@ -31,15 +30,14 @@
                             @foreach($branches as $key => $branch)
                             <tr>
                                 <th scope="row">{{$key+1}}</th>
-                                <td>{{$branch->name}}</td>
-                                <td>{{$branch->phone}}</td>
-                                <td>{{$branch->address}}</td>
-                                <td>{{$branch->slug}}</td>
+                                <td>{{$branch->branch->name}}</td>
+                                <td>{{$branch->currency->code}}</td>
+                                <td>{{$branch->balance}}</td>
                                 <td>{{$branch->created_at}}</td>
                                 <td>
                                     <div style="display: inline-flex;">
                                             <div>
-                                                <a href="{{url('/branches/'.$branch->id).'/edit'}}"
+                                                <a href="{{url('branch-currency-edit')}}"
                                                    class="btn btn-success btn-xs">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                                                         <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
@@ -47,7 +45,7 @@
                                                 </a>
                                             </div>
                                             <div>
-                                                <form method="post" action="{{ route('branches.destroy', ['branch' => $branch->id])}}">
+                                                <form method="post" action="{{ route('branch-currency.destroy', ['branch_currency' => $branch->id])}}">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button class="btn btn-danger btn-xs">

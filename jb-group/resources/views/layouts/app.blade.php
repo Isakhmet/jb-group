@@ -15,7 +15,8 @@
     <script src="{{ URL::to('/') }}/assets/plugins/jquery/jquery.maskMoney.min.js"></script>
     <script src="{{ URL::to('/') }}/assets/plugins/bootstrap-inputmask/bootstrap-inputmask.min.js"></script>
     <script src="{{ URL::to('/')}}/assets/js/main.js"></script>
-    <script type="text/javascript" charset="utf8"src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <!-- Fonts -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -85,6 +86,8 @@
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item" href="{{url('branch-currency')}}">Остатки в
                                             филиалах</a></li>
+                                    <li><a class="dropdown-item" href="{{url('branch-currency?is_additional=true')}}">Остатки доп валют в
+                                            филиалах</a></li>
                                     @can('create', \App\Models\BranchCurrency::class)
                                         <li><a class="dropdown-item" href="{{url('branch-currency/create')}}">Добавить
                                                 валюту в филиал</a></li>
@@ -92,6 +95,10 @@
                                     @can('update', \App\Models\BranchCurrency::class)
                                         <li><a class="dropdown-item" href="{{url('branch-currency-edit')}}">Изменить
                                                 остатки</a></li>
+                                    @endcan
+                                    @can('update', \App\Models\BranchCurrency::class)
+                                        <li><a class="dropdown-item" href="{{url('branch-currency-delete')}}">Отвязать
+                                               валюту от филиала</a></li>
                                     @endcan
                                 </ul>
                             </li>

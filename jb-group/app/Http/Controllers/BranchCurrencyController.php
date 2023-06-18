@@ -15,12 +15,13 @@ class BranchCurrencyController extends Controller
     /**
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $branches           = Branch::with('balances.currency')
-                                    ->get()
-        ;
-        $data['currencies'] = Currency::all();
+        $branches = Branch::whereHas('balances.currency', function ($query) use ($request) {
+            $query->where('is_additional', $request->has('is_additional'));
+        })->get();
+
+        $data['currencies'] = Currency::where('is_additional', $request->has('is_additional'))->get();
         $data['branches']   = [];
         $sum                = [];
 
@@ -31,7 +32,7 @@ class BranchCurrencyController extends Controller
         foreach ($branches as $key => $branch) {
             $balances = [];
 
-            foreach ($branch->balances as $balance) {
+            foreach ($branch->branchCurrencies($request->has('is_additional')) as $balance) {
                 $sum[$balance->currency->code] += $balance->balance;
 
                 $balances[$balance->currency->code]['balance']    = $balance->balance;
@@ -90,11 +91,7 @@ class BranchCurrencyController extends Controller
 
         BranchCurrency::create($data);
 
-        return redirect()->route(
-            'branch-currency.index', [
-                                       'success' => 'Филиал успешно создан.',
-                                   ]
-        );
+        return redirect()->route('branch-currency.index', ['success' => 'Филиал успешно создан.']);
     }
 
     /**
@@ -129,24 +126,35 @@ class BranchCurrencyController extends Controller
     public function update(Request $request)
     {
         foreach ($request->get('currency') as $key => $currency) {
-            $balance   = (int)str_replace(',', '', $currency);
-            $model = BranchCurrency::where('branch_id', $request->get('branch_id'))
-                                   ->where('currency_id', $key)
-                                   ->first();
+            $balance = (int)str_replace(',', '', $currency);
+            $model   = BranchCurrency::where('branch_id', $request->get('branch_id'))
+                                     ->where('currency_id', $key)
+                                     ->first()
+            ;
 
-            if(($balance - $model->balance) > 0) $model->change = true;
-            elseif (($balance - $model->balance)) $model->change = false;
+            if (($balance - $model->balance) > 0) {
+                $model->change = true;
+            } elseif (($balance - $model->balance)) {
+                $model->change = false;
+            }
 
             $limit     = Currency::find($key)->limit;
             $isLimited = $balance >= $limit ? false : true;
 
-            $model->balance = $balance;
+            $model->balance    = $balance;
             $model->is_limited = $isLimited;
             $model->updated_at = Carbon::now();
             $model->update();
         }
 
         return redirect()->back();
+    }
+
+    public function delete()
+    {
+        $branches = BranchCurrency::with('branch', 'currency')->get();
+
+        return view('branch-currency.delete', ['branches' => $branches]);
     }
 
     /**

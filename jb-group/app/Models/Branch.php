@@ -12,7 +12,8 @@ class Branch extends Model
     protected $fillable = [
         'name',
         'phone',
-        'address'
+        'address',
+        'slug'
     ];
 
     public function currencies()
@@ -30,5 +31,12 @@ class Branch extends Model
     public function balances()
     {
         return $this->hasMany(BranchCurrency::class, 'branch_id', 'id');
+    }
+
+    public function branchCurrencies($isAdditional)
+    {
+        return BranchCurrency::whereHas('currency', function ($q) use ($isAdditional) {
+            $q->where('is_additional', $isAdditional);
+        })->where('branch_id', $this->id)->get();
     }
 }

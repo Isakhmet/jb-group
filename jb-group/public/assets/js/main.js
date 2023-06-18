@@ -73,8 +73,8 @@ $(document).ready(function () {
             url: '/notify',
             type: 'GET',
             data: {
-                '_token' : $('input[name="token"]').val(),
-                'id' : phone
+                '_token' : $('input[name="_token"]').val(),
+                'phone' : phone
             },
             success: function(result) {
                 console.log(result.code)

@@ -5,14 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Currency extends Model
+class Notify extends Model
 {
     use HasFactory;
 
+    protected $table = 'notify';
+
     protected $fillable = [
-        'code',
-        'description',
-        'limit',
-        'is_additional',
+        'type',
+        'to',
+        'response_from_service',
+        'info'
     ];
 }
