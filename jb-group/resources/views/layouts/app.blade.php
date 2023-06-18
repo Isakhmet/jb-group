@@ -96,6 +96,10 @@
                                         <li><a class="dropdown-item" href="{{url('branch-currency-edit')}}">Изменить
                                                 остатки</a></li>
                                     @endcan
+                                    @can('update', \App\Models\BranchCurrency::class)
+                                        <li><a class="dropdown-item" href="{{url('branch-currency-delete')}}">Отвязать
+                                               валюту от филиала</a></li>
+                                    @endcan
                                 </ul>
                             </li>
                         @endcan

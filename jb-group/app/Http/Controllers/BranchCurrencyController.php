@@ -150,6 +150,13 @@ class BranchCurrencyController extends Controller
         return redirect()->back();
     }
 
+    public function delete()
+    {
+        $branches = BranchCurrency::with('branch', 'currency')->get();
+
+        return view('branch-currency.delete', ['branches' => $branches]);
+    }
+
     /**
      * @param $id
      *
