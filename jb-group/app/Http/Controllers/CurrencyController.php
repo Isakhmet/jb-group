@@ -40,6 +40,7 @@ class CurrencyController extends Controller
             [
                 'code' => 'required|string|unique:currencies,code',
                 'limit' => 'required|integer',
+                'is_additional' => 'boolean',
             ]
         );
 
@@ -88,6 +89,7 @@ class CurrencyController extends Controller
                 [
                     'code' => 'required|string|unique:currencies,code',
                     'limit' => 'required|integer',
+                    'is_additional' => 'boolean',
                 ]
             );
 

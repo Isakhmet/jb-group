@@ -12,6 +12,7 @@ class Currency extends Model
     protected $fillable = [
         'code',
         'description',
-        'limit'
+        'limit',
+        'is_additional',
     ];
 }

@@ -32,4 +32,11 @@ class Branch extends Model
     {
         return $this->hasMany(BranchCurrency::class, 'branch_id', 'id');
     }
+
+    public function branchCurrencies($isAdditional)
+    {
+        return BranchCurrency::whereHas('currency', function ($q) use ($isAdditional) {
+            $q->where('is_additional', $isAdditional);
+        })->where('branch_id', $this->id)->get();
+    }
 }

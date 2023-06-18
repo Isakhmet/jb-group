@@ -67,7 +67,7 @@ class CurrencyPolicy
      * @param  \App\Models\Currency  $currency
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Currency $currency)
+    public function update(User $user)
     {
         $accesses = $user->roles->accesses;
 

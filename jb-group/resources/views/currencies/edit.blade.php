@@ -29,6 +29,10 @@
                                            autocomplete required value="{{$currency->description}}">
                                     <input type="text" name="limit" class="form-control" id="limit" placeholder="Лимит"
                                            autocomplete required value="{{$currency->limit}}">
+                                    <select name="is_additional" class="form-control" id="is_additional" style="margin-top: 15px;">
+                                        <option value="0" {{$currency->is_additional === false ? 'selected' : ''}}>Нет</option>
+                                        <option value="1" {{$currency->is_additional === true ? 'selected' : ''}}>Да</option>
+                                    </select>
                                 <div class="mt-3">
                                     <button class="btn btn-lg btn-success col-12">Обновить</button>
                                 </div>
