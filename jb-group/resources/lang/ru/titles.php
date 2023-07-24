@@ -9,4 +9,6 @@ return [
     'organizations' => 'Партнеры',
     'clients' => 'Клиенты',
     'users' => 'Пользователи',
+    'media' => 'Медиафайлы',
+    'purchasing' => 'Лист заявки',
 ];

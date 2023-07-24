@@ -26,6 +26,8 @@ Route::middleware('auth')->group(function(){
     Route::resource('employees', \App\Http\Controllers\EmployeeController::class);
     Route::resource('clients', \App\Http\Controllers\ClientController::class);
     Route::resource('organizations', \App\Http\Controllers\OrganizationController::class);
+    Route::resource('medias', \App\Http\Controllers\MediaController::class);
+    Route::resource('purchasing', \App\Http\Controllers\PurchasingRequestsController::class);
     Route::get('/branch-currency-edit', [\App\Http\Controllers\BranchCurrencyController::class, 'edit']);
     Route::get('/branch-currency-delete', [\App\Http\Controllers\BranchCurrencyController::class, 'delete']);
     Route::get('/get-branch-currency', [\App\Http\Controllers\BranchCurrencyController::class, 'getBalance']);
@@ -41,6 +43,9 @@ Route::middleware('auth')->group(function(){
 });
 
 Route::post('admin-login', [\App\Http\Controllers\Auth\LoginController::class, 'login'])->name('admin-login');
+Route::post('upload',  function (\Illuminate\Http\Request $request) {
+    $file = $request->file('file');
+})->name('upload');
 Route::post('webhook/{handler}', [\App\Http\Controllers\Test\TelegramController::class, 'main']);
 
 Auth::routes();

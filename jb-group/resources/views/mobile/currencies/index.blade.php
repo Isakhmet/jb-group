@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 @can('viewAny', \App\Models\Currency::class)
                 <div class="card">
                     <div class="card-header">{{ __('Валюты') }}</div>
