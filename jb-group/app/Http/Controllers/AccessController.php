@@ -17,7 +17,7 @@ class AccessController extends Controller
     public function index()
     {
         $roleAccesses = RoleAccess::all();
-//dd($roleAccesses[0]->accesses);
+
         return view('accesses.index', ['roleAccesses' => $roleAccesses]);
     }
 

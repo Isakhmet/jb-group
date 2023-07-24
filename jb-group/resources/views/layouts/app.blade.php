@@ -17,7 +17,8 @@
     <script src="{{ URL::to('/')}}/assets/js/main.js"></script>
     <script type="text/javascript" charset="utf8"
             src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-    <!-- Fonts -->
+@yield('script')
+<!-- Fonts -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -25,6 +26,8 @@
     <!-- Styles -->
     <link href="{{ URL::to('/') }}/assets/css/bootstrap/bootstrap.css" rel="stylesheet" type="text/css"/>
     <link href="{{ URL::to('/') }}/assets/css/style.css" rel="stylesheet" type="text/css"/>
+
+    @yield('styles')
 </head>
 <body style="background-color: #2f4f5d;">
 <div id="app">
@@ -86,7 +89,8 @@
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item" href="{{url('branch-currency')}}">Остатки в
                                             филиалах</a></li>
-                                    <li><a class="dropdown-item" href="{{url('branch-currency?is_additional=true')}}">Остатки доп валют в
+                                    <li><a class="dropdown-item" href="{{url('branch-currency?is_additional=true')}}">Остатки
+                                            доп валют в
                                             филиалах</a></li>
                                     @can('create', \App\Models\BranchCurrency::class)
                                         <li><a class="dropdown-item" href="{{url('branch-currency/create')}}">Добавить
@@ -98,7 +102,7 @@
                                     @endcan
                                     @can('update', \App\Models\BranchCurrency::class)
                                         <li><a class="dropdown-item" href="{{url('branch-currency-delete')}}">Отвязать
-                                               валюту от филиала</a></li>
+                                                валюту от филиала</a></li>
                                     @endcan
                                 </ul>
                             </li>
@@ -183,6 +187,41 @@
                                     @can('create', \App\Models\Client::class)
                                         <li><a class="dropdown-item" href="{{url('clients/create')}}">Добавить
                                             </a></li>
+                                    @endcan
+                                </ul>
+                            </li>
+                        @endcan
+                        {{--<li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown"
+                               role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ __('titles.media') }}
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="{{url('medias')}}">Список</a></li>
+                                @can('create', \App\Models\MediaFiles::class)
+                                    <li><a class="dropdown-item" href="{{url('medias/create')}}">Добавить
+                                        </a></li>
+                                @endcan
+                            </ul>
+                        </li>--}}
+                        @can('viewAny', \App\Models\PurchasingRequests::class)
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown"
+                                   role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    {{ __('titles.purchasing') }}
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    @can('view', \App\Models\PurchasingRequests::class)
+                                        <li>
+                                            <a class="dropdown-item" href="{{url('purchasing')}}">Список</a>
+                                        </li>
+                                    @endcan
+                                    @can('create', \App\Models\PurchasingRequests::class)
+                                        <li>
+                                            <a class="dropdown-item" href="{{url('purchasing/create')}}">Добавить</a>
+                                        </li>
                                     @endcan
                                 </ul>
                             </li>
