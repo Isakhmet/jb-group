@@ -3,6 +3,7 @@ version: '3.3'
 services:
   jb-group-php:
     build:       ./configurations
+    user: root
     working_dir: /application
     environment:
       APP_ENV:  'local'
