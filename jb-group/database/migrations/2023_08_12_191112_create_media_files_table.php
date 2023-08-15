@@ -20,7 +20,10 @@ class CreateMediaFilesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('format');
-            $table->string('album');
+            $table->smallInteger('album_id')->nullable();
+            $table->timestamps();
+
+            $table->foreign('album_id')->on('media_albums')->references('id');
         });
 
         $accessesCode = ['media', 'media_create', 'media_edit', 'media_delete'];

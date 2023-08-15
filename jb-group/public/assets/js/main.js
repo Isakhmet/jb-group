@@ -110,6 +110,37 @@ $(document).ready(function () {
             $('.overlay').css("display", "none");
         }
     });
+
+    $('.icon-create').click(function () {
+        $('#overlay').css('display', 'block')
+    })
+
+    $('#create-album').click(function () {
+        $.ajax({
+            url: '/create-album',
+            type: 'GET',
+            data: {
+                'name' : $('input[name="album"]').val()
+            },
+            success: function(result) {
+                $('.overlay').css("display", "none");
+                window.location.reload();
+            }
+        });
+    })
+
+    $('#remove-album').click(function () {
+        $.ajax({
+            url: '/remove-album',
+            type: 'GET',
+            data: {
+                'name' : $('input[name="album"]').val()
+            },
+            success: function(result) {
+                window.location.href = '/medias/create';
+            }
+        });
+    })
 });
 
 function numberWithCommas(x) {

@@ -13,6 +13,7 @@
     <script src="{{ URL::to('/') }}/assets/js/bootstrap/bootstrap.js"></script>
     <script src="{{ URL::to('/') }}/assets/plugins/jquery/jquery.min.js"></script>
     <script src="{{ URL::to('/') }}/assets/plugins/jquery/jquery.maskMoney.min.js"></script>
+    <script src="{{ URL::to('/') }}/assets/plugins/jquery-inputmask/jquery.inputmask.js"></script>
     <script src="{{ URL::to('/') }}/assets/plugins/bootstrap-inputmask/bootstrap-inputmask.min.js"></script>
     <script src="{{ URL::to('/')}}/assets/js/main.js"></script>
     <script type="text/javascript" charset="utf8"
@@ -191,7 +192,7 @@
                                 </ul>
                             </li>
                         @endcan
-                        {{--<li class="nav-item dropdown">
+                        <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown"
                                role="button"
                                data-bs-toggle="dropdown" aria-expanded="false">
@@ -204,7 +205,7 @@
                                         </a></li>
                                 @endcan
                             </ul>
-                        </li>--}}
+                        </li>
                         @can('viewAny', \App\Models\PurchasingRequests::class)
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown"

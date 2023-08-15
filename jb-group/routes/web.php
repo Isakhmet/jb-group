@@ -43,9 +43,12 @@ Route::middleware('auth')->group(function(){
 });
 
 Route::post('admin-login', [\App\Http\Controllers\Auth\LoginController::class, 'login'])->name('admin-login');
-Route::post('upload',  function (\Illuminate\Http\Request $request) {
-    $file = $request->file('file');
-})->name('upload');
+Route::post('upload', [\App\Http\Controllers\MediaController::class, 'store'] )->name('upload');
+Route::get('create-album', [\App\Http\Controllers\MediaController::class, 'createAlbum'] )->name('create-album');
+Route::get('remove-album', [\App\Http\Controllers\MediaController::class, 'removeAlbum'] )->name('remove-album');
+Route::get('gallery', [\App\Http\Controllers\MediaController::class, 'show'] )->name('gallery');
+Route::get('remove/{file}', [\App\Http\Controllers\MediaController::class, 'destroy'] )->name('remove');
+Route::get('deleteByOne', [\App\Http\Controllers\MediaController::class, 'deleteByOne'] )->name('deleteByOne');
 Route::post('webhook/{handler}', [\App\Http\Controllers\Test\TelegramController::class, 'main']);
 
 Auth::routes();
