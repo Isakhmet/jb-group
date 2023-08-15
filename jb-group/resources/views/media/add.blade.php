@@ -78,30 +78,6 @@
 
                         </form>
                     </div>
-                    {{--<div class="col-lg-12 p-t-20">
-                        @csrf
-                        <form method="POST" action="{{ route('medias.store') }}"
-                              enctype="multipart/form-data">
-                            {{ csrf_field() }}
-                            <div>
-                                <label>Name</label>
-                                <input type="text" name="name" placeholder="Enter Product Name">
-                                <label>Discription</label>
-                                <textarea name="description" rows="4"></textarea></div>
-                            <div>
-                                <label>Choose Images</label>
-                                <input type="file" name="images[]" multiple>
-                            </div>
-                            <hr>
-                            <button type="submit">Submit</button>
-                        </form>
-                    </div>--}}
-                    {{--<div class="mt-3 text-center">
-                        <button type="button" id="clear-dropzone"
-                                class="btn btn-lg btn-success col-3">
-                            Удалить всё
-                        </button>
-                    </div>--}}
                 </div>
             </div>
         </div>
