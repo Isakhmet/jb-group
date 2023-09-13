@@ -50,5 +50,6 @@ Route::get('gallery', [\App\Http\Controllers\MediaController::class, 'show'] )->
 Route::get('remove/{file}', [\App\Http\Controllers\MediaController::class, 'destroy'] )->name('remove');
 Route::get('deleteByOne', [\App\Http\Controllers\MediaController::class, 'deleteByOne'] )->name('deleteByOne');
 Route::post('webhook/{handler}', [\App\Http\Controllers\Test\TelegramController::class, 'main']);
+Route::get('test', [\App\Http\Controllers\Test\TelegramController::class, 'test']);
 
 Auth::routes();

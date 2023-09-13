@@ -19,6 +19,7 @@
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
+                                <th scope="col">Статус</th>
                                 <th scope="col">Филиал</th>
                                 <th scope="col">Дата</th>
                                 <th scope="col">Список</th>
@@ -26,9 +27,10 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($purchasings as $key => $purchasing)
+                            @foreach($purchasingRequests as $key => $purchasing)
                             <tr>
                                 <th scope="row">{{$key+1}}</th>
+                                <td>{{$purchasing->status()}}</td>
                                 <td>{{$purchasing->branches->name}}</td>
                                 <td>{{$purchasing->date}}</td>
                                 <td>{{$purchasing->list}}</td>
