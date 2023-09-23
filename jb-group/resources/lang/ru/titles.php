@@ -11,4 +11,7 @@ return [
     'users' => 'Пользователи',
     'media' => 'Медиафайлы',
     'purchasing' => 'Лист заявки',
+    'directory' => 'Справочники',
+    'product-types' => 'Типы товаров',
+    'products' => 'Товары',
 ];

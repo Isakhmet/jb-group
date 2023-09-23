@@ -227,6 +227,23 @@
                                 </ul>
                             </li>
                         @endcan
+                        @can('viewAny', \App\Models\ProductType::class)
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown"
+                                   role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    {{ __('titles.directory') }}
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li>
+                                        <a class="dropdown-item" href="{{url('product-type-directory')}}">Типы товаров</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{url('product-directory')}}">Товары</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endcan
                     </ul>
             @endauth
             <!-- Right Side Of Navbar -->

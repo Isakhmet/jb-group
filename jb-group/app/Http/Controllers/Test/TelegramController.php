@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Test;
 
 use App\Http\Controllers\Controller;
+use App\Models\Roles;
 use App\Services\BotService;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -11,6 +13,13 @@ use Telegram\Bot\Laravel\Facades\Telegram;
 
 class TelegramController extends Controller
 {
+    public function test()
+    {
+        $roles = Roles::with('accesses')->whereHas('accesses', function ($query){
+            $query->whereIn('role_id', [1,2])->groupBy('access_id');
+        })->get();
+    }
+
     public function main(Request $request, $handler)
     {
         $this->telegramLog($request->all());

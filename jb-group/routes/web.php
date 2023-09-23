@@ -28,6 +28,8 @@ Route::middleware('auth')->group(function(){
     Route::resource('organizations', \App\Http\Controllers\OrganizationController::class);
     Route::resource('medias', \App\Http\Controllers\MediaController::class);
     Route::resource('purchasing', \App\Http\Controllers\PurchasingRequestsController::class);
+    Route::resource('product-type-directory', \App\Http\Controllers\ProductTypeDirectory::class);
+    Route::resource('product-directory', \App\Http\Controllers\ProductDirectory::class);
     Route::get('/branch-currency-edit', [\App\Http\Controllers\BranchCurrencyController::class, 'edit']);
     Route::get('/branch-currency-delete', [\App\Http\Controllers\BranchCurrencyController::class, 'delete']);
     Route::get('/get-branch-currency', [\App\Http\Controllers\BranchCurrencyController::class, 'getBalance']);
@@ -50,5 +52,6 @@ Route::get('gallery', [\App\Http\Controllers\MediaController::class, 'show'] )->
 Route::get('remove/{file}', [\App\Http\Controllers\MediaController::class, 'destroy'] )->name('remove');
 Route::get('deleteByOne', [\App\Http\Controllers\MediaController::class, 'deleteByOne'] )->name('deleteByOne');
 Route::post('webhook/{handler}', [\App\Http\Controllers\Test\TelegramController::class, 'main']);
+Route::get('test', [\App\Http\Controllers\Test\TelegramController::class, 'test']);
 
 Auth::routes();

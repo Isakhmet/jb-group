@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProductType;
+use App\Models\PurchasingProduct;
 use App\Models\PurchasingRequests;
+use App\Models\Status;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class PurchasingRequestsController extends Controller
@@ -14,13 +18,26 @@ class PurchasingRequestsController extends Controller
      */
     public function index()
     {
-        return view('purchasing.index', ['purchasings' => PurchasingRequests::with('branches')->get()]);
+        $user = Auth::user();
+
+        if(strcmp($user->roles->code, 'admin') === 0) {
+            $purchasing = PurchasingRequests::where('status_id', Status::where('name', 'new')->first()?->id)
+                                            ->get();
+        }else {
+            $purchasing = PurchasingRequests::where('user_id', $user->id)->get();
+        }
+
+        return view('purchasing.index', ['purchasingRequests' => $purchasing]);
     }
 
 
     public function create()
     {
-        return view('purchasing.create', ['branches' => auth()->user()->branches]);
+        return view('purchasing.create', [
+            'userName' => auth()->user()->name,
+            'branches' => auth()->user()->branches,
+            'productTypes' => ProductType::with('products')->get()
+        ]);
     }
 
     /**
@@ -31,9 +48,9 @@ class PurchasingRequestsController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'branch_id' => 'required|integer',
+            'branch_id' => 'required|exists:branches,id',
             'list_date' => 'required|date',
-            'list' => 'required|string',
+            'items' => 'required|array',
         ]);
 
         if ($validator->fails()) {
@@ -43,15 +60,27 @@ class PurchasingRequestsController extends Controller
                 ;
         }
 
-        $date = Carbon::createFromTimestamp(strtotime($request->get('list_date')));
+        $purchasingRequest = new PurchasingRequests();
+        $purchasingRequest->branch_id = $request->get('branch_id');
+        $purchasingRequest->date = Carbon::createFromTimestamp(strtotime($request->get('list_date')));
+        $purchasingRequest->list = $request->get('list');
+        $purchasingRequest->user_id = Auth::user()->id;
+        $purchasingRequest->status_id = Status::where('name', 'new')->first()?->id;
+        $purchasingRequest->save();
 
-        PurchasingRequests::create(
-            [
-                'branch_id' => $request->get('branch_id'),
-                'date' => $date,
-                'list' => $request->get('list'),
-            ]
-        );
+        foreach ($request->get('items') as $key => $item) {
+            if((int)$item === 0) {
+                continue;
+            }
+
+            PurchasingProduct::create(
+                [
+                    'purchasing_requests_id' => $purchasingRequest->id,
+                    'product_id' => $key,
+                    'count' => $item,
+                ]
+            );
+        }
 
         return redirect()->route(
             'purchasing.index', [
@@ -61,21 +90,48 @@ class PurchasingRequestsController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @param $id
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show($id)
     {
-        //
+        $purchasingModel = PurchasingRequests::find($id);
+        $productTypes = [];
+
+        foreach ($purchasingModel->purchasingProducts as $key => $purchasingProduct) {
+            if ($purchasingProduct->product->type->name) {
+                $productTypes[$purchasingProduct->product->type->name][$key]['product'] = $purchasingProduct->product;
+                $productTypes[$purchasingProduct->product->type->name][$key]['count'] = $purchasingProduct->count;
+            }
+        }
+
+        $data = [
+            'productTypes' => $productTypes,
+            'purchasing' => $purchasingModel,
+            'branches' => auth()->user()->branches,
+            'statuses' => Status::all()->pluck('description', 'id')
+        ];
+
+        return view('purchasing.show', $data);
     }
 
 
     public function edit($id)
     {
+        $purchasingModel = PurchasingRequests::find($id);
+        $productTypes = [];
+
+        foreach ($purchasingModel->purchasingProducts as $key => $purchasingProduct) {
+            if ($purchasingProduct->product->type->name) {
+                $productTypes[$purchasingProduct->product->type->name][$key]['product'] = $purchasingProduct->product;
+                $productTypes[$purchasingProduct->product->type->name][$key]['count'] = $purchasingProduct->count;
+            }
+        }
+
         $data = [
-            'purchasing' => PurchasingRequests::find($id),
+            'productTypes' => $productTypes,
+            'purchasing' => $purchasingModel,
             'branches' => auth()->user()->branches
         ];
         return view('purchasing.edit', $data);
@@ -85,9 +141,9 @@ class PurchasingRequestsController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'branch_id' => 'required|integer',
-            'list_date' => 'required|date',
-            'list' => 'required|string',
+            'branch' => 'required|string',
+            'list_date' => 'date',
+            'list' => 'string',
         ]);
 
         if ($validator->fails()) {
@@ -98,9 +154,7 @@ class PurchasingRequestsController extends Controller
         }
 
         $purchasing = PurchasingRequests::find($id);
-        $purchasing->branch_id = $request->get('branch_id');
-        $purchasing->date = Carbon::createFromTimestamp(strtotime($request->get('list_date')));
-        $purchasing->list = $request->get('list');
+        $purchasing->status_id = $request->get('status_id');
         $purchasing->save();
 
         return redirect()->route(
