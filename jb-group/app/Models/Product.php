@@ -17,6 +17,6 @@ class Product extends Model
 
     public function type()
     {
-        return $this->hasOne(ProductType::class, 'product_type_id', 'id');
+        return $this->hasOne(ProductType::class, 'id', 'product_type_id');
     }
 }

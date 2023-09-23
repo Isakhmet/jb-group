@@ -90,21 +90,48 @@ class PurchasingRequestsController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @param $id
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show($id)
     {
-        //
+        $purchasingModel = PurchasingRequests::find($id);
+        $productTypes = [];
+
+        foreach ($purchasingModel->purchasingProducts as $key => $purchasingProduct) {
+            if ($purchasingProduct->product->type->name) {
+                $productTypes[$purchasingProduct->product->type->name][$key]['product'] = $purchasingProduct->product;
+                $productTypes[$purchasingProduct->product->type->name][$key]['count'] = $purchasingProduct->count;
+            }
+        }
+
+        $data = [
+            'productTypes' => $productTypes,
+            'purchasing' => $purchasingModel,
+            'branches' => auth()->user()->branches,
+            'statuses' => Status::all()->pluck('description', 'id')
+        ];
+
+        return view('purchasing.show', $data);
     }
 
 
     public function edit($id)
     {
+        $purchasingModel = PurchasingRequests::find($id);
+        $productTypes = [];
+
+        foreach ($purchasingModel->purchasingProducts as $key => $purchasingProduct) {
+            if ($purchasingProduct->product->type->name) {
+                $productTypes[$purchasingProduct->product->type->name][$key]['product'] = $purchasingProduct->product;
+                $productTypes[$purchasingProduct->product->type->name][$key]['count'] = $purchasingProduct->count;
+            }
+        }
+
         $data = [
-            'purchasing' => PurchasingRequests::find($id),
+            'productTypes' => $productTypes,
+            'purchasing' => $purchasingModel,
             'branches' => auth()->user()->branches
         ];
         return view('purchasing.edit', $data);
@@ -114,9 +141,9 @@ class PurchasingRequestsController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'branch_id' => 'required|integer',
-            'list_date' => 'required|date',
-            'list' => 'required|string',
+            'branch' => 'required|string',
+            'list_date' => 'date',
+            'list' => 'string',
         ]);
 
         if ($validator->fails()) {
@@ -127,9 +154,7 @@ class PurchasingRequestsController extends Controller
         }
 
         $purchasing = PurchasingRequests::find($id);
-        $purchasing->branch_id = $request->get('branch_id');
-        $purchasing->date = Carbon::createFromTimestamp(strtotime($request->get('list_date')));
-        $purchasing->list = $request->get('list');
+        $purchasing->status_id = $request->get('status_id');
         $purchasing->save();
 
         return redirect()->route(

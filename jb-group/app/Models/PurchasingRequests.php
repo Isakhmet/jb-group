@@ -24,16 +24,16 @@ class PurchasingRequests extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id', 'user_id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function products()
+    public function purchasingProducts()
     {
         return $this->hasMany(PurchasingProduct::class, 'purchasing_requests_id', 'id');
     }
 
     public function status()
     {
-        return Status::find($this->status_id)->description;
+        return Status::find($this->status_id);
     }
 }
