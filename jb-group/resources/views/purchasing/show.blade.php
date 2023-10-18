@@ -50,7 +50,7 @@
                                         <h3>{{$key}}</h3>
                                         @foreach($types as $type)
                                             <div class="products">
-                                                <p class="product-name">{{$type['product']->name}}</p>
+                                                <p class="product-name">{{$type['product']->name}} {{$type['product']->description}}</p>
                                                 <p class="product-count">{{$type['count']}}</p>
                                             </div>
                                         @endforeach

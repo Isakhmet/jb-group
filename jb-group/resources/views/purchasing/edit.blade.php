@@ -108,7 +108,7 @@
                                             <ul class="item-list">
                                                 @foreach($type as $product)
                                                     <li>
-                                                        <span class="item-name">{{$product['product']->name}}</span>
+                                                        <span class="item-name">{{$product['product']->name}} {{$product['product']->description}}</span>
                                                         <div class="counter">
                                                             <span class="counter-button" onclick="decrementCounter('item_{{$product['product']->id}}')">-</span>
                                                             <input class="counter-item item_{{$product['product']->id}}" name="items[{{$product['product']->id}}]" type="text" value="{{$product['count']}}"/>

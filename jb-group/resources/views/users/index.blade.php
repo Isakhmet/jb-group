@@ -30,7 +30,7 @@
                                 <tr>
                                     <th scope="row">{{$key+1}}</th>
                                     <td>{{$user->name}}</td>
-                                    <td>{{$user->roles->name}}</td>
+                                    <td>{{$user->roles?->name}}</td>
                                     <td>{{$user->created_at}}</td>
                                     <td>
                                         <div style="display: inline-flex;">
