@@ -143,7 +143,6 @@ class PurchasingRequestsController extends Controller
         $validator = Validator::make($request->all(), [
             'branch' => 'required|string',
             'list_date' => 'date',
-            'list' => 'string',
         ]);
 
         if ($validator->fails()) {
