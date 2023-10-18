@@ -25,7 +25,7 @@
                                 <input type="text" class="form-control" id="name" name="name" placeholder="Имя"
                                        autocomplete required value="{{$user->name}}">
                                 <select class="form-select" aria-label="Roles" name="role" required>
-                                    <option value="{{$user->roles->code}}" selected>{{$user->roles->name}}</option>
+                                    <option value="{{$user->roles?->code}}" selected>{{$user->roles?->name}}</option>
                                     @foreach($roles as $role)
                                         <option value="{{$role->code}}">{{$role->name}}</option>
                                     @endforeach
