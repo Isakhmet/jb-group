@@ -19,8 +19,7 @@ class UserController extends Controller
     public function __construct()
     {
         $this->users = User::with('roles')
-                           ->get()
-        ;
+            ->get();
     }
 
     /**
@@ -58,13 +57,12 @@ class UserController extends Controller
         if ($validator->fails()) {
             return redirect()
                 ->back()
-                ->withErrors($validator)
-                ;
+                ->withErrors($validator);
         }
 
         $user = User::create(
             [
-                'name'     => $request->get('name'),
+                'name' => $request->get('name'),
                 'password' => Hash::make($request->get('password')),
             ]
         );
@@ -73,15 +71,15 @@ class UserController extends Controller
             [
                 'user_id' => $user->id,
                 'role_id' => Roles::where('code', $request->get('role'))
-                                  ->first(['id'])->id,
+                    ->first(['id'])->id,
             ]
         );
 
         return redirect()->route(
             'users.index', [
-                             'success' => 'Пользователь успешно создан.',
-                             'users'   => $this->users,
-                         ]
+                'success' => 'Пользователь успешно создан.',
+                'users' => $this->users,
+            ]
         );
     }
 
@@ -93,10 +91,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user  = User::with('roles')
-                     ->where('id', $id)
-                     ->first()
-        ;
+        $user = User::with('roles')
+            ->where('id', $id)
+            ->first();
         $roles = Roles::all();
 
         return view('users/edit', ['user' => $user, 'roles' => $roles]);
@@ -123,34 +120,29 @@ class UserController extends Controller
             if ($validator->fails()) {
                 return redirect()
                     ->back()
-                    ->withErrors($validator)
-                    ;
+                    ->withErrors($validator);
             }
         }
 
         $user->update(
             [
-                'name'     => $request->get('name'),
+                'name' => $request->get('name'),
                 'password' => Hash::make($request->get('password')),
             ]
         );
 
         $roleId = Roles::where('code', $request->get('role'))->first()->id;
 
-        UserRole::where('user_id', $user->id)
-                ->updateOrCreate(
-                    [
-                        'user_id' => $user->id,
-                        'role_id' => $roleId,
-                    ]
-                )
-        ;
+        UserRole::updateOrCreate(
+            ['user_id' => $user->id],
+            ['role_id' => $roleId]
+        );
 
         return redirect()->route(
             'users.index', [
-                             'success' => 'Данные успешно обновлены.',
-                             'users'   => $this->users,
-                         ]
+                'success' => 'Данные успешно обновлены.',
+                'users' => $this->users,
+            ]
         );
     }
 
@@ -169,8 +161,7 @@ class UserController extends Controller
 
         return redirect()
             ->back()
-            ->with('success', 'Пользователь успешно удален')
-            ;
+            ->with('success', 'Пользователь успешно удален');
     }
 
     public function addBranch()
@@ -193,8 +184,7 @@ class UserController extends Controller
         if ($validator->fails()) {
             return redirect()
                 ->back()
-                ->withErrors($validator)
-                ;
+                ->withErrors($validator);
         }
 
         UserBranch::create($request->all());
@@ -215,7 +205,6 @@ class UserController extends Controller
 
         return redirect()
             ->back()
-            ->with('success', 'Запись успешно удалена')
-            ;
+            ->with('success', 'Запись успешно удалена');
     }
 }
