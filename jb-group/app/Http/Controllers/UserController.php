@@ -135,12 +135,12 @@ class UserController extends Controller
             ]
         );
 
+        $roleId = Roles::where('code', $request->get('role'))->first()->id;
+
         UserRole::where('user_id', $user->id)
-                ->where('role_id', $user->roles->id)
                 ->update(
                     [
-                        'role_id' => Roles::where('code', $request->get('role'))
-                                          ->first()->id,
+                        'role_id' => $roleId,
                     ]
                 )
         ;
