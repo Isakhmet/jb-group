@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function(){
     Route::resource('organizations', \App\Http\Controllers\OrganizationController::class);
     Route::resource('medias', \App\Http\Controllers\MediaController::class);
     Route::resource('purchasing', \App\Http\Controllers\PurchasingRequestsController::class);
+    Route::get('purchasing-all', [\App\Http\Controllers\PurchasingRequestsController::class, 'allList'])->name('purchasing-all');
     Route::resource('product-type-directory', \App\Http\Controllers\ProductTypeDirectory::class);
     Route::resource('product-directory', \App\Http\Controllers\ProductDirectory::class);
     Route::get('/branch-currency-edit', [\App\Http\Controllers\BranchCurrencyController::class, 'edit']);

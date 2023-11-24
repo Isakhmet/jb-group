@@ -110,7 +110,8 @@ class PurchasingRequestsController extends Controller
             'productTypes' => $productTypes,
             'purchasing' => $purchasingModel,
             'branches' => auth()->user()->branches,
-            'statuses' => Status::all()->pluck('description', 'id')
+            'statuses' => Status::all()->pluck('description', 'id'),
+            'onlyList' => false
         ];
 
         return view('purchasing.show', $data);
@@ -134,6 +135,7 @@ class PurchasingRequestsController extends Controller
             'purchasing' => $purchasingModel,
             'branches' => auth()->user()->branches
         ];
+
         return view('purchasing.edit', $data);
     }
 
@@ -177,5 +179,32 @@ class PurchasingRequestsController extends Controller
                                'success' => 'Данные обновлены.',
                            ]
         );
+    }
+
+    public function allList()
+    {
+        $purchasingModels = PurchasingRequests::query()
+            ->where('status_id', Status::where('name', 'new')->first()?->id)
+            ->get();
+        $productTypes = [];
+
+        foreach ($purchasingModels as $purchasingModel) {
+            foreach ($purchasingModel->purchasingProducts as $key => $purchasingProduct) {
+                if ($purchasingProduct->product->type->name) {
+                    $productTypes[$purchasingProduct->product->type->name][$key]['product'] = $purchasingProduct->product;
+                    $productTypes[$purchasingProduct->product->type->name][$key]['count'] = $purchasingProduct->count;
+                }
+            }
+        }
+
+        $data = [
+            'productTypes' => $productTypes,
+            'purchasing' => $purchasingModel,
+            'branches' => auth()->user()->branches,
+            'statuses' => Status::all()->pluck('description', 'id'),
+            'onlyList' => true
+        ];
+
+        return view('purchasing.show', $data);
     }
 }

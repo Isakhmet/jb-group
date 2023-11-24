@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('script')
     <script src="{{ URL::to('/') }}/assets/plugins/dropzone/dropzone.js"></script>
