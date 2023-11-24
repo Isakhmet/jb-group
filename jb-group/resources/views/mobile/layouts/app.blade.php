@@ -50,20 +50,28 @@
                             </li>
                         @endcan
                         @can('viewAny', \App\Models\Branch::class)
-                                <li class="nav-item">
-                                    <a class="nav-link text-light" href="{{url('branches')}}"
-                                       role="button">
-                                        {{ __('titles.branches') }}
-                                    </a>
-                                </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" href="{{url('branches')}}"
+                                   role="button">
+                                    {{ __('titles.branches') }}
+                                </a>
+                            </li>
                         @endcan
                         @can('viewAny', \App\Models\BranchCurrency::class)
-                                <li class="nav-item">
-                                    <a class="nav-link text-light" href="{{url('branch-currency')}}"
-                                       role="button">
-                                        {{ __('titles.branch_currencies') }}
-                                    </a>
-                                </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" href="{{url('branch-currency')}}"
+                                   role="button">
+                                    {{ __('titles.branch_currencies') }}
+                                </a>
+                            </li>
+                        @endcan
+                        @can('viewAny', \App\Models\PurchasingRequests::class)
+                            <li class="nav-item">
+                                <a class="nav-link text-light" href="{{url('purchasing-all')}}"
+                                   role="button">
+                                    {{ __('titles.purchasing') }}
+                                </a>
+                            </li>
                         @endcan
                     </ul>
             @endauth

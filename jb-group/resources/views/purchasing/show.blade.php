@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('styles')
     <style>
@@ -33,18 +33,20 @@
                                     @endif
                                     @csrf
                                     @method('PUT')
-                                    <input type="text" class="form-control mb-3" name="branch"
-                                           value="{{$purchasing->branches->name}}"
-                                           required readonly>
+                                    @if(!$onlyList)
+                                        <input type="text" class="form-control mb-3" name="branch"
+                                               value="{{$purchasing->branches->name}}"
+                                               required readonly>
 
-                                    <textarea class="form-control mb-3" name="list" rows="3"
-                                              readonly>{{$purchasing->list}}</textarea>
-                                    <input type="text" class="form-control mb-3" name="list_date"
-                                           value="{{$purchasing->date}}"
-                                           required readonly>
-                                    <input type="text" class="form-control mb-3" name="user"
-                                           value="{{$purchasing->user->name}}"
-                                           required readonly>
+                                        <textarea class="form-control mb-3" name="list" rows="3"
+                                                  readonly>{{$purchasing->list}}</textarea>
+                                        <input type="text" class="form-control mb-3" name="list_date"
+                                               value="{{$purchasing->date}}"
+                                               required readonly>
+                                        <input type="text" class="form-control mb-3" name="user"
+                                               value="{{$purchasing->user->name}}"
+                                               required readonly>
+                                    @endif
 
                                     @foreach($productTypes as $key => $types)
                                         <h3>{{$key}}</h3>
@@ -55,16 +57,19 @@
                                             </div>
                                         @endforeach
                                     @endforeach
-                                    <select class="form-select mb-3" aria-label="Branches" name="status_id" required>
-                                        @foreach($statuses as $key => $status)
-                                            @if($key === $purchasing->status_id)
-                                                <option value="{{$key}}" selected>{{$status}}</option>
-                                            @else
-                                                <option value="{{$key}}">{{$status}}</option>
-                                            @endif
-                                        @endforeach
-                                    </select>
-                                    <button class="btn btn-lg btn-success col-12">Обновить</button>
+                                    @if(!$onlyList)
+                                        <select class="form-select mb-3" aria-label="Branches" name="status_id"
+                                                required>
+                                            @foreach($statuses as $key => $status)
+                                                @if($key === $purchasing->status_id)
+                                                    <option value="{{$key}}" selected>{{$status}}</option>
+                                                @else
+                                                    <option value="{{$key}}">{{$status}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                        <button class="btn btn-lg btn-success col-12">Обновить</button>
+                                    @endif
                                 </form>
                             </div>
                         </div>

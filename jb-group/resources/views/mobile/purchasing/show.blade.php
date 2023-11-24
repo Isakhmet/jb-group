@@ -1,17 +1,26 @@
-@extends('layouts.main')
+@extends('layouts.app')
 
+@section('styles')
+    <style>
+        .products {
+            display: flex;
+        }
+
+        .product-count, .product-name {
+            flex: 1;
+        }
+    </style>
+@endsection
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                @can('viewAny', \App\Models\ProductType::class)
+                @can('update', \App\Models\PurchasingRequests::class)
                     <div class="card">
-                        <div class="card-header">{{ __('Добавление типа товара') }}</div>
-
+                        <div class="card-header">{{ __('Просмотр данных') }}</div>
                         <div class="card-body p-2">
                             <div class="text-center mt-5">
-                                <form method="post" action="{{ route('product-type-directory.store') }}"
-                                      class="login-form">
+                                <form method="post" action="{{url('/purchasing/'.$purchasing->id)}}" class="login-form">
                                     @if ($errors->any())
                                         <div class="alert alert-danger">
                                             <strong>Что-то пошло не так!</strong> Заполните корректно данные.<br><br>
@@ -23,14 +32,16 @@
                                         </div>
                                     @endif
                                     @csrf
-                                    <input type="text" class="form-control mb-3" id="name" name="name"
-                                           placeholder="Названия типа товаров"
-                                           autocomplete required>
-                                    <input type="text" class="form-control mb-3" id="description" name="description"
-                                           placeholder="описание">
-                                    <div class="mt-3">
-                                        <button class="btn btn-lg btn-success col-12">Добавить</button>
-                                    </div>
+                                    @method('PUT')
+                                    @foreach($productTypes as $key => $types)
+                                        <h3>{{$key}}</h3>
+                                        @foreach($types as $type)
+                                            <div class="products">
+                                                <p class="product-name">{{$type['product']->name}} {{$type['product']->description}}</p>
+                                                <p class="product-count">{{$type['count']}}</p>
+                                            </div>
+                                        @endforeach
+                                    @endforeach
                                 </form>
                             </div>
                         </div>
@@ -38,5 +49,6 @@
                 @endcan
             </div>
         </div>
+    </div>
     </div>
 @endsection
