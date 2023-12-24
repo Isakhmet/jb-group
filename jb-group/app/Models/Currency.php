@@ -15,4 +15,13 @@ class Currency extends Model
         'limit',
         'is_additional',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('defaultSort', function ($builder) {
+            $builder->orderBy('id', 'asc');
+        });
+    }
 }
