@@ -46,6 +46,8 @@
                                         <input type="text" class="form-control mb-3" name="user"
                                                value="{{$purchasing->user->name}}"
                                                required readonly>
+                                    @else
+                                        <p>{{$comments}}</p>
                                     @endif
 
                                     @foreach($productTypes as $key => $types)
