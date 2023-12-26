@@ -33,6 +33,7 @@
                                     @endif
                                     @csrf
                                     @method('PUT')
+                                    <p>{{$comments}}</p>
                                     @foreach($productTypes as $key => $types)
                                         <h3>{{$key}}</h3>
                                         @foreach($types as $type)
