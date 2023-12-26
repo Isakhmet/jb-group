@@ -36,8 +36,8 @@
                                            name="addition_phone"
                                            placeholder="Доверенный номер" value="{{$employee->addition_phone}}">
                                     <select class="form-select mb-3" aria-label="Branch" name="branch_id">
-                                        <option value="{{$employee->branch->id}}"
-                                                selected>{{$employee->branch->name}}</option>
+                                        <option value="{{$employee->branch?->id}}"
+                                                selected>{{$employee->branch?->name}}</option>
                                         @foreach($branches as $branch)
                                             <option value="{{$branch->id}}">{{$branch->name}}</option>
                                         @endforeach
