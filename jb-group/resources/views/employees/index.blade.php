@@ -16,7 +16,7 @@
                                 </div>
                             @endif
                         </div>
-                        <table class="table">
+                        <table class="table" id="clients">
                             <thead>
                             <tr>
                                 <th scope="col">#</th>

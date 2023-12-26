@@ -23,4 +23,13 @@ class Employee extends Model
     {
         return $this->hasOne(Branch::class, 'id', 'branch_id');
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('defaultSort', function ($builder) {
+            $builder->orderBy('id', 'asc');
+        });
+    }
 }

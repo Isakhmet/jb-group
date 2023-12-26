@@ -184,15 +184,24 @@ class PurchasingRequestsController extends Controller
     public function allList()
     {
         $purchasingModels = PurchasingRequests::query()
-            ->where('status_id', Status::where('name', 'new')->first()?->id)
+            ->where('status_id', 1)
             ->get();
         $productTypes = [];
+        $comments = '';
 
         foreach ($purchasingModels as $purchasingModel) {
+
+            if(!empty(trim($purchasingModel->list))) $comments .= $purchasingModel->list. ', ';
+
             foreach ($purchasingModel->purchasingProducts as $key => $purchasingProduct) {
                 if ($purchasingProduct->product->type->name) {
                     $productTypes[$purchasingProduct->product->type->name][$key]['product'] = $purchasingProduct->product;
-                    $productTypes[$purchasingProduct->product->type->name][$key]['count'] = $purchasingProduct->count;
+
+                    if(isset($productTypes[$purchasingProduct->product->type->name][$key]['count'])) {
+                        $productTypes[$purchasingProduct->product->type->name][$key]['count'] += $purchasingProduct->count;
+                    }else {
+                        $productTypes[$purchasingProduct->product->type->name][$key]['count'] = $purchasingProduct->count;
+                    }
                 }
             }
         }
@@ -200,6 +209,7 @@ class PurchasingRequestsController extends Controller
         $data = [
             'productTypes' => $productTypes,
             'purchasing' => $purchasingModel,
+            'comments' => $comments,
             'branches' => auth()->user()->branches,
             'statuses' => Status::all()->pluck('description', 'id'),
             'onlyList' => true

@@ -178,10 +178,20 @@ class BranchCurrencyController extends Controller
      */
     public function getBalance(Request $request)
     {
-        return BranchCurrency::with('currency')
-                             ->where('branch_id', $request->get('id'))
-                             ->get()
-            ;
+        $branchCurrencies = Branch::query()->with(['currencies', 'balances'])->where('id', $request->get('id'))->first();
+        $currencies = $branchCurrencies->currencies;
+        $balances = $branchCurrencies->balances;
+        $data = [];
+
+        foreach ($currencies as $key => $currency) {
+            $balance = $balances->where('currency_id', $currency->id)->first();
+            $data[$key]['code'] = $currency->code;
+            $data[$key]['balance'] = $balance->balance;
+            $data[$key]['is_limited'] = $balance->is_limited;
+            $data[$key]['currency_id'] = $balance->currency_id;
+        }
+
+        return $data;
     }
 
     /**
