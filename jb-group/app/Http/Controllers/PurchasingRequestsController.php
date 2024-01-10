@@ -190,17 +190,16 @@ class PurchasingRequestsController extends Controller
         $comments = '';
 
         foreach ($purchasingModels as $purchasingModel) {
-
             if(!empty(trim($purchasingModel->list))) $comments .= $purchasingModel->list. ', ';
 
             foreach ($purchasingModel->purchasingProducts as $key => $purchasingProduct) {
                 if ($purchasingProduct->product->type->name) {
-                    $productTypes[$purchasingProduct->product->type->name][$key]['product'] = $purchasingProduct->product;
+                    $productTypes[$purchasingProduct->product->type->name][$purchasingProduct->id]['product'] = $purchasingProduct->product;
 
-                    if(isset($productTypes[$purchasingProduct->product->type->name][$key]['count'])) {
-                        $productTypes[$purchasingProduct->product->type->name][$key]['count'] += $purchasingProduct->count;
+                    if(isset($productTypes[$purchasingProduct->product->type->name][$purchasingProduct->id]['count'])) {
+                        $productTypes[$purchasingProduct->product->type->name][$purchasingProduct->id]['count'] += $purchasingProduct->count;
                     }else {
-                        $productTypes[$purchasingProduct->product->type->name][$key]['count'] = $purchasingProduct->count;
+                        $productTypes[$purchasingProduct->product->type->name][$purchasingProduct->id]['count'] = $purchasingProduct->count;
                     }
                 }
             }
@@ -214,7 +213,7 @@ class PurchasingRequestsController extends Controller
             'statuses' => Status::all()->pluck('description', 'id'),
             'onlyList' => true
         ];
-
+;
         return view('purchasing.show', $data);
     }
 }
