@@ -211,6 +211,21 @@
                         </div>
                     </li>
                 @endcan
+                @can('viewAny', \App\Models\Employee::class)
+                    <li class="mb-1">
+                        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+                                data-bs-toggle="collapse" data-bs-target="#schedule-collapse" aria-expanded="false">
+                            {{ __('titles.schedule') }}
+                        </button>
+                        <div class="collapse" id="schedule-collapse">
+                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                <li><a href="{{url('schedule')}}"
+                                       class="link-body-emphasis d-inline-flex text-decoration-none rounded">Список</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                @endcan
                 @can('viewAny', \App\Models\Organization::class)
                     <li class="mb-1">
                         <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"

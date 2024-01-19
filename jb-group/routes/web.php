@@ -42,6 +42,8 @@ Route::middleware('auth')->group(function(){
     Route::get('list-branch', [\App\Http\Controllers\UserController::class, 'listBranch']);
     Route::post('destroy-branch/{id}', [\App\Http\Controllers\UserController::class, 'destroyBranch']);
 
+    Route::get('schedule', [\App\Http\Controllers\ScheduleEmployeeController::class, 'index'])->name('schedule');
+    Route::post('schedule-save', [\App\Http\Controllers\ScheduleEmployeeController::class, 'save'])->name('schedule-save');
     Route::get('notify', [\App\Http\Controllers\NotifyController::class, 'notify']);
 });
 

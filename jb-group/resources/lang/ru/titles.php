@@ -14,4 +14,5 @@ return [
     'directory' => 'Справочники',
     'product-types' => 'Типы товаров',
     'products' => 'Товары',
+    'schedule' => 'График',
 ];
