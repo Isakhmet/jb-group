@@ -9,7 +9,7 @@ class ScheduleEmployee extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['employee_id', 'branch_id', 'date'];
+    protected $fillable = ['employee_id', 'branch_id', 'number_cash_desk','date'];
 
     public function employee()
     {
