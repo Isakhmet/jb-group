@@ -66,40 +66,54 @@
                                                 @if(isset($date['branches']))
                                                     <td>
                                                         @if(isset($date['branches'][$branch['id']]))
+                                                            @for($i=0; $i<$branch['count_cash_desk']; $i++)
+                                                                <select class="form-select employee-select"
+                                                                        name="employee[{{$branch['id']}}][{{$i}}][{{$day}}]"
+                                                                        id="employee"
+                                                                        @if(isset($date['readonly'])) disabled @endif>
+                                                                    @if(isset($date['branches'][$branch['id']]['employees'][$i]))
+                                                                        <option
+                                                                            value="{{$date['branches'][$branch['id']]['employees'][$i]['employeeId']}}">
+                                                                            {{$date['branches'][$branch['id']]['employees'][$i]['employee']}}
+                                                                        </option>
+                                                                    @else
+                                                                        <option value=""></option>
+                                                                    @endif
+                                                                    @foreach($employees as $employeeId => $employee)
+                                                                        <option
+                                                                            value="{{$employeeId}}">{{$employee}}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            @endfor
+                                                        @else
+                                                            @for($i=0; $i<$branch['count_cash_desk']; $i++)
+                                                                <select class="form-select employee-select"
+                                                                        name="employee[{{$branch['id']}}][{{$i}}][{{$day}}]"
+                                                                        id="employee"
+                                                                        @if(isset($date['readonly'])) disabled @endif>
+                                                                    <option value=""></option>
+                                                                    @foreach($employees as $employeeId => $employee)
+                                                                        <option
+                                                                            value="{{$employeeId}}">{{$employee}}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            @endfor
+                                                        @endif
+                                                    </td>
+                                                @else
+                                                    <td>
+                                                        @for($i=0; $i<$branch['count_cash_desk']; $i++)
                                                             <select class="form-select employee-select"
-                                                                    name="employee[{{$branch['id']}}][{{$day}}]"
+                                                                    name="employee[{{$branch['id']}}][{{$i}}][{{$day}}]"
                                                                     id="employee"
                                                                     @if(isset($date['readonly'])) disabled @endif>
-                                                                <option
-                                                                    value="{{$date['branches'][$branch['id']]['employeeId']}}">{{$date['branches'][$branch['id']]['employee']}}</option>
+                                                                <option value=""></option>
                                                                 @foreach($employees as $employeeId => $employee)
                                                                     <option
                                                                         value="{{$employeeId}}">{{$employee}}</option>
                                                                 @endforeach
                                                             </select>
-                                                        @else
-                                                            <select class="form-select employee-select"
-                                                                    name="employee[{{$branch['id']}}][{{$day}}]"
-                                                                    id="employee"
-                                                                    @if(isset($date['readonly'])) disabled @endif>
-                                                                <option value=""></option>
-                                                                @foreach($employees as $employeeId => $employee)
-                                                                    <option value="{{$employeeId}}">{{$employee}}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        @endif
-                                                    </td>
-                                                @else
-                                                    <td>
-                                                        <select class="form-select employee-select"
-                                                                name="employee[{{$branch['id']}}][{{$day}}]"
-                                                                id="employee"
-                                                                @if(isset($date['readonly'])) disabled @endif>
-                                                            <option value=""></option>
-                                                            @foreach($employees as $employeeId => $employee)
-                                                                <option value="{{$employeeId}}">{{$employee}}</option>
-                                                            @endforeach
-                                                        </select>
+                                                        @endfor
                                                     </td>
                                                 @endif
                                             @endforeach

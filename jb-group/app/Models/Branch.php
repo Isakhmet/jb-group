@@ -13,6 +13,7 @@ class Branch extends Model
         'name',
         'phone',
         'address',
+        'count_cash_desk',
         'slug'
     ];
 

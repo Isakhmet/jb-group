@@ -40,6 +40,7 @@ class BranchController extends Controller
                 'address' => 'required|string',
                 'phone' => 'required|string',
                 'slug' => 'string',
+                'count_cash_desk' => 'numeric',
             ]
         );
 
@@ -100,6 +101,7 @@ class BranchController extends Controller
                     'address' => 'required|string',
                     'phone' => 'required|string',
                     'slug' => 'string',
+                    'count_cash_desk' => 'numeric',
                 ]
             );
 
@@ -111,7 +113,7 @@ class BranchController extends Controller
             }
         }
 
-        $branch->update($request->all());
+        $branch->update($request->except(['_token', '_method', '_url']));
 
         return redirect()->route('branches.index', ['success' => 'Данные успешно обновлены.']);
     }

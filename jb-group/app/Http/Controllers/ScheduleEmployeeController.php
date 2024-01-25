@@ -75,8 +75,11 @@ class ScheduleEmployeeController extends Controller
                 foreach ($schedules as $schedule) {
                     if($schedule->date === $date) {
                         $data['dates'][$i]['branches'][$schedule->branch->id]['branchName'] = $schedule->branch->name;
-                        $data['dates'][$i]['branches'][$schedule->branch->id]['employee'] = $schedule->employee->name;
-                        $data['dates'][$i]['branches'][$schedule->branch->id]['employeeId'] = $schedule->employee->id;
+
+                        $data['dates'][$i]['branches'][$schedule->branch->id]['employees'][] = [
+                            'employee' => $schedule->employee->name,
+                            'employeeId' => $schedule->employee->id
+                        ];
                     }
                 }
             }
@@ -93,16 +96,23 @@ class ScheduleEmployeeController extends Controller
 
         if ($year) $date = $date->year($year);
 
-        foreach ($employees as $branchId => $days) {
-            foreach ($days as $day => $employee) {
-                $data = [];
+        foreach ($employees as $branchId => $cashDesks) {
+            foreach ($cashDesks as $number => $days) {
+                foreach ($days as $day => $employee) {
+                    $data = [];
 
-                if (isset($employee)) {
-                    $data['employee_id'] = $employee;
-                    $data['branch_id'] = $branchId;
-                    $data['date'] = $date->day($day)->format('Y-m-d');
+                    if (isset($employee)) {
+                        $data['employee_id'] = $employee;
+                        $data['branch_id'] = $branchId;
+                        $data['date'] = $date->day($day)->format('Y-m-d');
+                        $data['number_cash_desk'] = $number+1;
 
-                    ScheduleEmployee::query()->create($data);
+                        ScheduleEmployee::query()->updateOrCreate([
+                            'branch_id' => $branchId,
+                            'date' => $date->day($day)->format('Y-m-d'),
+                            'number_cash_desk' => $number+1
+                        ], $data);
+                    }
                 }
             }
         }
