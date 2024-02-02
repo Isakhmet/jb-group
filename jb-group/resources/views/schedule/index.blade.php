@@ -2,8 +2,8 @@
 
 @section('styles')
     <style>
-        .employee-select {
-            width: 200px;
+        tr, td, .form-select {
+            font-size: small;
         }
     </style>
 @endsection
@@ -61,7 +61,7 @@
                                     <tbody>
                                     @foreach($dates as $day => $date)
                                         <tr>
-                                            <th scope="row" style="color: #004d40; font-size: 22px">{{$day}}</th>
+                                            <th scope="row" style="color: #004d40; font-size: 15px">{{$day}}</th>
                                             @foreach($branches as $branch)
                                                 @if(isset($date['branches']))
                                                     <td>
