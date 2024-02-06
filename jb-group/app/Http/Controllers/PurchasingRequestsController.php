@@ -9,6 +9,7 @@ use App\Models\Status;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class PurchasingRequestsController extends Controller
@@ -20,10 +21,10 @@ class PurchasingRequestsController extends Controller
     {
         $user = Auth::user();
 
-        if(strcmp($user->roles->code, 'admin') === 0) {
+        if (strcmp($user->roles->code, 'admin') === 0) {
             $purchasing = PurchasingRequests::where('status_id', Status::where('name', 'new')->first()?->id)
-                                            ->get();
-        }else {
+                ->get();
+        } else {
             $purchasing = PurchasingRequests::where('user_id', $user->id)->get();
         }
 
@@ -56,8 +57,7 @@ class PurchasingRequestsController extends Controller
         if ($validator->fails()) {
             return redirect()
                 ->back()
-                ->withErrors($validator)
-                ;
+                ->withErrors($validator);
         }
 
         $purchasingRequest = new PurchasingRequests();
@@ -69,7 +69,7 @@ class PurchasingRequestsController extends Controller
         $purchasingRequest->save();
 
         foreach ($request->get('items') as $key => $item) {
-            if((int)$item === 0) {
+            if ((int)$item === 0) {
                 continue;
             }
 
@@ -84,8 +84,8 @@ class PurchasingRequestsController extends Controller
 
         return redirect()->route(
             'purchasing.index', [
-                                  'success' => 'Заявка успешно создана.',
-                              ]
+                'success' => 'Заявка успешно создана.',
+            ]
         );
     }
 
@@ -150,8 +150,7 @@ class PurchasingRequestsController extends Controller
         if ($validator->fails()) {
             return redirect()
                 ->back()
-                ->withErrors($validator)
-                ;
+                ->withErrors($validator);
         }
 
         $purchasing = PurchasingRequests::find($id);
@@ -160,8 +159,8 @@ class PurchasingRequestsController extends Controller
 
         return redirect()->route(
             'purchasing.index', [
-                                  'success' => 'Заявка успешно создана.',
-                              ]
+                'success' => 'Заявка успешно создана.',
+            ]
         );
     }
 
@@ -176,44 +175,40 @@ class PurchasingRequestsController extends Controller
 
         return redirect()->route(
             'purchasing.index', [
-                               'success' => 'Данные обновлены.',
-                           ]
+                'success' => 'Данные обновлены.',
+            ]
         );
     }
 
     public function allList()
     {
-        $purchasingModels = PurchasingRequests::query()
-            ->where('status_id', 1)
-            ->get();
+        $purchasingModels = PurchasingRequests::query()->where('status_id', 1)->get();
         $productTypes = [];
         $comments = '';
 
-        foreach ($purchasingModels as $purchasingModel) {
-            if(!empty(trim($purchasingModel->list))) $comments .= $purchasingModel->list. ', ';
+        $purchasingProducts = PurchasingProduct::with(['product'])
+            ->whereHas('purchasingRequest',function ($query) {
+                $query->where('status_id', 1);
+            })->groupBy('product_id')
+            ->orderBy('product_id', 'asc')
+            ->select('product_id', DB::raw('SUM(count)'))
+            ->get();
 
-            foreach ($purchasingModel->purchasingProducts as $key => $purchasingProduct) {
-                if ($purchasingProduct->product->type->name) {
-                    $productTypes[$purchasingProduct->product->type->name][$purchasingProduct->id]['product'] = $purchasingProduct->product;
-
-                    if(isset($productTypes[$purchasingProduct->product->type->name][$purchasingProduct->id]['count'])) {
-                        $productTypes[$purchasingProduct->product->type->name][$purchasingProduct->id]['count'] += $purchasingProduct->count;
-                    }else {
-                        $productTypes[$purchasingProduct->product->type->name][$purchasingProduct->id]['count'] = $purchasingProduct->count;
-                    }
-                }
+        foreach ($purchasingProducts as $key =>$purchasingProduct) {
+            if ($purchasingProduct->product->type->name) {
+                $productTypes[$purchasingProduct->product->type->name][$key]['product'] = $purchasingProduct->product;
+                $productTypes[$purchasingProduct->product->type->name][$key]['count'] = $purchasingProduct->sum;
             }
+        }
+
+        foreach ($purchasingModels as $purchasingModel) {
+            if (!empty(trim($purchasingModel->list))) $comments .= $purchasingModel->list . ', ';
         }
 
         $data = [
             'productTypes' => $productTypes,
-            'purchasing' => $purchasingModel,
             'comments' => $comments,
-            'branches' => auth()->user()->branches,
-            'statuses' => Status::all()->pluck('description', 'id'),
-            'onlyList' => true
-        ];
-;
-        return view('purchasing.show', $data);
+        ];;
+        return view('purchasing.list', $data);
     }
 }
