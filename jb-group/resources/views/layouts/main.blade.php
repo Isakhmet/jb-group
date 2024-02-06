@@ -226,6 +226,33 @@
                         </div>
                     </li>
                 @endcan
+                <li class="mb-1">
+                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+                            data-bs-toggle="collapse" data-bs-target="#news-collapse" aria-expanded="false">
+                        {{ __('titles.news') }}
+                    </button>
+
+                    <div class="collapse" id="news-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="{{url('events')}}"
+                                   class="link-body-emphasis d-inline-flex text-decoration-none rounded">Новости</a>
+                            </li>
+                            @can('viewAny', \App\Models\User::class)
+                                <li>
+                                    <a href="{{url('events/create')}}"
+                                       class="link-body-emphasis d-inline-flex text-decoration-none rounded">Создать</a>
+                                </li>
+                            @endcan
+                            @can('viewAny', \App\Models\User::class)
+                                <li>
+                                    <a href="{{url('/show-news')}}"
+                                       class="link-body-emphasis d-inline-flex text-decoration-none rounded">Редактировать</a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </div>
+                </li>
+
                 @can('viewAny', \App\Models\Organization::class)
                     <li class="mb-1">
                         <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
