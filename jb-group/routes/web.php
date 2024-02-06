@@ -36,6 +36,9 @@ Route::middleware('auth')->group(function(){
     Route::get('/get-branch-currency', [\App\Http\Controllers\BranchCurrencyController::class, 'getBalance']);
     Route::get('/get-balance-by-currency', [\App\Http\Controllers\BranchCurrencyController::class, 'getBalanceByCurrency']);
     Route::post('/update-branch-currency', [\App\Http\Controllers\BranchCurrencyController::class, 'update']);
+    Route::resource('events', \App\Http\Controllers\NewsController::class);
+    Route::get('upload-files', [\App\Http\Controllers\UploadController::class, 'upload'])->name('upload-files');
+    Route::get('show-news', [\App\Http\Controllers\NewsController::class, 'showNews'])->name('show-news');
 
     Route::get('add-branch', [\App\Http\Controllers\UserController::class, 'addBranch']);
     Route::post('bind-branch', [\App\Http\Controllers\UserController::class, 'bindBranch']);

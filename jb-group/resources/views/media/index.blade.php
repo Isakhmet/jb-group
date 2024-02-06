@@ -25,12 +25,6 @@
             cursor: pointer;
         }
     </style>
-    <style>
-        .icon-holder{
-            display: flex;
-            flex-direction: row;
-        }
-    </style>
 @endsection
 @section('content')
     <div class="container">

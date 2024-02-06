@@ -15,4 +15,5 @@ return [
     'product-types' => 'Типы товаров',
     'products' => 'Товары',
     'schedule' => 'График',
+    'news' => 'Новости',
 ];
