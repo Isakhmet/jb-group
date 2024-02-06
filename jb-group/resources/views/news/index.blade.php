@@ -63,9 +63,6 @@
                                                 <h6 class="card-title mb-0"> {{$event->title}} </h6>
                                                 <span class="nav-item small"> {{$event->created_at}}</span>
                                             </div>
-                                            <div class="nav nav-divider">
-                                                <span class="status"> {{$event->type}}</span>
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="card-body">
