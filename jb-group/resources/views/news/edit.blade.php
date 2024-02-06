@@ -54,7 +54,7 @@
 
                                     <label for="image" class="col-form-label">Фото</label>
                                     <input type="text" hidden name="old_image" class="form-control" id="image"
-                                           value="{{$image}}" readonly>
+                                           value="{{ $image ?? '' }}" readonly>
 
                                     <input type="file" name="image" class="form-control" id="image"
                                            onchange="previewImage(this)">
