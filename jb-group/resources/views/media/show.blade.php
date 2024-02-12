@@ -70,50 +70,32 @@
     </style>
 @endsection
 @section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">{{ __('titles.media') }}</div>
-                    <div class="row ml-2">
-                        {{--<div class="form-check">
-                            <input class="form-check-input" type="radio" name="type-file" id="exampleRadios1" value="image" checked>
-                            <label class="form-check-label" for="exampleRadios1">
-                                Image
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="type-file" id="exampleRadios2" value="video">
-                            <label class="form-check-label" for="exampleRadios2">
-                                Video
-                            </label>
-                        </div>--}}
-                        <div class="radio-group">
-                            <label class="radio">
-                                <input type="radio" value="image" name="type">
-                                Image
-                                <span></span>
-                            </label>
-                            <label class="radio">
-                                <input type="radio" value="video" name="type">
-                                Video
-                                <span></span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="card-body p-2 m">
-                        <div class="text-center mt-5">
-                            @if ($message = Session::get('success'))
-                                <div class="alert alert-success">
-                                    <p>{{ $message }}</p>
-                                </div>
-                            @endif
-                        </div>
-                        @include('layouts.gallery')
-                        @include('layouts.video')
-                    </div>
-                </div>
+    <div class="card">
+        <div class="card-header">{{ __('titles.media') }}</div>
+        <div class="row ml-2">
+            <div class="radio-group">
+                <label class="radio">
+                    <input type="radio" value="image" name="type">
+                    Image
+                    <span></span>
+                </label>
+                <label class="radio">
+                    <input type="radio" value="video" name="type">
+                    Video
+                    <span></span>
+                </label>
             </div>
+        </div>
+        <div class="card-body p-2 m">
+            <div class="text-center mt-5">
+                @if ($message = Session::get('success'))
+                    <div class="alert alert-success">
+                        <p>{{ $message }}</p>
+                    </div>
+                @endif
+            </div>
+            @include('layouts.gallery')
+            @include('layouts.video')
         </div>
     </div>
 @endsection
