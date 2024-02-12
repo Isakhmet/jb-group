@@ -27,6 +27,8 @@ Route::middleware('auth')->group(function(){
     Route::resource('clients', \App\Http\Controllers\ClientController::class);
     Route::resource('organizations', \App\Http\Controllers\OrganizationController::class);
     Route::resource('medias', \App\Http\Controllers\MediaController::class);
+    Route::get('album-edit', [\App\Http\Controllers\MediaController::class, 'albumEdit'])->name('album-edit');
+    Route::get('image-edit/{album}', [\App\Http\Controllers\MediaController::class, 'imageEdit'])->name('image-edit');
     Route::resource('purchasing', \App\Http\Controllers\PurchasingRequestsController::class);
     Route::get('purchasing-all', [\App\Http\Controllers\PurchasingRequestsController::class, 'allList'])->name('purchasing-all');
     Route::resource('product-type-directory', \App\Http\Controllers\ProductTypeDirectory::class);

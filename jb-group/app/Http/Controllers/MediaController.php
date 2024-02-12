@@ -76,6 +76,26 @@ class MediaController extends Controller
         return view('media.add', ['album' => $file, 'images' => $files]);
     }
 
+    public function albumEdit()
+    {
+        return view('media.create', ['files' => MediaAlbum::all(['name'])->toArray(), 'editable' => true]);
+    }
+
+    public function imageEdit($album)
+    {
+        if (strcmp($album, self::DEFAULT_ALBUM) === 0) {
+            $files = MediaFiles::all();
+        }else {
+            if (!File::exists(public_path().'/images/'.$album)){
+                return redirect()->back()->withErrors('Такой альбом не существует');
+            }
+
+            $files = MediaAlbum::with('images')->where('name', $album)->first()->images;
+        }
+
+        return view('media.add', ['album' => $album, 'images' => $files, 'editable' => true]);
+    }
+
     /**
      * Update the specified resource in storage.
      *

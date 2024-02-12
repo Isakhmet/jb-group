@@ -3,8 +3,7 @@
     <link href="{{asset('fonts/material-design-icons/material-icon.css')}}" rel="stylesheet" type="text/css"/>
     <style>
         a:hover {
-            text-decoration: inherit;
-            color:           inherit;
+            color:           black;
         }
 
         .icon-link {

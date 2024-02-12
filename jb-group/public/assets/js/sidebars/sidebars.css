@@ -6,11 +6,11 @@ main {
   overflow-y: hidden;
 }
 
-a {
+.sidebar a {
     color: white;
 }
 
-a:hover {
+.sidebar a:hover {
     color: white;
 }
 

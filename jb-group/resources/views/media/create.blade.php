@@ -1,7 +1,6 @@
 @extends('layouts.main')
 
 @section('styles')
-    <link href="{{asset('fonts/material-design-icons/material-icon.css')}}" rel="stylesheet" type="text/css"/>
     <style>
         a:hover {
             text-decoration: inherit;
@@ -26,6 +25,7 @@
             cursor: pointer;
         }
     </style>
+    <link href="{{asset('fonts/material-design-icons/material-icon.css')}}" rel="stylesheet" type="text/css"/>
 @endsection
 @section('content')
     <div class="container">
@@ -59,20 +59,29 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mdl-cell mdl-cell--3-col mdl-cell--4-col-tablet">
-                            <div class="icon-holder icon-create">
-                                <i class="material-icons f-left">add</i>
-                                <p class="icon-label">создать альбом</p>
+                        @if(!isset($editable))
+                            <div class="mdl-cell mdl-cell--3-col mdl-cell--4-col-tablet">
+                                <div class="icon-holder icon-create">
+                                    <i class="material-icons f-left">add</i>
+                                    <p class="icon-label">создать альбом</p>
+                                </div>
                             </div>
-                        </div>
-                        <br>
+                            <br>
+                        @endif
                         @foreach($files as $file)
                             <div class="mdl-cell mdl-cell--3-col mdl-cell--4-col-tablet">
                                 <div class="icon-holder">
-                                    <a href="{{url('medias/'.$file['name'].'/edit')}}" class="icon-link">
-                                        <i class="material-icons f-left">folder</i>
-                                        <p class="icon-label">{{$file['name']}}</p>
-                                    </a>
+                                    @if(!isset($editable))
+                                        <a href="{{url('medias/'.$file['name'].'/edit')}}" class="icon-link">
+                                            <i class="material-icons f-left">folder</i>
+                                            <p class="icon-label">{{$file['name']}}</p>
+                                        </a>
+                                    @else
+                                        <a href="{{route('image-edit', $file['name'])}}" class="icon-link">
+                                            <i class="material-icons f-left">folder</i>
+                                            <p class="icon-label">{{$file['name']}}</p>
+                                        </a>
+                                    @endif
                                 </div>
                             </div>
                         @endforeach
