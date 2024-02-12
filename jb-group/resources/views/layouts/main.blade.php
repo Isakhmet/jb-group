@@ -365,6 +365,11 @@
                                        class="link-body-emphasis d-inline-flex text-decoration-none rounded">Добавить</a>
                                 </li>
                             @endcan
+                            @can('create', \App\Models\MediaFiles::class)
+                                <li><a href="{{route('album-edit')}}"
+                                       class="link-body-emphasis d-inline-flex text-decoration-none rounded">Редактировать</a>
+                                </li>
+                            @endcan
                         </ul>
                     </div>
                 </li>
