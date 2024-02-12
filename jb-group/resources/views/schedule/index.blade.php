@@ -36,7 +36,7 @@
                     @if(isset($year))
                         <input hidden type="text" name="year" value="{{$year}}">
                     @endif
-                    <div style="overflow-x: scroll;" class="card-body p-2">
+                    <div class="card-body p-2">
                         <div class="text-center mt-5">
                             @if ($message = Session::get('success'))
                                 <div class="alert alert-success">

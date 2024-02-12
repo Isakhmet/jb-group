@@ -8,7 +8,6 @@
     }
 
     .container {
-        position: relative;
         min-height: 100vh;
     }
 
@@ -16,18 +15,13 @@
         display: none;
         flex-wrap: wrap;
         gap: 15px;
-/*
-        justify-content: center;
-*/
         padding: 10px;
     }
 
     .container .video-container, video{
         height: 400px;
         width: 250px;
-        /*border: 5px solid #fff;*/
         border-radius: 5px;
-        /*box-shadow: 0 5px 15px rgba(0,0,0,.7);*/
         cursor: pointer;
         overflow: hidden;
     }
@@ -38,10 +32,6 @@
         object-fit: cover;
         transition: .2s linear;
     }
-
-    /*.container .video-container, video:hover video{
-        transform: scale(1.1);
-    }*/
 
     .container .popup-video {
         position: fixed;
