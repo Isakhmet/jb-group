@@ -392,7 +392,7 @@
             </ul>
         </div>
     @endauth
-    <div class="container pt-3 text-dark">
+    <div class="container pt-3 text-dark fixed-content">
         @yield('content')
     </div>
 </main>

@@ -42,3 +42,12 @@
 .bi-arrow-down-short {
     color: #0e0101;
 }
+
+.fixed-content {
+    position: fixed;
+    top: 0;
+    left: 280px;
+    width: calc(100% - 280px);
+    height: calc(100%);
+    overflow: auto;
+}
