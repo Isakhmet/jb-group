@@ -17,9 +17,9 @@ class BranchCurrencyController extends Controller
      */
     public function index(Request $request)
     {
-        $branches = Branch::whereHas('balances.currency', function ($query) use ($request) {
+        $branches = Branch::query()->whereHas('balances.currency', function ($query) use ($request) {
             $query->where('is_additional', $request->has('is_additional'));
-        })->get();
+        })->orderBy('id')->get();
 
         $data['currencies'] = Currency::where('is_additional', $request->has('is_additional'))->get();
         $data['branches']   = [];
