@@ -17,7 +17,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return view('news.index', ['events' => News::query()->orderBy('created_at', 'asc')->get()]);
+        return view('news.index', ['events' => News::query()->orderBy('created_at', 'desc')->get()]);
     }
 
     /**
