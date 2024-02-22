@@ -66,7 +66,8 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <p>{{$event->message}}</p>
+                                        <textarea class="form-control mb-3" name="message" rows="5"
+                                                  readonly>{{$event->message}}</textarea>
                                         @if(isset($event->image))
                                             <img class="card-img"
                                                  src="{{asset('storage/news/images/'.$event->image)}}"
