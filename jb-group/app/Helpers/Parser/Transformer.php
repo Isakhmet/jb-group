@@ -12,7 +12,7 @@ class Transformer
     {
         $fileName = 'currencies_'. Carbon::now()->format('Y-m-d H:i:s') . '.xlsx';
 
-
+        (new ExchangeExport());
 
         Excel::store(new ExchangeExport, $fileName);
 

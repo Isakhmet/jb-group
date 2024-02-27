@@ -4,9 +4,11 @@ namespace App\Console\Commands;
 
 use App\Exports\ExchangeExport;
 use App\Helpers\Parser\Transformer;
+use App\Mail\CurrencyEmail;
 use Illuminate\Console\Command;
 use App\Services\Parser\MigParser;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ExchangeParser extends Command
@@ -42,23 +44,15 @@ class ExchangeParser extends Command
      */
     public function handle()
     {
+        Mail::to(env('MAIL_TO', 'aziaexchange01@mail.ru'))->send(new CurrencyEmail('currencies_2024-02-27 13:00:31.xlsx'));
+        dd('asd');
+        (new MigParser())->parse();
+
         $fileName = 'currencies_'. Carbon::now()->format('Y-m-d H:i:s') . '.xlsx';
+        Excel::store(new ExchangeExport, $fileName);
 
-        new ExchangeExport();
-
-        /*$model = \App\Models\ExchangeParser::query()
-            ->orderBy('currency', 'desc')
-            ->limit(23)
-            ->get(['currency', 'buy', 'sell']);
-        dd($model);
-
-        new ExchangeExport();*/
-dd('asd');
-        //return Excel::store(new ExchangeExport, $fileName);
-        /*$currencies = (new MigParser())->parse();
-
-
-
-        $currencies = (new Transformer())->transform($currencies);*/
+        if (file_exists(storage_path('app/public/'.$fileName))) {
+            Mail::to(env('MAIL_TO', 'aziaexchange01@mail.ru'))->send(new CurrencyEmail($fileName));
+        }
     }
 }
