@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Exports\ExchangeExport;
-use App\Helpers\Parser\Transformer;
 use App\Mail\CurrencyEmail;
 use Illuminate\Console\Command;
 use App\Services\Parser\MigParser;
@@ -44,8 +43,6 @@ class ExchangeParser extends Command
      */
     public function handle()
     {
-        Mail::to(env('MAIL_TO', 'aziaexchange01@mail.ru'))->send(new CurrencyEmail('currencies_2024-02-27 13:00:31.xlsx'));
-        dd('asd');
         (new MigParser())->parse();
 
         $fileName = 'currencies_'. Carbon::now()->format('Y-m-d H:i:s') . '.xlsx';
