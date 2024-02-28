@@ -31,7 +31,7 @@ class CurrencyEmail extends Mailable
     {
         return $this->view('emails.currency')
             ->subject('Аналитический отчет')
-            ->attach(storage_path('app/public/'.$this->fileName), [
+            ->attach(storage_path('app/'.$this->fileName), [
                 'as' => 'currency.xlsx',
             ])
             ->with([
