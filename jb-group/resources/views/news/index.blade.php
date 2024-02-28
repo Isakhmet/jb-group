@@ -66,7 +66,13 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <textarea class="form-control mb-3" name="message" rows="5"
+                                        <textarea class="form-control mb-3" name="message" rows="
+                                        @if(substr_count( $event->message, "\n" ) < 2 && strlen($event->message) > 124)
+                                        {{3 + strlen($event->message)/124}}
+                                        @else
+                                        {{3 + substr_count( $event->message, "\n" )}}
+                                        @endif
+                                            "
                                                   readonly>{{$event->message}}</textarea>
                                         @if(isset($event->image))
                                             <img class="card-img"
