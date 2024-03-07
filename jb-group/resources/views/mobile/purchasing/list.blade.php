@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('styles')
     <style>
@@ -20,30 +20,26 @@
                         <div class="card-header">{{ __('Просмотр данных') }}</div>
                         <div class="card-body p-2">
                             <div class="text-center mt-5">
-                                <form method="post" action="{{url('/purchasing/'.$purchasing->id)}}" class="login-form">
-                                    @if ($errors->any())
-                                        <div class="alert alert-danger">
-                                            <strong>Что-то пошло не так!</strong> Заполните корректно данные.<br><br>
-                                            <ul>
-                                                @foreach ($errors->all() as $error)
-                                                    <li>{{ $error }}</li>
-                                                @endforeach
-                                            </ul>
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <strong>Что-то пошло не так!</strong> Заполните корректно данные.<br><br>
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+                                <p>{{$comments}}</p>
+                                @foreach($productTypes as $key => $types)
+                                    <h3>{{$key}}</h3>
+                                    @foreach($types as $type)
+                                        <div class="products">
+                                            <p class="product-name">{{$type['product']->name}} {{$type['product']->description}}</p>
+                                            <p class="product-count">{{$type['count']}}</p>
                                         </div>
-                                    @endif
-                                    @csrf
-                                    @method('PUT')
-                                    <p>{{$comments}}</p>
-                                    @foreach($productTypes as $key => $types)
-                                        <h3>{{$key}}</h3>
-                                        @foreach($types as $type)
-                                            <div class="products">
-                                                <p class="product-name">{{$type['product']->name}} {{$type['product']->description}}</p>
-                                                <p class="product-count">{{$type['count']}}</p>
-                                            </div>
-                                        @endforeach
                                     @endforeach
-                                </form>
+                                @endforeach
                             </div>
                         </div>
                     </div>
