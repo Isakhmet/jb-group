@@ -51,8 +51,15 @@ class ExchangeParser extends Command
             $fileName = 'currencies_'. Carbon::now()->format('Y-m-d H:i:s') . '.xlsx';
             Excel::store(new ExchangeExport, $fileName);
 
+            $emails = [
+                'aziaexchange01@mail.ru',
+                'trillioner8@mail.ru'
+            ];
+
             if (file_exists(storage_path('app/'.$fileName))) {
-                Mail::to(env('MAIL_TO', 'aziaexchange01@mail.ru'))->send(new CurrencyEmail($fileName));
+                foreach ($emails as $email) {
+                    Mail::to($email)->send(new CurrencyEmail($fileName));
+                }
             }
         }catch (Exception $exception) {
             Log::info($exception);
