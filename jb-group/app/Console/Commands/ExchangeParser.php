@@ -46,7 +46,9 @@ class ExchangeParser extends Command
     public function handle()
     {
         try {
-            (new MigParser())->parse();
+            $diff = (new MigParser())->parse();
+
+            if (!$diff) return 0;
 
             $fileName = 'currencies_'. Carbon::now()->format('Y-m-d H:i:s') . '.xlsx';
             Excel::store(new ExchangeExport, $fileName);
