@@ -20,15 +20,14 @@ class MigParser extends AbstractDomDocument
     private string $url = 'https://mig.kz/additional#main';
 
     /**
-     * @return array
+     * @return bool
      */
-    public function parse(): array
+    public function parse(): bool
     {
         $data = Http::get($this->url);
         $currencies = [];
 
         try {
-
             $elements = [];
             $title = [];
             $buy = [];
@@ -65,9 +64,13 @@ class MigParser extends AbstractDomDocument
             echo $exception->getMessage();
         }
 
-        $this->save($currencies);
+        if ($this->checkDiff($currencies['USD'])) {
+            $this->save($currencies);
 
-        return $currencies;
+            return true;
+        }
+
+        return false;
     }
 
     public function save($data)
@@ -83,5 +86,22 @@ class MigParser extends AbstractDomDocument
                 ]
             );
         }
+    }
+
+    public function checkDiff($data) : bool
+    {
+        $currency = ExchangeParser::query()
+            ->where('currency', 'USD')
+            ->orderBy('id', 'DESC')
+            ->first();
+
+        if (!isset($currency)) return true;
+
+        $buyDiff = (float)$currency->buy - (float)$data[0];
+        $sellDiff = (float)$currency->sell - (float)$data[1];
+
+        if($buyDiff != 0 || $sellDiff != 0) return true;
+
+        return false;
     }
 }
