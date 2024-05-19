@@ -41,7 +41,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10">
-                @can('viewAny', \App\Models\Currency::class)
+                @can('viewAny', \App\Models\BranchCurrency::class)
                     <div class="card">
                         <div class="card-header">{{ __('titles.news') }}</div>
                         <div class="card-body">
