@@ -2,7 +2,6 @@
 
 @section('content')
     <div class="container">
-        @include('layouts.modals.echarts')
         <div class="row justify-content-center">
             <div class="col-md-12">
                 @can('viewAny', \App\Models\Operation::class)

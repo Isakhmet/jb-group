@@ -138,9 +138,13 @@
 
     $('.btn-danger').click(function () {
         $('.overlay').css("display", "none");
+        $('.buy-rate').css("display", "flex");
+        $('.sell-rate').css("display", "flex");
     });
 
     $('#close-icon').click(function () {
         $('.overlay').css("display", "none");
+        $('.buy-rate').css("display", "flex");
+        $('.sell-rate').css("display", "flex");
     });
 </script>
