@@ -16,4 +16,6 @@ return [
     'products' => 'Товары',
     'schedule' => 'График',
     'news' => 'Новости',
+    'operations' => 'Операций',
+    'rates' => 'Курс валют',
 ];

@@ -77,8 +77,8 @@ class ScheduleEmployeeController extends Controller
                         $data['dates'][$i]['branches'][$schedule->branch->id]['branchName'] = $schedule->branch->name;
 
                         $data['dates'][$i]['branches'][$schedule->branch->id]['employees'][] = [
-                            'employee' => $schedule->employee->name,
-                            'employeeId' => $schedule->employee->id
+                            'employee' => $schedule->employee?->name,
+                            'employeeId' => $schedule->employee?->id
                         ];
                     }
                 }

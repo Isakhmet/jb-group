@@ -26,6 +26,8 @@ Route::middleware('auth')->group(function(){
     Route::resource('employees', \App\Http\Controllers\EmployeeController::class);
     Route::resource('clients', \App\Http\Controllers\ClientController::class);
     Route::resource('organizations', \App\Http\Controllers\OrganizationController::class);
+    Route::resource('operations', \App\Http\Controllers\OperationController::class);
+    Route::get('operation/history', [\App\Http\Controllers\OperationController::class, 'history'])->name('operation-history');
     Route::resource('medias', \App\Http\Controllers\MediaController::class);
     Route::get('album-edit', [\App\Http\Controllers\MediaController::class, 'albumEdit'])->name('album-edit');
     Route::get('image-edit/{album}', [\App\Http\Controllers\MediaController::class, 'imageEdit'])->name('image-edit');

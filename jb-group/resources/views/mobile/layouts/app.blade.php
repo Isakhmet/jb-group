@@ -24,11 +24,11 @@
     <link href="{{ URL::to('/') }}/assets/css/bootstrap/bootstrap.css" rel="stylesheet" type="text/css"/>
     <link href="{{ URL::to('/') }}/assets/css/style.css" rel="stylesheet" type="text/css"/>
 </head>
-<body style="background-color: #2f4f5d;">
+<body style="background-color: #eaeef3;"{{--style="background-color: #2f4f5d;"--}}>
 <div id="app">
-    <nav class="navbar navbar-expand-md navbar-light shadow-sm border border-white" style="background-color: #47474c;">
+    <nav class="navbar navbar-expand-md navbar-light shadow-sm border border-white" style="background-color: #eaeef3;">
         <div class="container">
-            <a class="navbar-brand text-light" href="{{ url('/branch-currency') }}">
+            <a class="navbar-brand" href="{{ url('/branch-currency') }}">
                 {{ config('app.name', 'Laravel') }}
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -43,7 +43,7 @@
                     <ul class="navbar-nav me-auto">
                         @can('viewAny', \App\Models\Currency::class)
                             <li class="nav-item">
-                                <a class="nav-link text-light" href="{{url('currencies')}}"
+                                <a class="nav-link " href="{{url('currencies')}}"
                                    role="button">
                                     {{ __('titles.currencies') }}
                                 </a>
@@ -51,7 +51,7 @@
                         @endcan
                         @can('viewAny', \App\Models\Branch::class)
                             <li class="nav-item">
-                                <a class="nav-link text-light" href="{{url('branches')}}"
+                                <a class="nav-link " href="{{url('branches')}}"
                                    role="button">
                                     {{ __('titles.branches') }}
                                 </a>
@@ -59,7 +59,7 @@
                         @endcan
                         @can('viewAny', \App\Models\BranchCurrency::class)
                             <li class="nav-item">
-                                <a class="nav-link text-light" href="{{url('branch-currency')}}"
+                                <a class="nav-link " href="{{url('branch-currency')}}"
                                    role="button">
                                     {{ __('titles.branch_currencies') }}
                                 </a>
@@ -67,7 +67,7 @@
                         @endcan
                         @can('viewAny', \App\Models\PurchasingRequests::class)
                             <li class="nav-item">
-                                <a class="nav-link text-light" href="{{url('purchasing-all')}}"
+                                <a class="nav-link " href="{{url('purchasing-all')}}"
                                    role="button">
                                     {{ __('titles.purchasing') }}
                                 </a>
@@ -82,7 +82,7 @@
 
                     @else
                         <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle text-light" href="#" role="button"
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle " href="#" role="button"
                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->name }}
                             </a>

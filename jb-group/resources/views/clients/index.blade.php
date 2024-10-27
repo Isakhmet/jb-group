@@ -16,7 +16,7 @@
                                     </div>
                                 @endif
                             </div>
-                            <table class="table" id="clients">
+                            <table class="table table-hover" id="clients">
                                 <thead>
                                 <tr>
                                     <th scope="col">#</th>

@@ -1,7 +1,9 @@
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
 <head>
+{{--
     <script src="{{URL::to('/') }}/assets/js/sidebars/color-modes.js"></script>
+--}}
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,15 +40,56 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
     <link href="{{ URL::to('/') }}/assets/js/sidebars/sidebars.css" rel="stylesheet">
 </head>
-<body style="background-color: #2f4f5d">
+<body class="body-style">
+@yield('header')
 <main class="d-flex flex-nowrap text-light" style="overflow-y: auto">
     @auth
         <div class="flex-shrink-0 p-3 sidebar">
             <a href="/"
-               class="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
-                JB-GROUP
+               class="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom text-style">
+                {{env('APP_NAME')}}
             </a>
             <ul class="navbar-nav me-auto">
+                @can('viewAny', \App\Models\Operation::class)
+                    <li class="mb-1">
+                        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+                                data-bs-toggle="collapse" data-bs-target="#operations-collapse" aria-expanded="false">
+                            {{ __('titles.operations') }}
+                        </button>
+                        <div class="collapse" id="operations-collapse">
+                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                <li>
+                                    <a class="link-body-emphasis d-inline-flex text-decoration-none rounded"
+                                       href="{{url('operations')}}">{{ __('Провести операций') }}</a>
+                                </li>
+                                <li>
+                                    <a class="link-body-emphasis d-inline-flex text-decoration-none rounded"
+                                       href="{{url('operation/history')}}">{{ __('История операций') }}</a>
+                                </li>
+                                <li>
+                                    <a class="link-body-emphasis d-inline-flex text-decoration-none rounded"
+                                       href="{{url('operation/history')}}">{{ __('Отчеты') }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                @endcan
+                    @can('viewAny', \App\Models\Operation::class)
+                        <li class="mb-1">
+                            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+                                    data-bs-toggle="collapse" data-bs-target="#rates-collapse" aria-expanded="false">
+                                {{ __('titles.rates') }}
+                            </button>
+                            <div class="collapse" id="rates-collapse">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                    <li>
+                                        <a class="link-body-emphasis d-inline-flex text-decoration-none rounded"
+                                           href="{{url('rates')}}">Список</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    @endcan
                 @can('viewAny', \App\Models\Currency::class)
                     <li class="mb-1">
                         <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
@@ -131,7 +174,7 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="border-top my-3"></li>
+                    <li class="border-to my-3"></li>
                 @endcan
                 @can('viewAny', \App\Models\User::class)
                     <li class="mb-1">
@@ -226,32 +269,6 @@
                         </div>
                     </li>
                 @endcan
-                <li class="mb-1">
-                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
-                            data-bs-toggle="collapse" data-bs-target="#news-collapse" aria-expanded="false">
-                        {{ __('titles.news') }}
-                    </button>
-
-                    <div class="collapse" id="news-collapse">
-                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li><a href="{{url('events')}}"
-                                   class="link-body-emphasis d-inline-flex text-decoration-none rounded">Новости</a>
-                            </li>
-                            @can('viewAny', \App\Models\User::class)
-                                <li>
-                                    <a href="{{url('events/create')}}"
-                                       class="link-body-emphasis d-inline-flex text-decoration-none rounded">Создать</a>
-                                </li>
-                            @endcan
-                            @can('viewAny', \App\Models\User::class)
-                                <li>
-                                    <a href="{{url('/show-news')}}"
-                                       class="link-body-emphasis d-inline-flex text-decoration-none rounded">Редактировать</a>
-                                </li>
-                            @endcan
-                        </ul>
-                    </div>
-                </li>
 
                 @can('viewAny', \App\Models\Organization::class)
                     <li class="mb-1">
@@ -295,85 +312,7 @@
                     </li>
                 @endcan
                 <li class="border-top my-3"></li>
-                @can('viewAny', \App\Models\PurchasingRequests::class)
-                    <li class="mb-1">
-                        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
-                                data-bs-toggle="collapse" data-bs-target="#purchasing-collapse" aria-expanded="false">
-                            {{ __('titles.purchasing') }}
-                        </button>
-                        <div class="collapse" id="purchasing-collapse">
-                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                                @can('view', \App\Models\PurchasingRequests::class)
-                                    <li>
-                                        <a href="{{url('purchasing')}}"
-                                           class="link-body-emphasis d-inline-flex text-decoration-none rounded">
-                                            Список
-                                        </a>
-                                    </li>
-                                @endcan
-                                @can('create', \App\Models\PurchasingRequests::class)
-                                    <li><a href="{{url('purchasing/create')}}"
-                                           class="link-body-emphasis d-inline-flex text-decoration-none rounded">
-                                            Добавить
-                                        </a>
-                                    </li>
-                                @endcan
-                                @can('view', \App\Models\PurchasingRequests::class)
-                                    <li>
-                                        <a href="{{url('purchasing-all')}}"
-                                           class="link-body-emphasis d-inline-flex text-decoration-none rounded">
-                                            Полный список
-                                        </a>
-                                    </li>
-                                @endcan
-                            </ul>
-                        </div>
-                    </li>
-                @endcan
-                @can('viewAny', \App\Models\ProductType::class)
-                    <li class="mb-1">
-                        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
-                                data-bs-toggle="collapse" data-bs-target="#directory-collapse" aria-expanded="false">
-                            {{ __('titles.directory') }}
-                        </button>
-                        <div class="collapse" id="directory-collapse">
-                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                                <li><a href="{{url('product-type-directory')}}"
-                                       class="link-body-emphasis d-inline-flex text-decoration-none rounded">Типы
-                                        товаров</a>
-                                </li>
-                                <li><a href="{{url('product-directory')}}"
-                                       class="link-body-emphasis d-inline-flex text-decoration-none rounded">Товары</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="border-top my-3"></li>
-                @endcan
-                <li class="mb-1">
-                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
-                            data-bs-toggle="collapse" data-bs-target="#media-collapse" aria-expanded="false">
-                        {{ __('titles.media') }}
-                    </button>
-                    <div class="collapse" id="media-collapse">
-                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li><a href="{{url('medias')}}"
-                                   class="link-body-emphasis d-inline-flex text-decoration-none rounded">Список</a>
-                            </li>
-                            @can('create', \App\Models\MediaFiles::class)
-                                <li><a href="{{url('medias/create')}}"
-                                       class="link-body-emphasis d-inline-flex text-decoration-none rounded">Добавить</a>
-                                </li>
-                            @endcan
-                            @can('create', \App\Models\MediaFiles::class)
-                                <li><a href="{{route('album-edit')}}"
-                                       class="link-body-emphasis d-inline-flex text-decoration-none rounded">Редактировать</a>
-                                </li>
-                            @endcan
-                        </ul>
-                    </div>
-                </li>
-                <li class="border-top my-3"></li>
+
                 <li class="mb-1">
                     <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
                             data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
