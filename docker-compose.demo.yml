@@ -1,0 +1,39 @@
+version: '3.3'
+
+services:
+  demo-php:
+    build:       ./configurations
+    user: root
+    working_dir: /application
+    environment:
+      APP_ENV:  'local'
+      TIMEZONE: 'Asia/Almaty'
+    volumes:
+      - ./jb-group:/application
+    ports:
+      - 9000
+    restart:     unless-stopped
+
+  demo-nginx:
+    image: nginx
+    ports:
+      - 8880:80
+    volumes:
+      - ./configurations/nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
+      - ./configurations/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./jb-group:/application
+
+  demo-postgres:
+    image:   postgres:13
+    restart: always
+    environment:
+      POSTGRES_USER:     'demo'
+      POSTGRES_PASSWORD: 'demo'
+      POSTGRES_DB:       'demo'
+      SCHEMA:            'public'
+
+    ports:
+      - 54134:5432
+    volumes:
+      - ${PWD}/configurations/initdb.sh:/docker-entrypoint-initdb.d/initdb.sh
+      - ${PWD}/postgres-data:/var/lib/postgresql/data
