@@ -134,7 +134,7 @@ class OperationController extends Controller
             } elseif ($operation->type === 'sell') {
                 // Для продаж: (Курс на момент продажи - Текущий курс покупки) * Количество
                 $profits['sell'][$operation->currency->id][] = ($operation->rate - $currentRate['buy_rate']) * $operation->amount;
-                $profit += ($currentRate['sell_rate'] - $operation->rate) * $operation->amount;
+                $profit += ($currentRate['buy_rate'] - $operation->rate) * $operation->amount;
             }
         }
 
