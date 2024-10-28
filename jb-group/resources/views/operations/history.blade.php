@@ -18,7 +18,7 @@
                         <div class="text-center mt-5">
                                 <div class="alert alert-success">
                                     <p>Прибыль за период:</p>
-                                    <p>{{ $profit }}</p>
+                                    <p>{{ $profit }}тг</p>
                                 </div>
                         </div>
                         <table class="table table-hover">
