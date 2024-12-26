@@ -38,3 +38,5 @@ Route::prefix('parser')->group(function () {
     Route::post('get-users-roles', [\App\Http\Controllers\ParserController::class, 'parseUsersRoles']);
     Route::post('get-users-branches', [\App\Http\Controllers\ParserController::class, 'parseUsersBranch']);
 });
+
+Route::post('webhook/gupshup', [\App\Http\Controllers\ParserController::class, 'webhook']);

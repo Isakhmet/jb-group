@@ -11,6 +11,8 @@ use App\Models\User;
 use App\Models\UserBranch;
 use App\Models\UserRole;
 use GuzzleHttp\Client;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ParserController extends Controller
 {
@@ -139,5 +141,10 @@ class ParserController extends Controller
         $array = json_decode($results->getBody()->getContents(), true);
         UserRole::truncate();
         UserRole::insert($array);
+    }
+
+    public function webhook(Request $request)
+    {
+        Log::info('gupshup', $request->all());
     }
 }
