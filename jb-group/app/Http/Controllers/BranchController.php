@@ -119,13 +119,13 @@ class BranchController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
-        //
+        Branch::query()->find($id)->delete();
+
+        return redirect()->route('branches.index', ['success' => 'Данные обновлены.']);
     }
 }
